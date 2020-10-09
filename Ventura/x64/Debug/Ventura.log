@@ -1,6 +1,9 @@
 ﻿  Game.cpp
+  Shader.cpp
   main.cpp
-C:\Users\Alvizo\Desktop\Ventura\Ventura\src\main.cpp(64,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\main.cpp(64,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Texture.cpp
   Generating Code...
+  glad.c
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Ventura.vcxproj -> C:\Users\Alvizo\Desktop\Ventura\x64\Debug\Ventura.exe
+  Ventura.vcxproj -> C:\Users\Alvizo\Desktop\Ventura\Ventura\x64\Debug\Ventura.exe
