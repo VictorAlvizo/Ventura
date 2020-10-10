@@ -59,10 +59,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, c
 }
 
 Shader::~Shader() {
-	/*I could delete the program here using glDeleteProgram() 
-	but I don't yet know how the program will be structed.
-	Calling it here may cause an error in the early deletion of the shader
-	*/
+	glDeleteProgram(m_ProgramID);
 }
 
 void Shader::Bind() {
@@ -106,7 +103,7 @@ std::string Shader::readShader(const std::string& shaderPath) {
 	std::stringstream fileStream;
 
 	if (!shaderFile.is_open()) {
-		std::cout << "ERROR: " << "Unable to open shader file at: " << shaderPath << std::endl;
+		std::cout << "Error: " << "Unable to open shader file at: " << shaderPath << std::endl;
 	}
 
 	fileStream << shaderFile.rdbuf();
@@ -142,7 +139,7 @@ unsigned int Shader::createShader(unsigned int type, const char * src) {
 	if (!success) {
 		glGetShaderInfoLog(shader, 512, nullptr, infoLog);
 
-		std::cout << "ERROR: " << typeStr << " not compilied successfully \n" << infoLog << std::endl;
+		std::cout << "Error: " << typeStr << " not compilied successfully \n" << infoLog << std::endl;
 	}
 
 	return shader;

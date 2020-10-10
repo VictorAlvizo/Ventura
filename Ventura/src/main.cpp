@@ -1,8 +1,6 @@
 #include <glad/glad.h>
 #include <glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include "Shader.h"
-#include "Texture.h"
 #include "Game.h"
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode);
 

@@ -1,7 +1,10 @@
 #pragma once
 #include <glad/glad.h>
-#include "Shader.h"
-#include "Texture.h"
+#include "ResourceManager.h"
+
+enum class GameState {
+	MENU, ACTIVE
+};
 
 class Game {
 public:
@@ -14,6 +17,7 @@ public:
 	void Render();
 
 	char m_Keys[1024];
+	GameState m_State;
 
 private:
 	unsigned int m_Width, m_Height;

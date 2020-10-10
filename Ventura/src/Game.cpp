@@ -3,7 +3,7 @@
 Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
 	:m_Width(screenWidth), m_Height(screenHeight)
 {
-	//holder
+	m_State = GameState::ACTIVE; //TODO: Change to menu towards the end
 }
 
 void Game::Init() {
@@ -19,5 +19,11 @@ void Game::Update(float deltaTime) {
 }
 
 void Game::Render() {
-	//holder
+	if (m_State == GameState::MENU) {
+		//holder
+	}
+
+	if (m_State == GameState::ACTIVE) {
+		//holder
+	}
 }

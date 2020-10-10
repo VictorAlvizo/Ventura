@@ -28,6 +28,8 @@ public:
 	void SetMat4(const std::string& name, glm::mat4 mat4);
 
 private:
+	friend class ResourceManager;
+
 	std::string readShader(const std::string& shaderPath);
 	unsigned int createShader(unsigned int type, const char * src);
 

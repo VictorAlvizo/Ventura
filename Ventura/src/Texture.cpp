@@ -42,7 +42,7 @@ Texture::Texture(const std::string& path) {
 }
 
 Texture::~Texture() {
-	/*Nothing is here due to the same reason as in Shader.cpp*/
+	glDeleteTextures(1, &m_TextureID);
 }
 
 void Texture::Bind(int textureUnit) {

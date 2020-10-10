@@ -14,6 +14,8 @@ public:
 	void UnBind();
 
 private:
+	friend class ResourceManager;
+
 	unsigned int m_TextureID;
 
 	int m_Width, m_Height, m_NrChannels;
