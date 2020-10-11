@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\SpriteRenderer.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SpriteRenderer.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Shader.h" />
@@ -408,6 +410,8 @@
     <ClInclude Include="src\Vendor\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Shaders\SpriteFragment.glsl" />
+    <None Include="src\Shaders\SpriteVertex.glsl" />
     <None Include="src\Shaders\testFragment.glsl" />
     <None Include="src\Shaders\testVertex.glsl" />
     <None Include="src\Vendor\glm\detail\func_common.inl" />
