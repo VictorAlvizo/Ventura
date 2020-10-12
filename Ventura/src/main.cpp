@@ -2,6 +2,10 @@
 #include <glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "Game.h"
+#include "Vendor/imgui/imgui.h"
+#include "Vendor/imgui/imgui_impl_glfw.h"
+#include "Vendor/imgui/imgui_impl_opengl3.h"
+
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode);
 
 const unsigned int SCREEN_WIDTH = 800;
@@ -56,11 +60,20 @@ int main() {
     float lastFrame = 0.0f;
     float currentTime = 0.0f;
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init((char*)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+
     while (!glfwWindowShouldClose(window)) {
         currentTime = glfwGetTime();
         deltaTime = currentTime - lastFrame;
         lastFrame = currentTime;
         glfwPollEvents();
+
+        ImGui_ImplOpenGL3_NewFrame();
 
         ventura.ProcessInput(deltaTime);
         ventura.Update(deltaTime);
@@ -68,10 +81,25 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        {
+            //IMGUI Code
+        }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         ventura.Render();
 
         glfwSwapBuffers(window);
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+
+    ImGui::DestroyContext();
 
     glfwTerminate();
     return 0;
