@@ -1,3 +1,7 @@
-﻿  main.cpp
+﻿  Game.cpp
+  main.cpp
 C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\main.cpp(71,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\ResourceManager.h(35): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\ResourceManager.h(25): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
   Ventura.vcxproj -> C:\Users\Alvizo\Desktop\Ventura\Ventura\x64\Debug\Ventura.exe

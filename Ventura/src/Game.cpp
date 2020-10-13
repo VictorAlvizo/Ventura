@@ -32,6 +32,12 @@ void Game::Update(float deltaTime) {
 }
 
 void Game::Render() {
+	ImGui::Begin("Hello");
+	//ImGUI Code
+	ImGui::End();
+
+	std::cout << "F: " << f << std::endl;
+
 	if (m_State == GameState::MENU) {
 		//holder
 	}

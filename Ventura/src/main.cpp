@@ -84,14 +84,10 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        {
-            //IMGUI Code
-        }
+        ventura.Render();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        ventura.Render();
 
         glfwSwapBuffers(window);
     }

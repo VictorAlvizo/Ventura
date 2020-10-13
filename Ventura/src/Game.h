@@ -2,6 +2,9 @@
 #include <glad/glad.h>
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "Vendor/imgui/imgui.h"
+#include "Vendor/imgui/imgui_impl_glfw.h"
+#include "Vendor/imgui/imgui_impl_opengl3.h"
 
 enum class GameState {
 	MENU, ACTIVE
