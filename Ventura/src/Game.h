@@ -1,5 +1,6 @@
 #pragma once
 #include <glad/glad.h>
+#include <glfw3.h>
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "Vendor/imgui/imgui.h"

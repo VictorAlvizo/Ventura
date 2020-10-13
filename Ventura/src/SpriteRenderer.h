@@ -13,8 +13,7 @@ public:
 private:
 	void init();
 
-	unsigned int m_VAO, m_VBO; //NOTE: Subject to change after adding animations to sprite
-							  //due to updating texture coords. Tex coords might become dyanmic
+	unsigned int m_VAO, m_VBO;
 
 	std::shared_ptr<Shader> m_Shader;
 };
