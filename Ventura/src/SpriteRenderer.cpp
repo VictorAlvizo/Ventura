@@ -6,7 +6,7 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader>& shader)
 	init();
 }
 
-void SpriteRenderer::DrawSprite(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotate, glm::vec3 color) {
+void SpriteRenderer::DrawSprite(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotate, glm::vec3 color, std::vector<float> texUV) {
 	m_Shader->Bind();
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(pos, 0.0f));
@@ -23,7 +23,12 @@ void SpriteRenderer::DrawSprite(std::shared_ptr<Texture>& texture, glm::vec2 pos
 
 	texture->Bind(0);
 	glBindVertexArray(m_VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(texUV), &texUV[0]);
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 

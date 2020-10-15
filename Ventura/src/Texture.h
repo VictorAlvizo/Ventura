@@ -13,6 +13,9 @@ public:
 	void Bind(int textureUnit = 0);
 	void UnBind();
 
+	inline int getWidth() const { return m_Width; }
+	inline int getHeight() const { return m_Height; }
+
 private:
 	unsigned int m_TextureID;
 

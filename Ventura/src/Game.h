@@ -3,6 +3,7 @@
 #include <glfw3.h>
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "SpriteSheetReader.h"
 #include "Vendor/imgui/imgui.h"
 #include "Vendor/imgui/imgui_impl_glfw.h"
 #include "Vendor/imgui/imgui_impl_opengl3.h"
@@ -25,11 +26,11 @@ public:
 	char m_Keys[1024];
 	GameState m_State;
 
-	unsigned int vao;
-
 private:
 	unsigned int m_Width, m_Height;
 
 	SpriteRenderer * m_SpriteRenderer;
+
+	SpriteSheetReader * m_SSR; //NOTE: TESTING VARIBLE, REMOVE LATER
 };
 
