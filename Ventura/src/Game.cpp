@@ -1,6 +1,8 @@
 #include "Game.h"
 
 int index = 0; //NOTE: TESTING VARIBLE, REMOVE LATER
+int yIndex = 0;
+void Animate();
 
 Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
 	:m_Width(screenWidth), m_Height(screenHeight)
@@ -25,7 +27,10 @@ void Game::Init() {
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
 
-	m_SSR = new SpriteSheetReader(ResourceManager::Get<Texture>("knight"), glm::vec2(65.0f));
+	m_SSR = new SpriteSheetReader(ResourceManager::Get<Texture>("knight"), glm::vec2(64.0f, 64.0f));
+
+	std::thread animationThread(Animate);
+	animationThread.detach();
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -39,7 +44,7 @@ void Game::Update(float deltaTime) {
 void Game::Render() {
 
 	ImGui::Begin("ImGui");
-	ImGui::SliderInt("Index Slider", &index, 0, 72);
+	ImGui::SliderInt("Y Index", &yIndex, 0, 8);
 	ImGui::End();
 
 	if (m_State == GameState::MENU) {
@@ -47,7 +52,17 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		//TODO: 2D array system to retrive sprites
-		m_SpriteRenderer->DrawSprite(ResourceManager::Get<Texture>("knight"), glm::vec2(280.0f, 300.0f), glm::vec2(200.0f), 0.0f, glm::vec3(1.0f), m_SSR->getTexUV(index));
+		m_SpriteRenderer->DrawSprite(ResourceManager::Get<Texture>("knight"), glm::vec2(280.0f, 300.0f), glm::vec2(200.0f), 0.0f, glm::vec3(1.0f), m_SSR->getTexUV(index, yIndex));
+	}
+}
+
+void Animate() { //NOTE: This is an example, eliminate later
+	while (true) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		index++;
+
+		if (index == 3) {
+			index = 0;
+		}
 	}
 }

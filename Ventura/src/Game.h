@@ -1,6 +1,8 @@
 #pragma once
 #include <glad/glad.h>
 #include <glfw3.h>
+#include <thread>
+#include <chrono>
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "SpriteSheetReader.h"
