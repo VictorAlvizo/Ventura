@@ -7,6 +7,8 @@
 #include "Vendor/imgui/imgui_impl_opengl3.h"
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode);
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+void MousePosCallback(GLFWwindow* window, double xPos, double yPos);
 
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
@@ -50,6 +52,9 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
     glfwSetKeyCallback(window, KeyCallback);
+    glfwSetCursorPosCallback(window, MousePosCallback);
+
+    glfwSetMouseButtonCallback(window, MouseButtonCallback);
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -116,4 +121,14 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
             ventura.m_Keys[key] = false;
         }
     }
+}
+
+void MousePosCallback(GLFWwindow* window, double xPos, double yPos) {
+    std::cout << "(" << xPos << "," << yPos << ")" << std::endl;
+    ventura.m_MouseX = xPos;
+    ventura.m_MouseY = yPos;
+}
+
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    ventura.m_MouseButtons[button] = (action == GLFW_PRESS) ? true : false;
 }

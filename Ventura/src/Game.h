@@ -23,10 +23,14 @@ public:
 	void Update(float deltaTime);
 	void Render();
 
+	//Mouse and keyboard information
 	char m_Keys[1024];
+	bool m_MouseButtons[8];
+	double m_MouseX, m_MouseY;
+
 	GameState m_State;
 
-	Entity * m_Entity;
+	Entity * m_Entity, * m_Entity2;
 
 private:
 	unsigned int m_Width, m_Height;

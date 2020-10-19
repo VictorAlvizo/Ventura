@@ -8,6 +8,7 @@ public:
 		glm::vec3 color = glm::vec3(1.0f));
 
 	virtual void Draw(SpriteRenderer& spriteRenderer);
+	void Move(glm::vec2 newPos);
 
 protected:
 	Texture m_Texture;

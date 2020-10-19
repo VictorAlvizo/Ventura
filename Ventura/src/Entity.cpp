@@ -17,3 +17,7 @@ Entity::Entity(Texture& texture, glm::vec2 pos, glm::vec2 size, glm::vec2 hbSize
 void Entity::Draw(SpriteRenderer& spriteRenderer) {
 	spriteRenderer.DrawSprite(m_Texture, m_Pos, m_Size, m_Rotation, m_Color);
 }
+
+void Entity::Move(glm::vec2 newPos) {
+	m_Pos = newPos;
+}
