@@ -16,13 +16,14 @@ public:
 	inline glm::vec2 getVelocity() const { return m_Velocity; }
 	inline glm::vec3 getColor() const { return m_Color; }
 
+	float m_Rotation;
+
 protected:
 	Texture m_Texture;
 
 	glm::vec2 m_Pos, m_Size, m_Hitbox, m_Velocity;
 	glm::vec3 m_Color;
 
-	float m_Rotation;
 	bool m_Destroyed;
 };
 

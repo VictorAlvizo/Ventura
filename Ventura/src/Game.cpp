@@ -33,7 +33,7 @@ void Game::Init() {
 }
 
 void Game::ProcessInput(float deltaTime) {
-	if (m_MouseButtons[GLFW_MOUSE_BUTTON_LEFT] == GLFW_PRESS) {
+	if (m_MouseButtons[GLFW_MOUSE_BUTTON_RIGHT] == GLFW_PRESS) {
 		m_Entity->Move(glm::vec2(m_MouseX, m_MouseY));
 	}
 }
@@ -45,7 +45,7 @@ void Game::Update(float deltaTime) {
 void Game::Render() {
 
 	ImGui::Begin("ImGui");
-	//holder
+	ImGui::SliderFloat("Rotation", &m_Entity2->m_Rotation, 0.0f, 360.0f);
 	ImGui::End();
 
 	if (m_State == GameState::MENU) {
