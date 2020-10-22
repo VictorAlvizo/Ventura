@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CollisionHandler.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\SpriteSheetReader.cpp" />
     <ClCompile Include="src\SpriteRenderer.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="src\Vendor\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CollisionHandler.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\SpriteSheetReader.h" />
     <ClInclude Include="src\SpriteRenderer.h" />

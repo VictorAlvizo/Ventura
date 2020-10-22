@@ -39,7 +39,7 @@ void Game::ProcessInput(float deltaTime) {
 }
 
 void Game::Update(float deltaTime) {
-	//holder
+	CheckCollisions();
 }
 
 void Game::Render() {
@@ -55,5 +55,11 @@ void Game::Render() {
 	if (m_State == GameState::ACTIVE) {
 		m_Entity->Draw(*m_SpriteRenderer);
 		m_Entity2->Draw(*m_SpriteRenderer);
+	}
+}
+
+void Game::CheckCollisions() {
+	if (CollisionHandler::CollideAABB(*m_Entity, *m_Entity2)) {
+		std::cout << "Objects have collided" << std::endl;
 	}
 }

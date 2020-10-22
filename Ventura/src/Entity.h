@@ -10,6 +10,12 @@ public:
 	virtual void Draw(SpriteRenderer& spriteRenderer);
 	void Move(glm::vec2 newPos);
 
+	inline glm::vec2 getPos() const { return m_Pos; }
+	inline glm::vec2 getSize() const { return m_Size; }
+	inline glm::vec2 getHitbox() const { return m_Hitbox; }
+	inline glm::vec2 getVelocity() const { return m_Velocity; }
+	inline glm::vec3 getColor() const { return m_Color; }
+
 protected:
 	Texture m_Texture;
 

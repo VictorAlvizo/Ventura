@@ -124,7 +124,6 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 }
 
 void MousePosCallback(GLFWwindow* window, double xPos, double yPos) {
-    std::cout << "(" << xPos << "," << yPos << ")" << std::endl;
     ventura.m_MouseX = xPos;
     ventura.m_MouseY = yPos;
 }

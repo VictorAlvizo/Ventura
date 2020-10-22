@@ -3,7 +3,7 @@
 #include <glfw3.h>
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
-#include "Entity.h"
+#include "CollisionHandler.h"
 #include "Vendor/imgui/imgui.h"
 #include "Vendor/imgui/imgui_impl_glfw.h"
 #include "Vendor/imgui/imgui_impl_opengl3.h"
@@ -22,6 +22,8 @@ public:
 	void ProcessInput(float deltaTime);
 	void Update(float deltaTime);
 	void Render();
+
+	void CheckCollisions();
 
 	//Mouse and keyboard information
 	char m_Keys[1024];
