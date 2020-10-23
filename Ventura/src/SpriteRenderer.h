@@ -19,7 +19,7 @@ public:
 private:
 	void init();
 
-	unsigned int m_VAO, m_VBO;
+	unsigned int m_VAO, m_TexVBO;
 
 	std::shared_ptr<Shader> m_Shader;
 };

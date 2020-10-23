@@ -138,7 +138,6 @@ unsigned int Shader::createShader(unsigned int type, const char * src) {
 
 	if (!success) {
 		glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-
 		std::cout << "Error: " << typeStr << " not compilied successfully \n" << infoLog << std::endl;
 	}
 
