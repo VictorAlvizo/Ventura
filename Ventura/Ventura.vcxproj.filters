@@ -60,6 +60,9 @@
     <ClCompile Include="src\CollisionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vendor\glm\detail\_features.hpp">
@@ -839,6 +842,9 @@
     <ClInclude Include="src\CollisionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\TextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Vendor\glm\detail\func_common.inl">
@@ -1241,5 +1247,7 @@
     <None Include="src\Shaders\testFragment.glsl" />
     <None Include="src\Shaders\SpriteVertex.glsl" />
     <None Include="src\Shaders\SpriteFragment.glsl" />
+    <None Include="src\Shaders\TextVertex.glsl" />
+    <None Include="src\Shaders\TextFragment.glsl" />
   </ItemGroup>
 </Project>

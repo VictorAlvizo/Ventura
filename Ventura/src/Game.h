@@ -1,12 +1,13 @@
 #pragma once
 #include <glad/glad.h>
 #include <glfw3.h>
-#include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "CollisionHandler.h"
+#include "ResourceManager.h"
 #include "Vendor/imgui/imgui.h"
 #include "Vendor/imgui/imgui_impl_glfw.h"
 #include "Vendor/imgui/imgui_impl_opengl3.h"
+#include "TextRenderer.h"
 
 enum class GameState {
 	MENU, ACTIVE

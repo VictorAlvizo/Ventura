@@ -1,6 +1,6 @@
 #include "SpriteRenderer.h"
 
-SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader>& shader) 
+SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader> shader) 
 	:m_Shader(shader)
 {
 	init();

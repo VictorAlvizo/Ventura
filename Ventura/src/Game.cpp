@@ -17,6 +17,8 @@ Game::~Game() {
 
 void Game::Init() {
 	ResourceManager::LoadShader("src/Shaders/SpriteVertex.glsl", "src/Shaders/SpriteFragment.glsl", "sprite");
+	ResourceManager::LoadShader("src/Shaders/TextVertex.glsl", "src/Shaders/TextFragment.glsl", "text");
+
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/Tex1.jpg", "tex1");
 	ResourceManager::LoadTexture("Textures/Tex2.jpg", "tex2");

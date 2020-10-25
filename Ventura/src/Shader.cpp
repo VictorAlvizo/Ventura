@@ -103,7 +103,7 @@ std::string Shader::readShader(const std::string& shaderPath) {
 	std::stringstream fileStream;
 
 	if (!shaderFile.is_open()) {
-		std::cout << "Error: " << "Unable to open shader file at: " << shaderPath << std::endl;
+		std::cout << "Error: Unable to open shader file at: " << shaderPath << std::endl;
 	}
 
 	fileStream << shaderFile.rdbuf();
@@ -152,7 +152,7 @@ unsigned int Shader::GetUniLocation(const std::string& name) {
 	int location = glGetUniformLocation(m_ProgramID, name.c_str());
 
 	if (location == -1) {
-		std::cout << "Error: " << "Could not find the uniform named: " << name << std::endl;
+		std::cout << "Error: Could not find the uniform named: " << name << std::endl;
 	}
 	else {
 		m_UniformCache[name] = location;

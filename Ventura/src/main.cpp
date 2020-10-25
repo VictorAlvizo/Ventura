@@ -38,7 +38,7 @@ int main() {
     window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ventura", nullptr, nullptr);
 
     if (!window) {
-        std::cout << "Error: " << "Failed to create the window" << std::endl;
+        std::cout << "Error: Failed to create the window" << std::endl;
         glfwTerminate();
         return -1;
     }
