@@ -9,3 +9,9 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
 
     return xCol && yCol;
 }
+
+bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
+    //Get corners, shadows, etc SAT code
+
+    return false;
+}
