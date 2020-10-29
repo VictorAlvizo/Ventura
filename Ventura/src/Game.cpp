@@ -61,7 +61,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideAABB(*m_Entity, *m_Entity2)) {
+	if (CollisionHandler::CollideSAT(*m_Entity, *m_Entity2)) {
 		std::cout << "Objects have collided" << std::endl;
 	}
 }

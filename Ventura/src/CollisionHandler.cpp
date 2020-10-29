@@ -11,7 +11,22 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
 }
 
 bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
-    //Get corners, shadows, etc SAT code
+    std::vector<glm::ivec2> corners1 = getCorners(ent);
+    std::vector<glm::ivec2> corners2 = getCorners(ent2);
+
+    //TODO: Get axes and find min and max for each axis
 
     return false;
+}
+
+std::vector<glm::ivec2> CollisionHandler::getCorners(Entity& entity) {
+    std::vector<glm::ivec2> corners;
+
+    //TODO: So far only for a rectangle / square. Implment corners within entity itself?
+    corners.push_back({ entity.getPos().x, entity.getPos().y }); //Top left
+    corners.push_back({ entity.getPos().x + entity.getSize().x, entity.getPos().y }); //Top right
+    corners.push_back({ entity.getPos().x, entity.getPos().y + entity.getSize().y }); //Bottom left
+    corners.push_back({ entity.getPos().x + entity.getSize().x, entity.getPos().y + entity.getSize().y }); //Bottom right
+
+    return corners;
 }
