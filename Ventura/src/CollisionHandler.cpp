@@ -40,7 +40,7 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
             e2Max = glm::max(e2Max, product);
         }
 
-        if (e1Max < e2Min || e2Max < e1Max) {
+        if (e1Max < e2Min || e2Max < e1Min) {
             return false;
         }
     }
