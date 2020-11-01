@@ -25,16 +25,23 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
     std::vector<glm::vec2> corners1 = ent.GetCorners();
     std::vector<glm::vec2> corners2 = ent2.GetCorners();
 
+    //NOTE: For debugging, remove later
+    for (glm::vec2 corner : corners2) {
+        std::cout << "CORNERS: (" << corner.x << "," << corner.y << ")" << std::endl;
+    }
+
+    std::cout << std::endl;
+
     for (glm::vec2 axis : axes) {
         //First entity corners
-        for (unsigned int i = 0; i < ent.GetCorners().size(); i++) {
+        for (unsigned int i = 0; i < corners1.size(); i++) {
             float product = glm::dot(corners1[i], axis);
             e1Min = glm::min(e1Min, product);
             e1Max = glm::max(e1Max, product);
         }
 
         //Second entity corners
-        for (unsigned int i = 0; i < ent.GetCorners().size(); i++) {
+        for (unsigned int i = 0; i < corners2.size(); i++) {
             float product = glm::dot(corners2[i], axis);
             e2Min = glm::min(e2Min, product);
             e2Max = glm::max(e2Max, product);

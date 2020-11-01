@@ -35,6 +35,10 @@ void Game::Init() {
 }
 
 void Game::ProcessInput(float deltaTime) {
+	if (m_MouseButtons[GLFW_MOUSE_BUTTON_LEFT] == GLFW_PRESS) {
+		std::cout << "(" << m_MouseX << "," << m_MouseY << ")" << std::endl;
+	}
+
 	if (m_MouseButtons[GLFW_MOUSE_BUTTON_RIGHT] == GLFW_PRESS) {
 		m_Entity->Move(glm::vec2(m_MouseX, m_MouseY));
 	}
@@ -62,6 +66,6 @@ void Game::Render() {
 
 void Game::CheckCollisions() {
 	if (CollisionHandler::CollideSAT(*m_Entity, *m_Entity2)) {
-		std::cout << "Objects have collided" << std::endl;
+		//std::cout << "Objects have collided" << std::endl;
 	}
 }
