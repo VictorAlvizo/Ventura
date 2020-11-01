@@ -9,7 +9,5 @@ public:
 
 private:
 	CollisionHandler();
-
-	static std::vector<glm::ivec2> getCorners(Entity& entity);
 };
 

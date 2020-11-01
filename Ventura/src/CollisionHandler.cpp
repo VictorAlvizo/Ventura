@@ -11,22 +11,39 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
 }
 
 bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
-    std::vector<glm::ivec2> corners1 = getCorners(ent);
-    std::vector<glm::ivec2> corners2 = getCorners(ent2);
+    std::vector<glm::vec2> axes;
 
-    //TODO: Get axes and find min and max for each axis
+    axes.push_back(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation))));
+    axes.push_back(glm::vec2(glm::cos(glm::radians(ent.m_Rotation + 90.0f)), glm::sin(glm::radians(ent.m_Rotation + 90.0f))));
 
-    return false;
-}
+    axes.push_back(glm::vec2(glm::cos(glm::radians(ent2.m_Rotation)), glm::sin(glm::radians(ent2.m_Rotation))));
+    axes.push_back(glm::vec2(glm::cos(glm::radians(ent2.m_Rotation + 90.0f)), glm::sin(glm::radians(ent2.m_Rotation + 90.0f))));
 
-std::vector<glm::ivec2> CollisionHandler::getCorners(Entity& entity) {
-    std::vector<glm::ivec2> corners;
+    float e1Min = INFINITY, e1Max = -INFINITY;
+    float e2Min = INFINITY, e2Max = -INFINITY;
 
-    //TODO: So far only for a rectangle / square. Implment corners within entity itself?
-    corners.push_back({ entity.getPos().x, entity.getPos().y }); //Top left
-    corners.push_back({ entity.getPos().x + entity.getSize().x, entity.getPos().y }); //Top right
-    corners.push_back({ entity.getPos().x, entity.getPos().y + entity.getSize().y }); //Bottom left
-    corners.push_back({ entity.getPos().x + entity.getSize().x, entity.getPos().y + entity.getSize().y }); //Bottom right
+    std::vector<glm::vec2> corners1 = ent.GetCorners();
+    std::vector<glm::vec2> corners2 = ent2.GetCorners();
 
-    return corners;
+    for (glm::vec2 axis : axes) {
+        //First entity corners
+        for (unsigned int i = 0; i < ent.GetCorners().size(); i++) {
+            float product = glm::dot(corners1[i], axis);
+            e1Min = glm::min(e1Min, product);
+            e1Max = glm::max(e1Max, product);
+        }
+
+        //Second entity corners
+        for (unsigned int i = 0; i < ent.GetCorners().size(); i++) {
+            float product = glm::dot(corners2[i], axis);
+            e2Min = glm::min(e2Min, product);
+            e2Max = glm::max(e2Max, product);
+        }
+
+        if (e1Max < e2Min || e2Max < e1Max) {
+            return false;
+        }
+    }
+
+    return true;
 }

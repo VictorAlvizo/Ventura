@@ -8,6 +8,8 @@ public:
 		glm::vec3 color = glm::vec3(1.0f));
 
 	virtual void Draw(SpriteRenderer& spriteRenderer);
+	virtual std::vector<glm::vec2> GetCorners();
+
 	void Move(glm::vec2 newPos);
 
 	inline glm::vec2 getPos() const { return m_Pos; }
