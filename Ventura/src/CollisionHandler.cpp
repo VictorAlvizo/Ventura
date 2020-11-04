@@ -10,7 +10,7 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
     return xCol && yCol;
 }
 
-bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
+bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) { //FIXME: SAT collision not correct, may be due to wrong corner rotated corner pos
     std::vector<glm::vec2> axes;
 
     axes.push_back(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation))));
@@ -24,13 +24,6 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
 
     std::vector<glm::vec2> corners1 = ent.GetCorners();
     std::vector<glm::vec2> corners2 = ent2.GetCorners();
-
-    //NOTE: For debugging, remove later
-    for (glm::vec2 corner : corners2) {
-        std::cout << "CORNERS: (" << corner.x << "," << corner.y << ")" << std::endl;
-    }
-
-    std::cout << std::endl;
 
     for (glm::vec2 axis : axes) {
         //First entity corners
