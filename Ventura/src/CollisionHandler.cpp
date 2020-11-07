@@ -10,7 +10,7 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
     return xCol && yCol;
 }
 
-bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) { //FIXME: SAT collision not correct, may be due to wrong corner rotated corner pos
+bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) { //FIXME: SAT collision not correct
     std::vector<glm::vec2> axes;
 
     axes.push_back(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation))));

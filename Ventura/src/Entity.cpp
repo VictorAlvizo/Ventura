@@ -20,15 +20,13 @@ void Entity::Draw(SpriteRenderer& spriteRenderer) {
 
 std::vector<glm::vec2> Entity::GetCorners() { //Default is a rectangle / square
 	std::vector<glm::vec2> corners;
-	glm::vec2 center = glm::vec2((m_Pos.x + m_Size.x) / 2, (m_Pos.y + m_Size.y) / 2);
+	glm::vec2 center = glm::vec2(m_Pos.x + (m_Size.x / 2.0f), m_Pos.y + (m_Size.y / 2.0f));
 
 	corners.push_back({ m_Pos.x, m_Pos.y }); //Top left
 	corners.push_back({ m_Pos.x + m_Size.x, m_Pos.y }); //Top right
 	corners.push_back({ m_Pos.x, m_Pos.y + m_Size.y }); //Bottom left
 	corners.push_back({ m_Pos.x + m_Size.x, m_Pos.y + m_Size.y }); //Bottom right
 
-	//FIXME: Algorithm to finding the correct corner points does not seem to be correct
-	//To get the real corners in case the shape is rotated as well
 	for (glm::vec2& corner : corners) {
 		corner -= center;
 

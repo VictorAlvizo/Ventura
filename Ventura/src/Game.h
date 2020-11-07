@@ -29,10 +29,11 @@ public:
 	//Mouse and keyboard information
 	char m_Keys[1024];
 	bool m_MouseButtons[8];
-	double m_MouseX, m_MouseY;
+	glm::vec2 m_MousePos;
 
 	GameState m_State;
 
+	Entity * testEnt2;
 	Entity * testEnt;
 
 private:

@@ -125,8 +125,7 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 }
 
 void MousePosCallback(GLFWwindow* window, double xPos, double yPos) {
-    ventura.m_MouseX = xPos;
-    ventura.m_MouseY = yPos;
+    ventura.m_MousePos = glm::vec2(xPos, yPos);
 }
 
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
