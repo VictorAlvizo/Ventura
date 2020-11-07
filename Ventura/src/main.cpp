@@ -8,12 +8,12 @@
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-void MousePosCallback(GLFWwindow* window, double xPos, double yPos);
+void MousePosCallback(GLFWwindow * window, double xPos, double yPos);
 
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
-Game ventura(SCREEN_WIDTH, SCREEN_WIDTH);
+Game ventura(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 void FramebufferSizeCallback(GLFWwindow * window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -23,6 +23,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 #ifdef  __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);

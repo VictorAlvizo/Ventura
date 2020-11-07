@@ -33,6 +33,8 @@ public:
 
 	GameState m_State;
 
+	Entity * testEnt;
+
 private:
 	unsigned int m_Width, m_Height;
 
