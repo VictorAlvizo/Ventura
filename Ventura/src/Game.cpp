@@ -31,12 +31,16 @@ void Game::Init() {
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
 
 	testEnt = new Entity(*ResourceManager::Get<Texture>("map"), glm::vec2(300.0f), glm::vec2(200.0f));
-	testEnt2 = new Entity(*ResourceManager::Get<Texture>("boat"), glm::vec2(100.0f), glm::vec2(200.0f, 200.0f));
+	testEnt2 = new Entity(*ResourceManager::Get<Texture>("boat"), glm::vec2(50.0f), glm::vec2(200.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
 	if (m_MouseButtons[GLFW_MOUSE_BUTTON_2]) {
 		testEnt2->Move(m_MousePos);
+	}
+
+	if (m_MouseButtons[GLFW_MOUSE_BUTTON_4]) {
+		std::cout << "Mouse Pos (" << m_MousePos.x << "," << m_MousePos.y << ")" << std::endl;
 	}
 }
 
@@ -61,7 +65,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideSAT(*testEnt, *testEnt2)) {
+	if (CollisionHandler::CollideRadius(*testEnt, *testEnt2)) {
 		std::cout << "Objects have collided" << std::endl;
 	}
 }
