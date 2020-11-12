@@ -65,7 +65,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideRadius(*testEnt, *testEnt2)) {
+	if (CollisionHandler::CollideSAT(*testEnt, *testEnt2)) {
 		std::cout << "Objects have collided" << std::endl;
 	}
 }

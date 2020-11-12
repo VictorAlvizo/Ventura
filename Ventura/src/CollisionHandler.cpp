@@ -13,11 +13,11 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
 bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) { //FIXME: SAT collision not correct
     std::vector<glm::vec2> axes;
 
-    axes.push_back(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation))));
-    axes.push_back(glm::vec2(glm::cos(glm::radians(ent.m_Rotation + 90.0f)), glm::sin(glm::radians(ent.m_Rotation + 90.0f))));
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation)))));
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation + 90.0f)), glm::sin(glm::radians(ent.m_Rotation + 90.0f)))));
 
-    axes.push_back(glm::vec2(glm::cos(glm::radians(ent2.m_Rotation)), glm::sin(glm::radians(ent2.m_Rotation))));
-    axes.push_back(glm::vec2(glm::cos(glm::radians(ent2.m_Rotation + 90.0f)), glm::sin(glm::radians(ent2.m_Rotation + 90.0f))));
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent2.m_Rotation)), glm::sin(glm::radians(ent2.m_Rotation)))));
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent2.m_Rotation + 90.0f)), glm::sin(glm::radians(ent2.m_Rotation + 90.0f)))));
 
     float e1Min = INFINITY, e1Max = -INFINITY;
     float e2Min = INFINITY, e2Max = -INFINITY;
@@ -57,9 +57,8 @@ bool CollisionHandler::CollideRadius(Entity& ent, Entity& ent2) {
 
     //Want to have two driffent radius and the diagonal radius > Straight Radius.
     //The bigger length is too much in some situations when the entity is straight enough
-
     float rad1 = 0.0f, rad2 = 0.0f;
-    if ((yDif > xDif && xDif >= 80) || (xDif > yDif && yDif > 80)) {//Diagonal Radius
+    if ((yDif > xDif && xDif >= 65) || (xDif > yDif && yDif > 65)) {//Diagonal Radius
         rad1 = glm::length(center1 - glm::vec2(ent.getPos().x, ent.getPos().y));
         rad2 = glm::length(center2 - glm::vec2(ent2.getPos().x, ent2.getPos().y));
     }
