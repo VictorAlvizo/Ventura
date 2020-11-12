@@ -10,7 +10,7 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
     return xCol && yCol;
 }
 
-bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) { //FIXME: SAT collision not correct
+bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
     std::vector<glm::vec2> axes;
 
     axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation)))));
@@ -26,6 +26,11 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) { //FIXME: SAT coll
     std::vector<glm::vec2> corners2 = ent2.GetCorners();
 
     for (glm::vec2 axis : axes) {
+        e1Min = INFINITY;
+        e2Min = INFINITY;
+        e1Max = -INFINITY;
+        e2Max = -INFINITY;
+
         //First entity corners
         for (unsigned int i = 0; i < corners1.size(); i++) {
             float product = glm::dot(corners1[i], axis);
@@ -46,28 +51,4 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) { //FIXME: SAT coll
     }
 
     return true;
-}
-
-bool CollisionHandler::CollideRadius(Entity& ent, Entity& ent2) {
-    glm::vec2 center1 = glm::vec2(ent.getPos().x + (ent.getSize().x / 2.0f), ent.getPos().y + (ent.getSize().y / 2.0f));
-    glm::vec2 center2 = glm::vec2(ent2.getPos().x + (ent2.getSize().x / 2.0f), ent2.getPos().y + (ent2.getSize().y / 2.0f));
-
-    float xDif = std::abs(center2.x - center1.x);
-    float yDif = std::abs(center2.y - center1.y);
-
-    //Want to have two driffent radius and the diagonal radius > Straight Radius.
-    //The bigger length is too much in some situations when the entity is straight enough
-    float rad1 = 0.0f, rad2 = 0.0f;
-    if ((yDif > xDif && xDif >= 65) || (xDif > yDif && yDif > 65)) {//Diagonal Radius
-        rad1 = glm::length(center1 - glm::vec2(ent.getPos().x, ent.getPos().y));
-        rad2 = glm::length(center2 - glm::vec2(ent2.getPos().x, ent2.getPos().y));
-    }
-    else { //Straight Radius
-        rad1 = glm::length(center1 - glm::vec2(ent.getPos().x, ent.getPos().y + (ent.getSize().y / 2.0f)));
-        rad2 = glm::length(center2 - glm::vec2(ent2.getPos().x, ent2.getPos().y + (ent2.getSize().y / 2.0f)));
-    }
-
-    //Distance between the two centers, must be positive
-    float distance = glm::abs(glm::length(center2 - center1));
-    return distance <= rad1 + rad2;
 }

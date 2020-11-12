@@ -7,6 +7,7 @@
 class ResourceManager {
 public:
 	static void LoadShader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& name);
+	static void LoadShader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath, const std::string& name);
 	static void LoadTexture(const std::string& texturePath, const std::string& name);
 
 	template<typename T>
