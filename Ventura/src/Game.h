@@ -1,7 +1,6 @@
 #pragma once
 #include <glad/glad.h>
 #include <glfw3.h>
-#include "SpriteRenderer.h"
 #include "CollisionHandler.h"
 #include "ResourceManager.h"
 #include "Vendor/imgui/imgui.h"
@@ -32,6 +31,8 @@ public:
 	glm::vec2 m_MousePos;
 
 	GameState m_State;
+
+	Entity * m_TestEntity;
 
 private:
 	unsigned int m_Width, m_Height;
