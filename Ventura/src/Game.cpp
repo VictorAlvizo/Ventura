@@ -2,6 +2,7 @@
 
 int x = 0;
 int y = 0;
+bool flipped = false;
 
 Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
 	:m_Width(screenWidth), m_Height(screenHeight)
@@ -36,6 +37,10 @@ void Game::ProcessInput(float deltaTime) {
 }
 
 void Game::Update(float deltaTime) {
+	if (flipped != m_TestEntity->isFlipped()) {
+		m_TestEntity->Flip();
+	}
+
 	CheckCollisions();
 }
 
@@ -44,6 +49,7 @@ void Game::Render() {
 	ImGui::Begin("ImGui");
 	ImGui::SliderInt("X", &x, 0, 7);
 	ImGui::SliderInt("Y", &y, 0, 8);
+	ImGui::Checkbox("Flipped", &flipped);
 	ImGui::End();
 
 	if (m_State == GameState::MENU) {

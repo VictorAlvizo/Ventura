@@ -16,11 +16,13 @@ public:
 	virtual std::vector<glm::vec2> GetCorners();
 
 	void Move(glm::vec2 newPos);
+	void Flip();
 
 	inline glm::vec2 getPos() const { return m_Pos; }
 	inline glm::vec2 getSize() const { return m_Size; }
 	inline glm::vec2 getHitbox() const { return m_Hitbox; }
 	inline glm::vec3 getColor() const { return m_Color; }
+	inline bool isFlipped() const { return m_Flipped; }
 
 	float m_Rotation;
 
@@ -32,5 +34,6 @@ protected:
 	glm::vec3 m_Color;
 
 	bool m_Destroyed;
+	bool m_Flipped;
 };
 

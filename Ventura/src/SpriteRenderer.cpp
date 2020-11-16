@@ -6,7 +6,7 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader> shader)
 	init();
 }
 
-void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, float rotate, glm::vec3 color, std::vector<float> texUV) {
+void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, float rotate, glm::vec3 color, std::vector<float> texUV) {
 	m_Shader->Bind();
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(pos, 0.0f));
@@ -20,6 +20,7 @@ void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size,
 
 	m_Shader->SetMat4("u_Model", model);
 	m_Shader->SetVec3("u_Color", color);
+	m_Shader->SetBool("u_Flipped", flipped);
 
 	texture.Bind(0);
 	glBindVertexArray(m_VAO);

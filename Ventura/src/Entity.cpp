@@ -5,6 +5,7 @@ Entity::Entity()
 {
 	m_Rotation = 0.0f;
 	m_Destroyed = false;
+	m_Flipped = false;
 }
 
 Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, glm::vec3 color, glm::vec2 hbSize)
@@ -13,15 +14,17 @@ Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size,
 	m_SpriteSheet = nullptr;
 	m_Rotation = 0.0f;
 	m_Destroyed = false;
+	m_Flipped = false;
 }
 
 Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, glm::vec3 color, glm::vec2 hbSize)
 	:m_Texture(texture), m_Pos(pos), m_Size(size), m_Hitbox(hbSize), m_Color(color)
 {
-	//Not wanting a glm::vec2 for sprite size to avoid amguity between the overloaded functions
+	//Not wanting a glm::vec2 for sprite size to avoid ambiguity between the overloaded functions
 	m_SpriteSheet = new SpriteSheetReader(texture, glm::vec2(spriteX, spriteY));
 	m_Rotation = 0.0f;
 	m_Destroyed = false;
+	m_Flipped = false;
 }
 
 Entity::~Entity() {
@@ -29,7 +32,7 @@ Entity::~Entity() {
 }
 
 void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color) {
-	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Rotation, m_Color = (color == glm::vec3(1.0f)) ? m_Color : color);
+	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, m_Color = (color == glm::vec3(1.0f)) ? m_Color : color);
 }
 
 void Entity::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec3 color) {
@@ -37,8 +40,8 @@ void Entity::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec
 		std::cout << "Error: Entity does not have a dedicated sprite sheet" << std::endl;
 	}
 	else {
-		spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Rotation, m_Color = (color == glm::vec3(1.0f)) ? m_Color : color, 
-			m_SpriteSheet->getTexUV(spritePos.x, spritePos.y));
+		spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, m_Color = (color == glm::vec3(1.0f)) ? m_Color : color, 
+			m_SpriteSheet->getTexUV(spritePos.x, spritePos.y, m_Flipped));
 	}
 }
 
@@ -65,4 +68,8 @@ std::vector<glm::vec2> Entity::GetCorners() { //Default is a rectangle / square
 
 void Entity::Move(glm::vec2 newPos) {
 	m_Pos = newPos;
+}
+
+void Entity::Flip() {
+	m_Flipped = !m_Flipped;
 }

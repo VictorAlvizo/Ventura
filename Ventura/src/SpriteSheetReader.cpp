@@ -23,7 +23,7 @@ SpriteSheetReader::SpriteSheetReader(std::shared_ptr<Texture> texture, glm::vec2
 	}
 }
 
-std::vector<float> SpriteSheetReader::getTexUV(int x, int y) {
+std::vector<float> SpriteSheetReader::getTexUV(int x, int y, bool isFlipped) {
 	int xMax = m_Width / m_SpriteSize.x;
 	int yMax = m_Height / m_SpriteSize.y;
 
@@ -32,7 +32,7 @@ std::vector<float> SpriteSheetReader::getTexUV(int x, int y) {
 		return m_TexUVs[0];
 	}
 	else {
-		//* by xMax to skip a row
-		return m_TexUVs[(y * xMax) + x];
+		//* by xMax to skip a row, if the texture is flipped, need to inverse my x coordinate
+		return (!isFlipped) ? m_TexUVs[(y * xMax) + x] : m_TexUVs[(y * xMax) + (xMax - 1) - x];
 	}
 }
