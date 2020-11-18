@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AnimationCycle.cpp" />
+    <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\CollisionHandler.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\SpriteSheetReader.cpp" />
@@ -169,6 +171,8 @@
     <ClCompile Include="src\TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AnimationCycle.h" />
+    <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\CollisionHandler.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\SpriteSheetReader.h" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "SpriteRenderer.h"
 #include "SpriteSheetReader.h"
+#include "Component.h"
 
 class Entity {
 public:
@@ -35,5 +36,7 @@ protected:
 
 	bool m_Destroyed;
 	bool m_Flipped;
+
+	Component m_Components;
 };
 
