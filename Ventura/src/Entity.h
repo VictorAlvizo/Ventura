@@ -17,7 +17,8 @@ public:
 	virtual std::vector<glm::vec2> GetCorners();
 
 	void Move(glm::vec2 newPos);
-	void Flip();
+	void Translate(glm::vec2 trans, float deltaTime);
+	void Flip(bool flip);
 
 	inline glm::vec2 getPos() const { return m_Pos; }
 	inline glm::vec2 getSize() const { return m_Size; }

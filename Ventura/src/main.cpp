@@ -2,9 +2,6 @@
 #include <glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "Game.h"
-#include "Vendor/imgui/imgui.h"
-#include "Vendor/imgui/imgui_impl_glfw.h"
-#include "Vendor/imgui/imgui_impl_opengl3.h"
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);

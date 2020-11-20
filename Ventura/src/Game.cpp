@@ -1,9 +1,5 @@
 #include "Game.h"
 
-int x = 0;
-int y = 0;
-bool flipped = false;
-
 Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
 	:m_Width(screenWidth), m_Height(screenHeight)
 {
@@ -29,17 +25,54 @@ void Game::Init() {
 	ResourceManager::Get<Shader>("sprite")->SetMat4("u_Projection", projection);
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
-	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(100.0f), glm::vec2(200.0f));
+	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(300.0f, 200.0f), glm::vec2(200.0f));
+
+	m_TestCycle.LinearX("Idle", 0, 4, 0, 150);
+	m_TestCycle.LinearX("Walking", 0, 7, 1, 80);
+	m_TestCycle.LinearX("Swing", 0, 2, 5, 140);
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//holder
+	//Note: Will we need the velocity varible again?
+	if (m_Keys[GLFW_KEY_W]) {
+		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
+		m_TestCycle.Animate("Walking");
+		m_TestEntity->m_Rotation = 90.0f;
+		m_TestEntity->Flip(true);
+	}
+	else if (m_Keys[GLFW_KEY_S]) {
+		m_TestEntity->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
+		m_TestCycle.Animate("Walking");
+		m_TestEntity->m_Rotation = 90.0f;
+		m_TestEntity->Flip(false);
+	}
+	else if (m_Keys[GLFW_KEY_A]) {
+		m_TestEntity->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
+		m_TestCycle.Animate("Walking");
+		m_TestEntity->m_Rotation = 0.0f;
+		m_TestEntity->Flip(true);
+	}
+	else if (m_Keys[GLFW_KEY_D]) {
+		m_TestEntity->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
+		m_TestCycle.Animate("Walking");
+		m_TestEntity->m_Rotation = 0.0f;
+		m_TestEntity->Flip(false);
+	}
+	else if (m_Keys[GLFW_KEY_SPACE]) {
+		//FIXME: Cant see the swing animation as it will get overidden by idle below haha
+
+		m_TestCycle.Animate("Swing");
+		m_TestEntity->m_Rotation = 0.0f;
+	}
+
+	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
+		m_TestCycle.Animate("Idle");
+		m_TestEntity->m_Rotation = 0.0f;
+	}
 }
 
 void Game::Update(float deltaTime) {
-	if (flipped != m_TestEntity->isFlipped()) {
-		m_TestEntity->Flip();
-	}
+	//holder
 
 	CheckCollisions();
 }
@@ -47,9 +80,7 @@ void Game::Update(float deltaTime) {
 void Game::Render() {
 
 	ImGui::Begin("ImGui");
-	ImGui::SliderInt("X", &x, 0, 7);
-	ImGui::SliderInt("Y", &y, 0, 8);
-	ImGui::Checkbox("Flipped", &flipped);
+	//ImGui code here
 	ImGui::End();
 
 	if (m_State == GameState::MENU) {
@@ -57,7 +88,7 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		m_TestEntity->Draw(*m_SpriteRenderer, glm::ivec2(x, y));
+		m_TestEntity->Draw(*m_SpriteRenderer, m_TestCycle.getSpritePos());
 	}
 }
 

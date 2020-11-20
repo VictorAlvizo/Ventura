@@ -70,6 +70,10 @@ void Entity::Move(glm::vec2 newPos) {
 	m_Pos = newPos;
 }
 
-void Entity::Flip() {
-	m_Flipped = !m_Flipped;
+void Entity::Translate(glm::vec2 trans, float deltaTime) {
+	m_Pos += trans * deltaTime;
+}
+
+void Entity::Flip(bool flip) {
+	m_Flipped = flip;
 }

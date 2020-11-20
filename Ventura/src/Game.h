@@ -33,6 +33,7 @@ public:
 	GameState m_State;
 
 	Entity * m_TestEntity;
+	AnimationCycle m_TestCycle;
 
 private:
 	unsigned int m_Width, m_Height;
