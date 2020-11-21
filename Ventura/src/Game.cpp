@@ -27,46 +27,49 @@ void Game::Init() {
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
 	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(300.0f, 200.0f), glm::vec2(200.0f));
 
-	m_TestCycle.LinearX("Idle", 0, 4, 0, 150);
-	m_TestCycle.LinearX("Walking", 0, 7, 1, 80);
-	m_TestCycle.LinearX("Swing", 0, 2, 5, 140);
+	AnimationCycle cycle;
+	cycle.LinearX("Idle", 0, 4, 0, 150);
+	cycle.LinearX("Walking", 0, 7, 1, 80);
+	cycle.LinearX("Swing", 0, 2, 5, 140);;
+
+	m_TestEntity->AddComponent<AnimationCycle>("AnimCycle", cycle);
+	m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Idle");
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//Note: Will we need the velocity varible again?
+	//Note: Will it need the velocity varible again?
 	if (m_Keys[GLFW_KEY_W]) {
 		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
-		m_TestCycle.Animate("Walking");
+		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
 		m_TestEntity->m_Rotation = 90.0f;
 		m_TestEntity->Flip(true);
 	}
 	else if (m_Keys[GLFW_KEY_S]) {
 		m_TestEntity->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
-		m_TestCycle.Animate("Walking");
+		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
 		m_TestEntity->m_Rotation = 90.0f;
 		m_TestEntity->Flip(false);
 	}
 	else if (m_Keys[GLFW_KEY_A]) {
 		m_TestEntity->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
-		m_TestCycle.Animate("Walking");
+		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
 		m_TestEntity->m_Rotation = 0.0f;
 		m_TestEntity->Flip(true);
 	}
 	else if (m_Keys[GLFW_KEY_D]) {
 		m_TestEntity->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
-		m_TestCycle.Animate("Walking");
+		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
 		m_TestEntity->m_Rotation = 0.0f;
 		m_TestEntity->Flip(false);
 	}
 	else if (m_Keys[GLFW_KEY_SPACE]) {
 		//FIXME: Cant see the swing animation as it will get overidden by idle below haha
-
-		m_TestCycle.Animate("Swing");
+		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Swing");
 		m_TestEntity->m_Rotation = 0.0f;
 	}
 
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
-		m_TestCycle.Animate("Idle");
+		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Idle");
 		m_TestEntity->m_Rotation = 0.0f;
 	}
 }
@@ -88,7 +91,7 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		m_TestEntity->Draw(*m_SpriteRenderer, m_TestCycle.getSpritePos());
+		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->getSpritePos());
 	}
 }
 

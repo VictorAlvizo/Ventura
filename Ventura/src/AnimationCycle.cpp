@@ -7,6 +7,14 @@ AnimationCycle::AnimationCycle()
 	m_CurrentAnimation = "";
 }
 
+AnimationCycle::AnimationCycle(const AnimationCycle& copy) {
+	m_TerminateAnimation = true; //Want to end any running threads when copying
+	m_CurrentAnimation = "";
+	m_Cycles = copy.m_Cycles;
+	m_CurrentIndex = copy.m_CurrentIndex;
+	m_CurrentCycle = copy.m_CurrentCycle;
+}
+
 AnimationCycle::~AnimationCycle() {
 	m_TerminateAnimation = true;
 	m_CurrentAnimation = "";
@@ -45,9 +53,9 @@ void AnimationCycle::Animate(std::string cycleName) {
 		m_CurrentCycle = m_Cycles[cycleName];
 		m_CurrentAnimation = cycleName;
 
-		if (m_TerminateAnimation) {
-			m_TerminateAnimation = false;
-			std::thread animationThread(&AnimationCycle::AnimationThread, this); //Thread will die once m_TerminateAnimation is true, allows for a max of 1 thread per AnimationCycle class
+		if (m_TerminateAnimation) { //Thread will die once m_TerminateAnimation is true, allows for a max of 1 thread per AnimationCycle class
+			m_TerminateAnimation = false; 
+			std::thread animationThread(&AnimationCycle::AnimationThread, this);
 			animationThread.detach();
 		}
 	}

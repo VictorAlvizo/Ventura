@@ -26,6 +26,7 @@ struct Cycle {
 class AnimationCycle {
 public:
 	AnimationCycle();
+	AnimationCycle(const AnimationCycle& copy); //Had to make my own as std::mutex cannot be copied
 	~AnimationCycle();
 	
 	//Third argument will stay the same while it ranges the indexes linearly

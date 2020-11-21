@@ -20,6 +20,26 @@ public:
 	void Translate(glm::vec2 trans, float deltaTime);
 	void Flip(bool flip);
 
+	template<typename T>
+	void AddComponent(const std::string& compName, T& newComponent) {
+		m_Components.Add(compName, newComponent);
+	}
+
+	template<>
+	void AddComponent<AnimationCycle>(const std::string& compName, AnimationCycle& newComponent) {
+		m_Components.Add<AnimationCycle>(compName, newComponent);
+	}
+
+	template<typename T>
+	std::unique_ptr<T>& GetComponent(const std::string& name) {
+		return m_Components.Get(name);
+	}
+
+	template<>
+	std::unique_ptr<AnimationCycle>& GetComponent(const std::string& name) {
+		return m_Components.Get<AnimationCycle>(name);
+	}
+
 	inline glm::vec2 getPos() const { return m_Pos; }
 	inline glm::vec2 getSize() const { return m_Size; }
 	inline glm::vec2 getHitbox() const { return m_Hitbox; }
@@ -40,4 +60,3 @@ protected:
 
 	Component m_Components;
 };
-

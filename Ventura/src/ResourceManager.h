@@ -12,7 +12,7 @@ public:
 
 	template<typename T>
 	static std::shared_ptr<T>& Get(const std::string& name) {
-		//holder
+		return nullptr;
 	}
 
 	template<>
