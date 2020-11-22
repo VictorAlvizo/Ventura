@@ -97,6 +97,27 @@ std::vector<glm::vec2> Entity::GetCorners() { //Default is a rectangle / square
 	return corners;
 }
 
+std::vector<glm::vec2> Entity::GetHitboxCorners() { //Default is a rectangle / square
+	std::vector<glm::vec2> corners;
+	glm::vec2 center = glm::vec2(m_HitboxPos.x + (m_Hitbox.x / 2.0f), m_HitboxPos.y + (m_Hitbox.y / 2.0f));
+
+	corners.push_back({ m_HitboxPos.x, m_HitboxPos.y }); //Top left
+	corners.push_back({ m_HitboxPos.x + m_Hitbox.x, m_HitboxPos.y }); //Top right
+	corners.push_back({ m_HitboxPos.x, m_HitboxPos.y + m_Hitbox.y }); //Bottom left
+	corners.push_back({ m_HitboxPos.x + m_Hitbox.x, m_HitboxPos.y + m_Hitbox.y }); //Bottom right
+
+	for (glm::vec2& corner : corners) {
+		corner -= center;
+
+		corner = glm::vec2(corner.x * glm::cos(glm::radians(m_Rotation)) - corner.y * glm::sin(glm::radians(m_Rotation)),
+			corner.x * glm::sin(glm::radians(m_Rotation)) + corner.y * glm::cos(glm::radians(m_Rotation)));
+
+		corner += center;
+	}
+
+	return corners;
+}
+
 void Entity::Move(glm::vec2 newPos) {
 	m_Pos = newPos;
 	m_HitboxPos = m_HitboxOffset + m_Pos;

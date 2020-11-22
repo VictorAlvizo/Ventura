@@ -16,6 +16,7 @@ public:
 	virtual void Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec3 color = glm::vec3(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f));
 
 	virtual std::vector<glm::vec2> GetCorners();
+	virtual std::vector<glm::vec2> GetHitboxCorners();
 
 	void Move(glm::vec2 newPos);
 	void Translate(glm::vec2 trans, float deltaTime);
@@ -56,6 +57,7 @@ protected:
 	SpriteSheetReader * m_SpriteSheet;
 	HitboxRenderer * m_HBRenderer;
 
+	//m_Hitbox is the size of the hitbox
 	glm::vec2 m_Pos, m_Size, m_Hitbox, m_HitboxPos, m_HitboxOffset;
 
 	bool m_Destroyed;

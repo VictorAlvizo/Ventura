@@ -1,11 +1,11 @@
 #include "CollisionHandler.h"
 
 bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
-    bool xCol = ent.getPos().x + ent.getSize().x >= ent2.getPos().x
-        && ent2.getPos().x + ent2.getSize().x >= ent.getPos().x;
+    bool xCol = ent.getHitboxPos().x + ent.getHitboxSize().x >= ent2.getHitboxPos().x
+        && ent2.getHitboxPos().x + ent2.getHitboxSize().x >= ent.getHitboxPos().x;
 
-    bool yCol = ent.getPos().y + ent.getSize().y >= ent2.getPos().y
-        && ent2.getPos().y + ent2.getSize().y >= ent.getPos().y;
+    bool yCol = ent.getHitboxPos().y + ent.getHitboxSize().y >= ent2.getHitboxPos().y
+        && ent2.getHitboxPos().y + ent2.getHitboxSize().y >= ent.getHitboxPos().y;
 
     return xCol && yCol;
 }
@@ -22,8 +22,8 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
     float e1Min = INFINITY, e1Max = -INFINITY;
     float e2Min = INFINITY, e2Max = -INFINITY;
 
-    std::vector<glm::vec2> corners1 = ent.GetCorners();
-    std::vector<glm::vec2> corners2 = ent2.GetCorners();
+    std::vector<glm::vec2> corners1 = ent.GetHitboxCorners();
+    std::vector<glm::vec2> corners2 = ent2.GetHitboxCorners();
 
     for (glm::vec2 axis : axes) {
         e1Min = INFINITY;
