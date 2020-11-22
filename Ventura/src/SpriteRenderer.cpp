@@ -1,9 +1,20 @@
 #include "SpriteRenderer.h"
 
-SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader> shader) 
+SpriteRenderer::SpriteRenderer() {
+	init();
+}
+
+SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader> shader, bool childClass)
 	:m_Shader(shader)
 {
-	init();
+	if (!childClass) {
+		init();
+	}
+}
+
+SpriteRenderer::~SpriteRenderer() {
+	glDeleteBuffers(1, &m_TexVBO);
+	glDeleteVertexArrays(1, &m_VAO);
 }
 
 void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, float rotate, glm::vec3 color, std::vector<float> texUV) {

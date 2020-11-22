@@ -7,6 +7,7 @@
 #include "Vendor/imgui/imgui_impl_glfw.h"
 #include "Vendor/imgui/imgui_impl_opengl3.h"
 #include "TextRenderer.h"
+#include "HitboxRenderer.h"
 
 enum class GameState {
 	MENU, ACTIVE

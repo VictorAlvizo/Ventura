@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\HitboxRenderer.cpp" />
     <ClCompile Include="src\AnimationCycle.cpp" />
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\CollisionHandler.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="src\TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\HitboxRenderer.h" />
     <ClInclude Include="src\AnimationCycle.h" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\CollisionHandler.h" />
@@ -435,6 +437,8 @@
     <ClInclude Include="src\TextRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Shaders\HBOutlineFragment.glsl" />
+    <None Include="src\Shaders\HBOutlineVertex.glsl" />
     <None Include="src\Shaders\SpriteFragment.glsl" />
     <None Include="src\Shaders\SpriteVertex.glsl" />
     <None Include="src\Shaders\testFragment.glsl" />

@@ -69,6 +69,9 @@
     <ClCompile Include="src\AnimationCycle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\HitboxRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vendor\glm\detail\_features.hpp">
@@ -857,6 +860,9 @@
     <ClInclude Include="src\AnimationCycle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\HitboxRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Vendor\glm\detail\func_common.inl">
@@ -1261,5 +1267,7 @@
     <None Include="src\Shaders\SpriteFragment.glsl" />
     <None Include="src\Shaders\TextVertex.glsl" />
     <None Include="src\Shaders\TextFragment.glsl" />
+    <None Include="src\Shaders\HBOutlineVertex.glsl" />
+    <None Include="src\Shaders\HBOutlineFragment.glsl" />
   </ItemGroup>
 </Project>
