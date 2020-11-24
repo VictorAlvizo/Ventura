@@ -21,6 +21,7 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
 
     float e1Min = INFINITY, e1Max = -INFINITY;
     float e2Min = INFINITY, e2Max = -INFINITY;
+    float overlap = INFINITY;
 
     std::vector<glm::vec2> corners1 = ent.GetHitboxCorners();
     std::vector<glm::vec2> corners2 = ent2.GetHitboxCorners();

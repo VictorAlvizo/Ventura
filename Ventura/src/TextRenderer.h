@@ -23,7 +23,7 @@ public:
 	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f));
 
 private:
-	std::map<char, Character> m_Characters;
+	std::unordered_map<char, Character> m_Characters;
 
 	std::shared_ptr<Shader> m_Shader;
 	unsigned int m_VAO, m_VBO;

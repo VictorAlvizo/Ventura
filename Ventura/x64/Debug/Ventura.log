@@ -1,6 +1,7 @@
 ﻿  CollisionHandler.cpp
   Entity.cpp
   Game.cpp
+  ResourceManager.cpp
   main.cpp
 C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\main.cpp(74,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
