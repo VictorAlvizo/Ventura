@@ -123,6 +123,11 @@ void Entity::Move(glm::vec2 newPos) {
 	m_HitboxPos = m_HitboxOffset + m_Pos;
 }
 
+void Entity::MoveHitbox(glm::vec2 newPos) {
+	m_HitboxPos = newPos;
+	m_Pos = m_HitboxPos - m_HitboxOffset;
+}
+
 void Entity::Translate(glm::vec2 trans, float deltaTime) {
 	m_Pos += trans * deltaTime;
 	m_HitboxPos = m_HitboxOffset + m_Pos;

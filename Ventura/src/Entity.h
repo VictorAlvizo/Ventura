@@ -19,6 +19,7 @@ public:
 	virtual std::vector<glm::vec2> GetHitboxCorners();
 
 	void Move(glm::vec2 newPos);
+	void MoveHitbox(glm::vec2 newPos); //Hitbox focused movement
 	void Translate(glm::vec2 trans, float deltaTime);
 	void Flip(bool flip);
 
@@ -51,6 +52,7 @@ public:
 
 	float m_Rotation;
 	bool m_ShowHitbox;
+	std::string m_Tag;
 
 protected:
 	std::shared_ptr<Texture> m_Texture;

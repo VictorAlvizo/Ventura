@@ -36,7 +36,7 @@ void Game::Init() {
 	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(100.0f, 200.0f), glm::vec2(200.0f), glm::vec2(65.0f, 80.0f), glm::vec2(70.0f));
 	m_TestEntity->m_ShowHitbox = true;
 
-	m_ColEnt = new Entity(ResourceManager::Get<Texture>("mario"), glm::vec2(400.0f), glm::vec2(100.0f));
+	m_ColEnt = new Entity(ResourceManager::Get<Texture>("mario"), glm::vec2(400.0f, 200.0f), glm::vec2(100.0f));
 
 	AnimationCycle cycle;
 	cycle.LinearX("Idle", 0, 4, 0, 150);
@@ -48,6 +48,10 @@ void Game::Init() {
 }
 
 void Game::ProcessInput(float deltaTime) {
+	if (m_MouseButtons[GLFW_MOUSE_BUTTON_4]) {
+		std::cout << "Mouse: " << m_MousePos.x << "," << m_MousePos.y << std::endl;
+	}
+
 	if (m_Keys[GLFW_KEY_W]) {
 		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
 		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
@@ -105,7 +109,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideSAT(*m_TestEntity, *m_ColEnt)) {
+	if (CollisionHandler::CollideAABB(*m_TestEntity, *m_ColEnt)) {
 		std::cout << "Collision Detected" << std::endl;
 	}
 }

@@ -1,11 +1,54 @@
 #include "CollisionHandler.h"
 
-bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2) {
+bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2, bool staticResolution) {
     bool xCol = ent.getHitboxPos().x + ent.getHitboxSize().x >= ent2.getHitboxPos().x
         && ent2.getHitboxPos().x + ent2.getHitboxSize().x >= ent.getHitboxPos().x;
 
     bool yCol = ent.getHitboxPos().y + ent.getHitboxSize().y >= ent2.getHitboxPos().y
         && ent2.getHitboxPos().y + ent2.getHitboxSize().y >= ent.getHitboxPos().y;
+
+    //Static resolution
+    if (xCol && yCol && staticResolution) {
+        glm::vec2 hb1Center = glm::vec2(ent.getHitboxPos().x + (ent.getHitboxSize().x / 2), ent.getHitboxPos().y + (ent.getHitboxSize().y / 2));
+        glm::vec2 hb2Center = glm::vec2(ent2.getHitboxPos().x + (ent2.getHitboxSize().x / 2), ent2.getHitboxPos().y + (ent.getHitboxSize().y / 2));
+        glm::vec2 centerVector = hb2Center - hb1Center;
+
+        glm::vec2 directions[4] = {
+            glm::vec2(1.0f, 0.0f), //Right
+            glm::vec2(-1.0f, 0.0f), //Left
+            glm::vec2(0.0f, -1.0f), //Top
+            glm::vec2(0.0f, 1.0f) //Bottom
+        };
+
+        float closest = 0.0f;
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            float product = glm::dot(directions[i], glm::normalize(centerVector));
+
+            if (closest > product) {
+                closest = product;
+                index = i;
+            }
+        }
+        
+        switch (index) {
+            case 0:
+                ent.MoveHitbox(glm::vec2(ent2.getHitboxPos().x + ent2.getHitboxSize().x, ent.getHitboxPos().y));
+                break;
+
+            case 1:
+                ent.MoveHitbox(glm::vec2(ent2.getHitboxPos().x - ent.getHitboxSize().x, ent.getHitboxPos().y));
+                break;
+               
+            case 2:
+                ent.MoveHitbox(glm::vec2(ent.getHitboxPos().x, ent2.getHitboxPos().y - ent.getHitboxSize().y));
+                break;
+
+            default:
+                ent.MoveHitbox(glm::vec2(ent.getHitboxPos().x, ent2.getHitboxPos().y + ent2.getHitboxSize().y));
+                break;
+        }
+    }
 
     return xCol && yCol;
 }
