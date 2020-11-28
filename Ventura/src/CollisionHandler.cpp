@@ -53,7 +53,7 @@ bool CollisionHandler::CollideAABB(Entity& ent, Entity& ent2, bool staticResolut
     return xCol && yCol;
 }
 
-bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
+bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2, bool staticResolution) {
     std::vector<glm::vec2> axes;
 
     axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation)))));
@@ -89,9 +89,22 @@ bool CollisionHandler::CollideSAT(Entity& ent, Entity& ent2) {
             e2Max = glm::max(e2Max, product);
         }
 
+        //Store the minimum overlap
+        overlap = glm::min(glm::min(e1Max, e2Max) - glm::max(e1Min, e2Min), overlap);
+
         if (e1Max < e2Min || e2Max < e1Min) {
             return false;
         }
+    }
+
+    if (staticResolution) {
+        glm::vec2 d = glm::vec2(ent.getHitboxPos().x - ent2.getHitboxPos().x, ent2.getHitboxPos().y - ent.getHitboxPos().y);
+        float s = glm::sqrt(d.x * d.x + d.y * d.y);
+
+        float moveX = ent.getHitboxPos().x - overlap * d.x / s;
+        float moveY = ent.getHitboxPos().y - overlap * d.y / s;
+
+        ent.MoveHitbox(glm::vec2(moveX, moveY));
     }
 
     return true;

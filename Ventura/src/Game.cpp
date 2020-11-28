@@ -34,6 +34,7 @@ void Game::Init() {
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
 
 	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(100.0f, 200.0f), glm::vec2(200.0f), glm::vec2(65.0f, 80.0f), glm::vec2(70.0f));
+	//m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), glm::vec2(100.0f, 200.0f), glm::vec2(100.0f));
 	m_TestEntity->m_ShowHitbox = true;
 
 	m_ColEnt = new Entity(ResourceManager::Get<Texture>("mario"), glm::vec2(400.0f, 200.0f), glm::vec2(100.0f));
@@ -104,12 +105,13 @@ void Game::Render() {
 
 	if (m_State == GameState::ACTIVE) {
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->getSpritePos());
+		//m_TestEntity->Draw(*m_SpriteRenderer);
 		m_ColEnt->Draw(*m_SpriteRenderer);
 	}
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideAABB(*m_TestEntity, *m_ColEnt)) {
+	if (CollisionHandler::CollideSAT(*m_TestEntity, *m_ColEnt)) {
 		std::cout << "Collision Detected" << std::endl;
 	}
 }
