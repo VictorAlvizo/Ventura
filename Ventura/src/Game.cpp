@@ -20,6 +20,8 @@ void Game::Init() {
 
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/Mario.jpg", "mario");
+	ResourceManager::LoadTexture("Textures/Ball.png", "circle");
+	ResourceManager::LoadTexture("Textures/Circle.png", "whiteCircle");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -33,19 +35,11 @@ void Game::Init() {
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
 
-	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(100.0f, 200.0f), glm::vec2(200.0f), glm::vec2(65.0f, 80.0f), glm::vec2(70.0f));
-	//m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), glm::vec2(100.0f, 200.0f), glm::vec2(100.0f));
+	m_TestEntity = new Circle(ResourceManager::Get<Texture>("circle"), glm::vec2(100.0f), 50.0f);
 	m_TestEntity->m_ShowHitbox = true;
 
-	m_ColEnt = new Entity(ResourceManager::Get<Texture>("mario"), glm::vec2(400.0f, 200.0f), glm::vec2(100.0f));
-
-	AnimationCycle cycle;
-	cycle.LinearX("Idle", 0, 4, 0, 150);
-	cycle.LinearX("Walking", 0, 7, 1, 80);
-	cycle.LinearX("Swing", 0, 2, 5, 140);
-
-	m_TestEntity->AddComponent<AnimationCycle>("AnimCycle", cycle);
-	m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Idle");
+	m_ColEnt = new Circle(ResourceManager::Get<Texture>("whiteCircle"), glm::vec2(400.0f, 200.0f), 40.0f);
+	m_ColEnt->m_ShowHitbox = true;
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -55,37 +49,22 @@ void Game::ProcessInput(float deltaTime) {
 
 	if (m_Keys[GLFW_KEY_W]) {
 		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
-		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
-		m_TestEntity->m_Rotation = 90.0f;
-		m_TestEntity->Flip(true);
 	}
 	else if (m_Keys[GLFW_KEY_S]) {
 		m_TestEntity->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
-		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
-		m_TestEntity->m_Rotation = 90.0f;
-		m_TestEntity->Flip(false);
 	}
 	else if (m_Keys[GLFW_KEY_A]) {
 		m_TestEntity->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
-		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
-		m_TestEntity->m_Rotation = 0.0f;
-		m_TestEntity->Flip(true);
 	}
 	else if (m_Keys[GLFW_KEY_D]) {
 		m_TestEntity->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
-		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Walking");
-		m_TestEntity->m_Rotation = 0.0f;
-		m_TestEntity->Flip(false);
 	}
 	else if (m_Keys[GLFW_KEY_SPACE]) {
-		//FIXME: Cant see the swing animation as it will get overidden by idle below haha
-		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Swing");
-		m_TestEntity->m_Rotation = 0.0f;
+		//holder
 	}
 
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
-		m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->Animate("Idle");
-		m_TestEntity->m_Rotation = 0.0f;
+		//holder
 	}
 }
 
@@ -104,14 +83,13 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("AnimCycle")->getSpritePos());
-		//m_TestEntity->Draw(*m_SpriteRenderer);
+		m_TestEntity->Draw(*m_SpriteRenderer);
 		m_ColEnt->Draw(*m_SpriteRenderer);
 	}
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideSAT(*m_TestEntity, *m_ColEnt)) {
-		std::cout << "Collision Detected" << std::endl;
+	if (CollisionHandler::CollideCircle(dynamic_cast<Circle *>(m_TestEntity), dynamic_cast<Circle *>(m_ColEnt))) {
+		std::cout << "Objects have collided" << std::endl;
 	}
 }

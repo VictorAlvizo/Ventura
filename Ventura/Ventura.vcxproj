@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Circle.cpp" />
     <ClCompile Include="src\HitboxRenderer.cpp" />
     <ClCompile Include="src\AnimationCycle.cpp" />
     <ClCompile Include="src\Component.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="src\TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\HitboxRenderer.h" />
     <ClInclude Include="src\AnimationCycle.h" />
     <ClInclude Include="src\Component.h" />

@@ -1,12 +1,18 @@
 #pragma once
-#include "Entity.h"
-
+#include "Circle.h"
 class CollisionHandler {
 public:
 	static bool CollideAABB(Entity& ent, Entity& ent2, bool staticResolution = true);
 	static bool CollideSAT(Entity& ent, Entity& ent2, bool staticResolution = true);
+	static bool CollideCircle(Circle * cir1, Circle * cir2, bool staticResolution = true);
 
 private:
+	enum class CollisionDirction {
+		RIGHT, LEFT, TOP, BOTTOM
+	};
+
+	static CollisionDirction colDir(glm::vec2 centerVector);
+
 	CollisionHandler();
 };
 
