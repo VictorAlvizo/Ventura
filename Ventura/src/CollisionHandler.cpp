@@ -169,6 +169,43 @@ bool CollisionHandler::CollideCircleAABB(Circle * cir, Entity& ent, bool staticR
     return false;
 }
 
+bool CollisionHandler::CollidePoint(glm::vec2 point, Entity& ent) {
+    std::vector<glm::vec2> axes;
+
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation)))));
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation + 90.0f)), glm::sin(glm::radians(ent.m_Rotation + 90.0f)))));
+
+    std::vector<glm::vec2> corners = ent.GetHitboxCorners();
+
+    float eMin = INFINITY, eMax = -INFINITY;
+    float pointProduct;
+
+    for (glm::vec2 axis : axes) {
+        eMin = INFINITY;
+        eMax = -INFINITY;
+
+        //Don't have to reset everytime, as it's just one value
+        pointProduct = glm::dot(point, axis);
+
+        for (unsigned int i = 0; i < corners.size(); i++) {
+            float product = glm::dot(corners[i], axis);
+            eMax = glm::max(eMax, product);
+            eMin = glm::min(eMin, product);
+        }
+
+        if (eMax < pointProduct || eMin > pointProduct) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool CollisionHandler::CollidePoint(glm::vec2 point, Circle * cir) {
+    glm::vec2 circleCenter = cir->getHitboxPos() + cir->getHitboxRadius();
+    return glm::length(circleCenter - point) <= cir->getHitboxRadius();
+}
+
 CollisionHandler::CollisionDirction CollisionHandler::colDir(glm::vec2 centerVector) {
     glm::vec2 directions[4] = {
         glm::vec2(1.0f, 0.0f), //Right

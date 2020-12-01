@@ -6,6 +6,8 @@ public:
 	static bool CollideSAT(Entity& ent, Entity& ent2, bool staticResolution = true);
 	static bool CollideCircle(Circle * cir1, Circle * cir2, bool staticResolution = true);
 	static bool CollideCircleAABB(Circle * cir, Entity& ent, bool staticResolution = true);
+	static bool CollidePoint(glm::vec2 point, Entity& ent);
+	static bool CollidePoint(glm::vec2 point, Circle * cir);
 
 private:
 	enum class CollisionDirction {

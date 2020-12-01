@@ -88,7 +88,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideCircleAABB(dynamic_cast<Circle *>(m_TestEntity), *m_ColEnt)) {
-		std::cout << "Objects have collided" << std::endl;
+	if (CollisionHandler::CollidePoint(m_MousePos, dynamic_cast<Circle *>(m_TestEntity))) {
+		std::cout << "Point Collided" << std::endl;
 	}
 }
