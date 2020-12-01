@@ -21,7 +21,6 @@ void Game::Init() {
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/Mario.jpg", "mario");
 	ResourceManager::LoadTexture("Textures/Ball.png", "circle");
-	ResourceManager::LoadTexture("Textures/Circle.png", "whiteCircle");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -38,7 +37,7 @@ void Game::Init() {
 	m_TestEntity = new Circle(ResourceManager::Get<Texture>("circle"), glm::vec2(100.0f), 50.0f);
 	m_TestEntity->m_ShowHitbox = true;
 
-	m_ColEnt = new Circle(ResourceManager::Get<Texture>("whiteCircle"), glm::vec2(400.0f, 200.0f), 40.0f);
+	m_ColEnt = new Entity(ResourceManager::Get<Texture>("mario"), glm::vec2(400.0f, 200.0f), glm::vec2(200.0f));
 	m_ColEnt->m_ShowHitbox = true;
 }
 
@@ -89,7 +88,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideCircle(dynamic_cast<Circle *>(m_TestEntity), dynamic_cast<Circle *>(m_ColEnt))) {
+	if (CollisionHandler::CollideCircleAABB(dynamic_cast<Circle *>(m_TestEntity), *m_ColEnt)) {
 		std::cout << "Objects have collided" << std::endl;
 	}
 }
