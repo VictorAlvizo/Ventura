@@ -14,13 +14,17 @@ SpriteSheetReader::SpriteSheetReader(std::shared_ptr<Texture> texture, glm::vec2
 	for (float i = 0; i < m_Height / m_SpriteSize.y; i++) {
 		for (float j = 0; j < m_Width / m_SpriteSize.x; j++) {
 			m_TexUVs.push_back({
-				(j * m_SpriteSize.x) / m_Width, ((i + 1) * m_SpriteSize.y) / m_Height,
-				((j + 1) * m_SpriteSize.x) / m_Width, (i * m_SpriteSize.y) / m_Height,
-				(j * m_SpriteSize.x) / m_Width, (i * m_SpriteSize.y) / m_Height,
-				((j + 1) * m_SpriteSize.x) / m_Width, ((i + 1) * m_SpriteSize.y) / m_Height
+				(j * m_SpriteSize.x) / m_Width, ((i + 1) * m_SpriteSize.y) / m_Height, //Top left
+				((j + 1) * m_SpriteSize.x) / m_Width, (i * m_SpriteSize.y) / m_Height, //Bottom right
+				(j * m_SpriteSize.x) / m_Width, (i * m_SpriteSize.y) / m_Height, //Bottom left
+				((j + 1) * m_SpriteSize.x) / m_Width, ((i + 1) * m_SpriteSize.y) / m_Height //Top Right
 			});
 		}
 	}
+}
+
+SpriteSheetReader::~SpriteSheetReader() {
+	//holder
 }
 
 std::vector<float> SpriteSheetReader::getTexUV(int x, int y, bool isFlipped) {

@@ -22,7 +22,7 @@ void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size,
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(pos, 0.0f));
 
-	//Setting origin to the center then translating back
+	//Setting origin to the center, rotating, then translating back
 	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
 	model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));

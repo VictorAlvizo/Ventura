@@ -5,5 +5,5 @@ Component::Component() {
 }
 
 Component::~Component() {
-	//TODO: Free resources
+	m_ACComponents.clear();
 }

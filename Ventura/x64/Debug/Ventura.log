@@ -1,2 +1,6 @@
-﻿  CollisionHandler.cpp
+﻿  SpriteRenderer.cpp
+  SpriteSheetReader.cpp
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\SpriteSheetReader.cpp(31,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\SpriteSheetReader.cpp(32,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
   Ventura.vcxproj -> C:\Users\Alvizo\Desktop\Ventura\Ventura\x64\Debug\Ventura.exe

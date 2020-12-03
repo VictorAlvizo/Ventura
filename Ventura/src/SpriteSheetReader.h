@@ -7,6 +7,7 @@ class SpriteSheetReader {
 public:
 	SpriteSheetReader();
 	SpriteSheetReader(std::shared_ptr<Texture> texture, glm::vec2 spriteSize);
+	~SpriteSheetReader();
 
 	std::vector<float> getTexUV(int x, int y, bool isFlipped);
 

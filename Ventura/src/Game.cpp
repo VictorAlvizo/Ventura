@@ -21,6 +21,7 @@ void Game::Init() {
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/Mario.jpg", "mario");
 	ResourceManager::LoadTexture("Textures/Ball.png", "circle");
+	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -82,7 +83,7 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		m_TestEntity->Draw(*m_SpriteRenderer);
+		m_TestEntity->Draw(*m_SpriteRenderer, glm::vec3(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		m_ColEnt->Draw(*m_SpriteRenderer);
 	}
 }
