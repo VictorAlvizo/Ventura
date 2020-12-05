@@ -1,6 +1,5 @@
-﻿  SpriteRenderer.cpp
-  SpriteSheetReader.cpp
-C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\SpriteSheetReader.cpp(31,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\SpriteSheetReader.cpp(32,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
+﻿  Game.cpp
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\Component.h(34): warning C4715: 'Component::Get<AnimationCycle>': not all control paths return a value
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\ResourceManager.h(26): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\ResourceManager.h(36): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
   Ventura.vcxproj -> C:\Users\Alvizo\Desktop\Ventura\Ventura\x64\Debug\Ventura.exe

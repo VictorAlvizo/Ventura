@@ -3,20 +3,22 @@
 #include <vector>
 #include <unordered_map>
 #include <thread>
-#include <mutex>
 #include <chrono>
+#include <mutex>
 #include "Vendor/glm/glm.hpp"
 
 struct Cycle {
 	Cycle() { }
-	Cycle(std::vector<glm::ivec2> range, int speed) 
-		:m_Range(range), m_AnimationSpeed(speed)
+	Cycle(std::vector<glm::ivec2> range, int speed, bool loop) 
+		:m_Range(range), m_AnimationSpeed(speed), m_Loop(loop)
 	{
-		//holder
+		m_CycleComplete = (m_Loop) ? true : false;
 	}
 
 	std::vector<glm::ivec2> m_Range;
 	int m_AnimationSpeed;
+	bool m_Loop;
+	bool m_CycleComplete;
 
 	bool operator!=(const Cycle& c2) {
 		return this->m_AnimationSpeed != c2.m_AnimationSpeed && this->m_Range != c2.m_Range;
@@ -31,9 +33,9 @@ public:
 	
 	//Third argument will stay the same while it ranges the indexes linearly
 	//Ex LinearX("Walking", 0, 4, 1) -> (0 - 4, 1)
-	void LinearX(const std::string cycleName, int xStart, int xEnd, int y, int speed);
-	void LinearY(const std::string cycleName, int yStart, int yEnd, int x, int speed);
-	void CustomCycle(const std::string cycleName, std::vector<glm::ivec2> spritePoses, int speed);
+	void LinearX(const std::string cycleName, int xStart, int xEnd, int y, int speed = 100, bool loop = true);
+	void LinearY(const std::string cycleName, int yStart, int yEnd, int x, int speed = 100, bool loop = true);
+	void CustomCycle(const std::string cycleName, std::vector<glm::ivec2> spritePoses, int speed = 100, bool loop = true);
 
 	void Animate(const std::string cycleName);
 

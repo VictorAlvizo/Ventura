@@ -34,7 +34,6 @@ public:
 	GameState m_State;
 
 	Entity * m_TestEntity;
-	Entity * m_ColEnt;
 
 private:
 	unsigned int m_Width, m_Height;
