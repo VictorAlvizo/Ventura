@@ -59,12 +59,6 @@ void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, glm::vec3 hbC
 
 	if (m_ShowHitbox) {
 		m_HBRenderer->DrawOutline(m_HitboxPos, m_Hitbox, m_Rotation, hbColor);
-
-		for (const auto& hitbox : m_Hitboxes) {
-			if (hitbox.second->m_ShowHitbox) {
-				hitbox.second->Draw(m_Pos, m_Rotation, hbColor);
-			}
-		}
 	}
 }
 
@@ -78,12 +72,6 @@ void Entity::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec
 
 		if (m_ShowHitbox) {
 			m_HBRenderer->DrawOutline(m_HitboxPos, m_Hitbox, m_Rotation, hbColor);
-
-			for (const auto& hitbox : m_Hitboxes) {
-				if (hitbox.second->m_ShowHitbox) {
-					hitbox.second->Draw(m_Pos, m_Rotation, hbColor);
-				}
-			}
 		}
 	}
 }
@@ -147,17 +135,4 @@ void Entity::Translate(glm::vec2 trans, float deltaTime) {
 
 void Entity::Flip(bool flip) {
 	m_Flipped = flip;
-}
-
-void Entity::AddHitbox(const std::string& hitboxName, glm::vec2 offset, glm::vec2 size) {
-	m_Hitboxes[hitboxName] = std::make_unique<Hitbox>(size, offset);
-}
-
-std::unique_ptr<Hitbox>& Entity::GetHitbox(const std::string& hitboxName) {
-	if (m_Hitboxes.find(hitboxName) != m_Hitboxes.end()) {
-		return m_Hitboxes[hitboxName];
-	}
-	else {
-		std::cout << "Error: Hitbox: " << hitboxName << " could not be found" << std::endl;
-	}
 }

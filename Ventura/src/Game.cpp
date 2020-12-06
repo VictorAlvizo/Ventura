@@ -42,8 +42,6 @@ void Game::Init() {
 
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
-
-	m_TestEntity->AddHitbox("test", glm::vec2(100.0f), glm::vec2(200.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
