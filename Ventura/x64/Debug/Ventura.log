@@ -1,11 +1,5 @@
 ﻿  Entity.cpp
-  Game.cpp
-  main.cpp
-C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\main.cpp(74,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\Component.h(34): warning C4715: 'Component::Get<AnimationCycle>': not all control paths return a value
+C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\Entity.cpp(163): warning C4715: 'Entity::GetHitbox': not all control paths return a value
 C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\ResourceManager.h(26): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
-C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\ResourceManager.h(36): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
-C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\Entity.cpp(159): warning C4715: 'Entity::GetHitbox': not all control paths return a value
-C:\Users\Alvizo\Desktop\Ventura\Ventura\Ventura\src\ResourceManager.h(26): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Ventura.vcxproj -> C:\Users\Alvizo\Desktop\Ventura\Ventura\x64\Debug\Ventura.exe

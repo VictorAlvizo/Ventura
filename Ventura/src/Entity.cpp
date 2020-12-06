@@ -60,8 +60,10 @@ void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, glm::vec3 hbC
 	if (m_ShowHitbox) {
 		m_HBRenderer->DrawOutline(m_HitboxPos, m_Hitbox, m_Rotation, hbColor);
 
-		if (m_Hitboxes["test"]->m_ShowHitbox) {
-			m_Hitboxes["test"]->Draw(m_Pos, m_Rotation, glm::vec3(1.0f, 0.0f, 0.0f));
+		for (const auto& hitbox : m_Hitboxes) {
+			if (hitbox.second->m_ShowHitbox) {
+				hitbox.second->Draw(m_Pos, m_Rotation, hbColor);
+			}
 		}
 	}
 }
@@ -77,8 +79,10 @@ void Entity::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec
 		if (m_ShowHitbox) {
 			m_HBRenderer->DrawOutline(m_HitboxPos, m_Hitbox, m_Rotation, hbColor);
 
-			if (m_Hitboxes["test"]->m_ShowHitbox) {
-				m_Hitboxes["test"]->Draw(m_Pos, m_Rotation, glm::vec3(1.0f, 0.0f, 0.0f));
+			for (const auto& hitbox : m_Hitboxes) {
+				if (hitbox.second->m_ShowHitbox) {
+					hitbox.second->Draw(m_Pos, m_Rotation, hbColor);
+				}
 			}
 		}
 	}
