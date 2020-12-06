@@ -1,5 +1,5 @@
 #pragma once
-#include "HitboxRenderer.h"
+#include "Hitbox.h"
 #include "SpriteSheetReader.h"
 #include "Component.h"
 #include "ResourceManager.h"
@@ -22,6 +22,9 @@ public:
 	void MoveHitbox(glm::vec2 newPos); //Hitbox focused movement
 	void Translate(glm::vec2 trans, float deltaTime);
 	void Flip(bool flip);
+
+	void AddHitbox(const std::string& hitboxName, glm::vec2 offset, glm::vec2 size);
+	std::unique_ptr<Hitbox>& GetHitbox(const std::string& hitboxName);
 
 	template<typename T>
 	void AddComponent(const std::string& compName, T& newComponent) {
@@ -66,4 +69,5 @@ protected:
 	bool m_Flipped;
 
 	Component m_Components;
+	std::unordered_map<std::string, std::unique_ptr<Hitbox>> m_Hitboxes; //Not a component, Entity needs deep control of Hitbox
 };

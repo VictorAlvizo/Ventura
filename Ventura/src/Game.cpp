@@ -32,7 +32,8 @@ void Game::Init() {
 	ResourceManager::Get<Shader>("hboutline")->UnBind();
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
-	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(100.0f), glm::vec2(250.0f));
+	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(100.0f), glm::vec2(250.0f), glm::vec2(80.0f, 100.0f), glm::vec2(90.0f));
+	m_TestEntity->m_ShowHitbox = true;
 
 	AnimationCycle knightCycle;
 	knightCycle.LinearX("Idle", 0, 4, 0, 160);
@@ -41,6 +42,8 @@ void Game::Init() {
 
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
+
+	m_TestEntity->AddHitbox("test", glm::vec2(100.0f), glm::vec2(200.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
