@@ -20,6 +20,7 @@ void Game::Init() {
 
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
+	ResourceManager::LoadTexture("Textures/Background.png", "background");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -32,7 +33,7 @@ void Game::Init() {
 	ResourceManager::Get<Shader>("hboutline")->UnBind();
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
-	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(100.0f), glm::vec2(250.0f), glm::vec2(80.0f, 100.0f), glm::vec2(90.0f));
+	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(250.0f, 320.0f), glm::vec2(250.0f), glm::vec2(80.0f, 100.0f), glm::vec2(90.0f));
 	m_TestEntity->m_ShowHitbox = true;
 
 	AnimationCycle knightCycle;
@@ -98,6 +99,7 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
+		m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	}
 }
