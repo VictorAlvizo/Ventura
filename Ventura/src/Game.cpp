@@ -11,6 +11,8 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight)
 Game::~Game() {
 	delete m_SpriteRenderer;
 	delete m_TestEntity;
+	delete hitbox;
+	delete hitbox2;
 }
 
 void Game::Init() {
@@ -20,7 +22,6 @@ void Game::Init() {
 
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
-	ResourceManager::LoadTexture("Textures/Background.png", "background");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -43,32 +44,35 @@ void Game::Init() {
 
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
+
+	hitbox = new Hitbox(glm::vec2(80.0f, 100.0f), glm::vec2(90.0f), 0.0f);
+	hitbox2 = new Hitbox(glm::vec2(300.0f), glm::vec2(100.0f), 0.0f);
 }
 
 void Game::ProcessInput(float deltaTime) {
 	if (m_Keys[GLFW_KEY_W]) {
-		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
+		hitbox->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
 		m_TestEntity->m_Rotation = 270.0f;
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
-		m_TestEntity->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
+		hitbox->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
 		m_TestEntity->m_Rotation = 90.0f;
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
-		m_TestEntity->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
+		hitbox->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
 		m_TestEntity->m_Rotation = 0.0f;
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
-		m_TestEntity->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
+		hitbox->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
 		m_TestEntity->m_Rotation = 0.0f;
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
@@ -91,7 +95,7 @@ void Game::Update(float deltaTime) {
 void Game::Render() {
 
 	ImGui::Begin("ImGui");
-	//holder
+	//ImGui Code
 	ImGui::End();
 
 	if (m_State == GameState::MENU) {
@@ -99,11 +103,14 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
+		hitbox->Draw(glm::vec3(0.0f, 0.0f, 1.0f));
+		hitbox2->Draw(glm::vec3(1.0f, 0.0f, 0.0f));
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	}
 }
 
 void Game::CheckCollisions() {
-	//holder
+	if (CollisionHandler::CollideAABB(*hitbox, *hitbox2)) {
+		std::cout << "Collision Detected" << std::endl;
+	}
 }

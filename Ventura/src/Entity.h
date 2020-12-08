@@ -1,5 +1,5 @@
 #pragma once
-#include "HitboxRenderer.h"
+#include "Hitbox.h"
 #include "SpriteSheetReader.h"
 #include "Component.h"
 #include "ResourceManager.h"

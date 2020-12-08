@@ -2,12 +2,11 @@
 #include <glad/glad.h>
 #include <glfw3.h>
 #include "CollisionHandler.h"
-#include "ResourceManager.h"
 #include "Vendor/imgui/imgui.h"
 #include "Vendor/imgui/imgui_impl_glfw.h"
 #include "Vendor/imgui/imgui_impl_opengl3.h"
 #include "TextRenderer.h"
-#include "HitboxRenderer.h"
+#include "Hitbox.h"
 
 enum class GameState {
 	MENU, ACTIVE
@@ -33,11 +32,12 @@ public:
 
 	GameState m_State;
 
-	Entity * m_TestEntity;
-
 private:
 	unsigned int m_Width, m_Height;
 
 	SpriteRenderer * m_SpriteRenderer;
+	Entity * m_TestEntity;
+	Hitbox * hitbox;
+	Hitbox * hitbox2;
 };
 
