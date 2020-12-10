@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "HitCircle.h"
 
 class Circle : public Entity {
 public:

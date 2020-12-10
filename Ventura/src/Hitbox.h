@@ -22,7 +22,7 @@ public:
 
 	float m_Rotation = 0.0f;
 
-private:
+protected:
 	HitboxRenderer * m_Renderer;
 
 	glm::vec2 m_Pos, m_Size;

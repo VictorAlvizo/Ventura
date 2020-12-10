@@ -1,64 +1,58 @@
 #include "Entity.h"
 
 Entity::Entity()
-	:m_Pos(0.0f), m_Size(1.0f), m_HitboxPos(0.0f), m_Hitbox(0.0f), m_HitboxOffset(0.0f)
+	:m_Pos(0.0f), m_Size(1.0f), m_HitboxOffset(0.0f)
 {
 	m_SpriteSheet = nullptr;
 	m_Rotation = 0.0f;
 	m_Destroyed = false;
 	m_Flipped = false;
-	m_ShowHitbox = false;
 
-	m_HBRenderer = new HitboxRenderer(ResourceManager::Get<Shader>("hboutline"));
+	m_Hitbox = new Hitbox(m_Pos, m_Size);
+	m_LastHitboxPos = m_Pos;
 }
 
-Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, glm::vec2 hbPos, glm::vec2 hbSize)
-	:m_Texture(texture), m_Pos(pos), m_Size(size)
+Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize)
+	:m_Texture(texture), m_Pos(pos), m_Size(size), m_HitboxOffset(hbPos)
 {
 	m_SpriteSheet = nullptr;
 	m_Rotation = 0.0f;
 	m_Destroyed = false;
 	m_Flipped = false;
-	m_ShowHitbox = false;
 
 	//Set hitbox varibles
-	m_Hitbox = (hbSize != glm::vec2(0.0f)) ? m_Hitbox = hbSize : m_Hitbox = m_Size;
-	m_HitboxOffset = hbPos;
-	m_HitboxPos = m_HitboxOffset + pos;
-
-	m_HBRenderer = new HitboxRenderer(ResourceManager::Get<Shader>("hboutline"));
+	glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
+	m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize);
+	m_LastHitboxPos = hbPos + pos;
 }
 
-Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, glm::vec2 hbPos, glm::vec2 hbSize)
-	:m_Texture(texture), m_Pos(pos), m_Size(size)
+Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize)
+	:m_Texture(texture), m_Pos(pos), m_Size(size), m_HitboxOffset(hbPos)
 {
 	//Not wanting a glm::vec2 for sprite size to avoid ambiguity between the overloaded functions
 	m_SpriteSheet = new SpriteSheetReader(texture, glm::vec2(spriteX, spriteY));
 	m_Rotation = 0.0f;
 	m_Destroyed = false;
 	m_Flipped = false;
-	m_ShowHitbox = false;
 
-	m_Hitbox = (hbSize != glm::vec2(0.0f)) ? m_Hitbox = hbSize : m_Hitbox = m_Size;
-	m_HitboxOffset = hbPos;
-	m_HitboxPos = m_HitboxOffset + pos;
-
-	m_HBRenderer = new HitboxRenderer(ResourceManager::Get<Shader>("hboutline"));
+	glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
+	m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize);
+	m_LastHitboxPos = hbPos + pos;
 }
 
 Entity::~Entity() {
 	delete m_SpriteSheet;
 	m_SpriteSheet = nullptr;
 
-	delete m_HBRenderer;
-	m_HBRenderer = nullptr;
+	delete m_Hitbox;
+	m_Hitbox = nullptr;
 }
 
 void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, glm::vec3 hbColor) {
 	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, color);
 
-	if (m_ShowHitbox) {
-		m_HBRenderer->DrawOutline(m_HitboxPos, m_Hitbox, m_Rotation, hbColor);
+	if (m_Hitbox->m_ShowHitbox) {
+		m_Hitbox->Draw(hbColor);
 	}
 }
 
@@ -70,8 +64,8 @@ void Entity::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec
 		spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, color, 
 			m_SpriteSheet->getTexUV(spritePos.x, spritePos.y, m_Flipped));
 
-		if (m_ShowHitbox) {
-			m_HBRenderer->DrawOutline(m_HitboxPos, m_Hitbox, m_Rotation, hbColor);
+		if (m_Hitbox->m_ShowHitbox) {
+			m_Hitbox->Draw(hbColor);
 		}
 	}
 }
@@ -97,42 +91,27 @@ std::vector<glm::vec2> Entity::GetCorners() { //Default is a rectangle / square
 	return corners;
 }
 
-std::vector<glm::vec2> Entity::GetHitboxCorners() { //Default is a rectangle / square
-	std::vector<glm::vec2> corners;
-	glm::vec2 center = glm::vec2(m_HitboxPos.x + (m_Hitbox.x / 2.0f), m_HitboxPos.y + (m_Hitbox.y / 2.0f));
-
-	corners.push_back({ m_HitboxPos.x, m_HitboxPos.y }); //Top left
-	corners.push_back({ m_HitboxPos.x + m_Hitbox.x, m_HitboxPos.y }); //Top right
-	corners.push_back({ m_HitboxPos.x, m_HitboxPos.y + m_Hitbox.y }); //Bottom left
-	corners.push_back({ m_HitboxPos.x + m_Hitbox.x, m_HitboxPos.y + m_Hitbox.y }); //Bottom right
-
-	for (glm::vec2& corner : corners) {
-		corner -= center;
-
-		corner = glm::vec2(corner.x * glm::cos(glm::radians(m_Rotation)) - corner.y * glm::sin(glm::radians(m_Rotation)),
-			corner.x * glm::sin(glm::radians(m_Rotation)) + corner.y * glm::cos(glm::radians(m_Rotation)));
-
-		corner += center;
-	}
-
-	return corners;
-}
-
 void Entity::Move(glm::vec2 newPos) {
 	m_Pos = newPos;
-	m_HitboxPos = m_HitboxOffset + m_Pos;
-}
-
-void Entity::MoveHitbox(glm::vec2 newPos) {
-	m_HitboxPos = newPos;
-	m_Pos = m_HitboxPos - m_HitboxOffset;
+	m_Hitbox->Move(m_Pos + m_HitboxOffset);
+	m_LastHitboxPos = m_Pos + m_HitboxOffset;
 }
 
 void Entity::Translate(glm::vec2 trans, float deltaTime) {
+	if (m_LastHitboxPos != m_Hitbox->getPos()) { //Hitbox has moved, for example in collision
+		m_Pos = m_Hitbox->getPos() - m_HitboxOffset;
+	}
+
 	m_Pos += trans * deltaTime;
-	m_HitboxPos = m_HitboxOffset + m_Pos;
+	m_Hitbox->Move(m_Pos + m_HitboxOffset);
+	m_LastHitboxPos = m_Pos + m_HitboxOffset;
 }
 
 void Entity::Flip(bool flip) {
 	m_Flipped = flip;
+}
+
+void Entity::SetRotation(float newRotation) {
+	m_Rotation = newRotation;
+	m_Hitbox->m_Rotation = newRotation;
 }

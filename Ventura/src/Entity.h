@@ -7,21 +7,20 @@
 class Entity {
 public:
 	Entity();
-	Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f));
+	Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f));
 	//Only if you want animated sprites / use of a spritesheet. Provide the dimensions of 1 sprite
-	Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f));
+	Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f));
 	~Entity();
 
 	virtual void Draw(SpriteRenderer& spriteRenderer, glm::vec3 color = glm::vec3(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f));
 	virtual void Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec3 color = glm::vec3(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f));
 
 	virtual std::vector<glm::vec2> GetCorners();
-	virtual std::vector<glm::vec2> GetHitboxCorners();
 
 	void Move(glm::vec2 newPos);
-	void MoveHitbox(glm::vec2 newPos); //Hitbox focused movement
 	void Translate(glm::vec2 trans, float deltaTime);
 	void Flip(bool flip);
+	void SetRotation(float newRotation);
 
 	template<typename T>
 	void AddComponent(const std::string& compName, T& newComponent) {
@@ -45,22 +44,24 @@ public:
 
 	inline glm::vec2 getPos() const { return m_Pos; }
 	inline glm::vec2 getSize() const { return m_Size; }
-	inline glm::vec2 getHitboxSize() const { return m_Hitbox; }
-	inline glm::vec2 getHitboxPos() const { return m_HitboxPos; }
-	inline glm::vec2 getHitboxOffset() const { return m_HitboxOffset; }
+	inline float getRotation() const { return m_Rotation; }
+	inline Hitbox& getHitbox() const { return *m_Hitbox; }
 	inline bool isFlipped() const { return m_Flipped; }
 
-	float m_Rotation;
-	bool m_ShowHitbox;
 	std::string m_Tag;
 
 protected:
 	std::shared_ptr<Texture> m_Texture;
 	SpriteSheetReader * m_SpriteSheet;
-	HitboxRenderer * m_HBRenderer;
 
-	//m_Hitbox is the size of the hitbox
-	glm::vec2 m_Pos, m_Size, m_Hitbox, m_HitboxPos, m_HitboxOffset;
+	Hitbox * m_Hitbox;
+	glm::vec2 m_HitboxOffset;
+	glm::vec2 m_LastHitboxPos;
+
+	glm::vec2 m_Pos, m_Size;
+
+	//This is an anti-pattern but it actually works as I need to update the hitbox rotation when this does as well
+	float m_Rotation; 
 
 	bool m_Destroyed;
 	bool m_Flipped;
