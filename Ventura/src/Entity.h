@@ -7,9 +7,9 @@
 class Entity {
 public:
 	Entity();
-	Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f));
+	Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), bool childClass = false);
 	//Only if you want animated sprites / use of a spritesheet. Provide the dimensions of 1 sprite
-	Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f));
+	Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), bool childClass = false);
 	~Entity();
 
 	virtual void Draw(SpriteRenderer& spriteRenderer, glm::vec3 color = glm::vec3(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f));
@@ -45,7 +45,7 @@ public:
 	inline glm::vec2 getPos() const { return m_Pos; }
 	inline glm::vec2 getSize() const { return m_Size; }
 	inline float getRotation() const { return m_Rotation; }
-	inline Hitbox& getHitbox() const { return *m_Hitbox; }
+	inline Hitbox* getHitbox() const { return m_Hitbox; }
 	inline bool isFlipped() const { return m_Flipped; }
 
 	std::string m_Tag;

@@ -8,25 +8,26 @@ Entity::Entity()
 	m_Destroyed = false;
 	m_Flipped = false;
 
-	m_Hitbox = new Hitbox(m_Pos, m_Size);
+	m_Hitbox = nullptr;
 	m_LastHitboxPos = m_Pos;
 }
 
-Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize)
-	:m_Texture(texture), m_Pos(pos), m_Size(size), m_HitboxOffset(hbPos)
+Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, bool childClass)
+	:m_Texture(texture), m_Pos(pos), m_Size(size), m_HitboxOffset(hbPos), m_Rotation(rotation)
 {
 	m_SpriteSheet = nullptr;
-	m_Rotation = 0.0f;
 	m_Destroyed = false;
 	m_Flipped = false;
 
-	//Set hitbox varibles
-	glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-	m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize);
-	m_LastHitboxPos = hbPos + pos;
+	if (!childClass) {
+		//Set hitbox varibles
+		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation);
+		m_LastHitboxPos = hbPos + pos;
+	}
 }
 
-Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize)
+Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, bool childClass)
 	:m_Texture(texture), m_Pos(pos), m_Size(size), m_HitboxOffset(hbPos)
 {
 	//Not wanting a glm::vec2 for sprite size to avoid ambiguity between the overloaded functions
@@ -35,9 +36,11 @@ Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, 
 	m_Destroyed = false;
 	m_Flipped = false;
 
-	glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-	m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize);
-	m_LastHitboxPos = hbPos + pos;
+	if (!childClass) {
+		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation);
+		m_LastHitboxPos = hbPos + pos;
+	}
 }
 
 Entity::~Entity() {

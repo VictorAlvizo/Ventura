@@ -44,6 +44,8 @@ void Game::Init() {
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
+	circle = new Circle(ResourceManager::Get<Texture>("ball"), glm::vec2(250.0f), 30.0f);
+
 	hitbox = new HitCircle(glm::vec2(80.0f, 100.0f), 50.0f);
 	hitbox2 = new HitCircle(glm::vec2(300.0f), 30.0f);
 }
@@ -102,6 +104,8 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
+		circle->Draw(*m_SpriteRenderer, glm::vec3(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
 		hitbox->Draw(*m_SpriteRenderer);
 		hitbox2->Draw(*m_SpriteRenderer, glm::vec3(1.0f, 0.0f, 0.0f));
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
@@ -109,7 +113,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideCircle(*hitbox, *hitbox2)) {
+	if (CollisionHandler::CollideCircle(dynamic_cast<HitCircle *>(circle->getHitbox()), hitbox)) {
 		std::cout << "Collision Detected" << std::endl;
 	}
 }

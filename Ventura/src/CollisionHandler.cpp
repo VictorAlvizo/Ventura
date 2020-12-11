@@ -91,32 +91,32 @@ bool CollisionHandler::CollideSAT(Hitbox& hb1, Hitbox& hb2, bool staticResolutio
     return true;
 }
 
-bool CollisionHandler::CollideCircle(HitCircle& cir1, HitCircle& cir2, bool staticResolution) {
-    glm::vec2 center1 = glm::vec2(cir1.getPos() + cir1.getRadius());
-    glm::vec2 center2 = glm::vec2(cir2.getPos() + cir2.getRadius());
+bool CollisionHandler::CollideCircle(HitCircle * cir1, HitCircle * cir2, bool staticResolution) {
+    glm::vec2 center1 = glm::vec2(cir1->getPos() + cir1->getRadius());
+    glm::vec2 center2 = glm::vec2(cir2->getPos() + cir2->getRadius());
 
     float distance = glm::length(center2 - center1);
 
-    if (distance <= cir1.getRadius() + cir2.getRadius()) {
+    if (distance <= cir1->getRadius() + cir2->getRadius()) {
         if (staticResolution) {
             glm::vec2 centerVector = center2 - center1;
-            float diff = cir1.getRadius() + cir2.getRadius() - distance;
+            float diff = cir1->getRadius() + cir2->getRadius() - distance;
 
             switch (CollisionHandler::colDir(centerVector)) {
                 case CollisionDirction::RIGHT:
-                    cir1.Move(glm::vec2(cir1.getPos().x + diff, cir1.getPos().y));
+                    cir1->Move(glm::vec2(cir1->getPos().x + diff, cir1->getPos().y));
                     break;
 
                 case CollisionDirction::LEFT:
-                    cir1.Move(glm::vec2(cir1.getPos().x - diff, cir1.getPos().y));
+                    cir1->Move(glm::vec2(cir1->getPos().x - diff, cir1->getPos().y));
                     break;
 
                 case CollisionDirction::TOP:
-                    cir1.Move(glm::vec2(cir1.getPos().x, cir1.getPos().y - diff));
+                    cir1->Move(glm::vec2(cir1->getPos().x, cir1->getPos().y - diff));
                     break;
 
                 default:
-                    cir1.Move(glm::vec2(cir1.getPos().x, cir1.getPos().y + diff));
+                    cir1->Move(glm::vec2(cir1->getPos().x, cir1->getPos().y + diff));
                     break;
             }
         }
@@ -127,43 +127,7 @@ bool CollisionHandler::CollideCircle(HitCircle& cir1, HitCircle& cir2, bool stat
     return false;
 }
 
-/*bool CollisionHandler::CollideCircle(Circle * cir1, Circle * cir2, bool staticResolution) {
-    glm::vec2 center1 = glm::vec2(cir1->getHitboxPos() + cir1->getHitboxRadius());
-    glm::vec2 center2 = glm::vec2(cir2->getHitboxPos() + cir2->getHitboxRadius());
-
-    float distance = glm::length(center2 - center1);
-
-    if (distance <= cir1->getHitboxRadius() + cir2->getHitboxRadius()) {
-        if (staticResolution) {
-            glm::vec2 centerVector = center2 - center1;
-            float diff = cir1->getHitboxRadius() + cir2->getHitboxRadius() - distance;
-
-            switch (CollisionHandler::colDir(centerVector)) {
-                case CollisionDirction::RIGHT:
-                    cir1->MoveHitbox(glm::vec2(cir1->getHitboxPos().x + diff, cir1->getHitboxPos().y));
-                    break;
-
-                case CollisionDirction::LEFT:
-                    cir1->MoveHitbox(glm::vec2(cir1->getHitboxPos().x - diff, cir1->getHitboxPos().y));
-                    break;
-
-                case CollisionDirction::TOP:
-                    cir1->MoveHitbox(glm::vec2(cir1->getHitboxPos().x, cir1->getHitboxPos().y - diff));
-                    break;
-
-                default:
-                    cir1->MoveHitbox(glm::vec2(cir1->getHitboxPos().x, cir1->getHitboxPos().y + diff));
-                    break;
-            }
-        }
-
-        return true;
-    }
-
-    return false;
-}
-
-bool CollisionHandler::CollideCircleAABB(Circle * cir, Entity& ent, bool staticResolution) {
+/*bool CollisionHandler::CollideCircleAABB(Circle * cir, Entity& ent, bool staticResolution) {
     glm::vec2 circleCenter = glm::vec2(cir->getHitboxPos() + cir->getHitboxRadius());
 
     glm::vec2 entityHalfs = glm::vec2(ent.getHitboxSize().x / 2.0f, ent.getHitboxSize().y / 2.0f);

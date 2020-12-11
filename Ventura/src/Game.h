@@ -36,6 +36,8 @@ private:
 
 	SpriteRenderer * m_SpriteRenderer;
 	Entity * m_TestEntity;
+	Entity * circle;
+
 	HitCircle * hitbox;
 	HitCircle * hitbox2;
 };
