@@ -12,7 +12,6 @@ Game::~Game() {
 	delete m_SpriteRenderer;
 	delete m_TestEntity;
 	delete hitbox;
-	delete hitbox2;
 }
 
 void Game::Init() {
@@ -44,36 +43,34 @@ void Game::Init() {
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
-	circle = new Circle(ResourceManager::Get<Texture>("ball"), glm::vec2(250.0f), 30.0f);
-
-	hitbox = new HitCircle(glm::vec2(80.0f, 100.0f), 50.0f);
-	hitbox2 = new HitCircle(glm::vec2(300.0f), 30.0f);
+	circle = new Circle(ResourceManager::Get<Texture>("ball"), glm::vec2(250.0f), 50.0f);
+	hitbox = new Hitbox(glm::vec2(80.0f, 100.0f), glm::vec2(160.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
 	if (m_Keys[GLFW_KEY_W]) {
-		hitbox->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
+		circle->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
 		m_TestEntity->SetRotation(270.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
-		hitbox->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
+		circle->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
 		m_TestEntity->SetRotation(90.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
-		hitbox->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
+		circle->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
-		hitbox->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
+		circle->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
@@ -106,14 +103,13 @@ void Game::Render() {
 	if (m_State == GameState::ACTIVE) {
 		circle->Draw(*m_SpriteRenderer, glm::vec3(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
-		hitbox->Draw(*m_SpriteRenderer);
-		hitbox2->Draw(*m_SpriteRenderer, glm::vec3(1.0f, 0.0f, 0.0f));
+		hitbox->Draw();
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	}
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideCircle(dynamic_cast<HitCircle *>(circle->getHitbox()), hitbox)) {
+	if (CollisionHandler::CollidePoint(m_MousePos, dynamic_cast<HitCircle *>(circle->getHitbox()))) {
 		std::cout << "Collision Detected" << std::endl;
 	}
 }

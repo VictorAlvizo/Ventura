@@ -38,7 +38,6 @@ private:
 	Entity * m_TestEntity;
 	Entity * circle;
 
-	HitCircle * hitbox;
-	HitCircle * hitbox2;
+	Hitbox * hitbox;
 };
 

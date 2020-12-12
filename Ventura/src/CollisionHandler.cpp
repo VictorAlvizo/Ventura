@@ -127,11 +127,11 @@ bool CollisionHandler::CollideCircle(HitCircle * cir1, HitCircle * cir2, bool st
     return false;
 }
 
-/*bool CollisionHandler::CollideCircleAABB(Circle * cir, Entity& ent, bool staticResolution) {
-    glm::vec2 circleCenter = glm::vec2(cir->getHitboxPos() + cir->getHitboxRadius());
+bool CollisionHandler::CollideCircleAABB(HitCircle * cir, Hitbox& hitbox, bool staticResolution) {
+    glm::vec2 circleCenter = glm::vec2(cir->getPos() + cir->getRadius());
 
-    glm::vec2 entityHalfs = glm::vec2(ent.getHitboxSize().x / 2.0f, ent.getHitboxSize().y / 2.0f);
-    glm::vec2 entityCenter = glm::vec2(ent.getHitboxPos().x + entityHalfs.x, ent.getHitboxPos().y + entityHalfs.y);
+    glm::vec2 entityHalfs = glm::vec2(hitbox.getSize().x / 2.0f, hitbox.getSize().y / 2.0f);
+    glm::vec2 entityCenter = glm::vec2(hitbox.getPos().x + entityHalfs.x, hitbox.getPos().y + entityHalfs.y);
 
     //Difference vector between the two vectors
     glm::vec2 difference = circleCenter - entityCenter;
@@ -141,25 +141,25 @@ bool CollisionHandler::CollideCircle(HitCircle * cir1, HitCircle * cir2, bool st
 
     difference = closest - circleCenter;
 
-    if (glm::length(difference) < cir->getHitboxRadius()) {
+    if (glm::length(difference) < cir->getRadius()) {
         float diff = cir->getRadius() - glm::length(difference);
 
         switch (CollisionHandler::colDir(difference)) {
-            case CollisionDirction::RIGHT:
-                cir->MoveHitbox(glm::vec2(cir->getHitboxPos().x + diff, cir->getHitboxPos().y));
-                break;
+        case CollisionDirction::RIGHT:
+            cir->Move(glm::vec2(cir->getPos().x + diff, cir->getPos().y));
+            break;
 
-            case CollisionDirction::LEFT:
-                cir->MoveHitbox(glm::vec2(cir->getHitboxPos().x - diff, cir->getHitboxPos().y));
-                break;
+        case CollisionDirction::LEFT:
+            cir->Move(glm::vec2(cir->getPos().x - diff, cir->getPos().y));
+            break;
 
         case CollisionDirction::TOP:
-                cir->MoveHitbox(glm::vec2(cir->getHitboxPos().x, cir->getHitboxPos().y - diff));
-                break;
+            cir->Move(glm::vec2(cir->getPos().x, cir->getPos().y - diff));
+            break;
 
-            default:
-                cir->MoveHitbox(glm::vec2(cir->getHitboxPos().x, cir->getHitboxPos().y + diff));
-                break;
+        default:
+            cir->Move(glm::vec2(cir->getPos().x, cir->getPos().y + diff));
+            break;
         }
 
         return true;
@@ -168,13 +168,13 @@ bool CollisionHandler::CollideCircle(HitCircle * cir1, HitCircle * cir2, bool st
     return false;
 }
 
-bool CollisionHandler::CollidePoint(glm::vec2 point, Entity& ent) {
+bool CollisionHandler::CollidePoint(glm::vec2 point, Hitbox& hitbox) {
     std::vector<glm::vec2> axes;
 
-    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation)), glm::sin(glm::radians(ent.m_Rotation)))));
-    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(ent.m_Rotation + 90.0f)), glm::sin(glm::radians(ent.m_Rotation + 90.0f)))));
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(hitbox.m_Rotation)), glm::sin(glm::radians(hitbox.m_Rotation)))));
+    axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(hitbox.m_Rotation + 90.0f)), glm::sin(glm::radians(hitbox.m_Rotation + 90.0f)))));
 
-    std::vector<glm::vec2> corners = ent.GetHitboxCorners();
+    std::vector<glm::vec2> corners = hitbox.GetHitboxCorners();
 
     float eMin = INFINITY, eMax = -INFINITY;
     float pointProduct;
@@ -200,10 +200,10 @@ bool CollisionHandler::CollidePoint(glm::vec2 point, Entity& ent) {
     return true;
 }
 
-bool CollisionHandler::CollidePoint(glm::vec2 point, Circle * cir) {
-    glm::vec2 circleCenter = cir->getHitboxPos() + cir->getHitboxRadius();
-    return glm::length(circleCenter - point) <= cir->getHitboxRadius();
-}*/
+bool CollisionHandler::CollidePoint(glm::vec2 point, HitCircle * cir) {
+    glm::vec2 circleCenter = cir->getPos() + cir->getRadius();
+    return glm::length(circleCenter - point) <= cir->getRadius();
+}
 
 CollisionHandler::CollisionDirction CollisionHandler::colDir(glm::vec2 centerVector) {
     glm::vec2 directions[4] = {
