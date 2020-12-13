@@ -45,6 +45,8 @@ void Game::Init() {
 
 	circle = new Circle(ResourceManager::Get<Texture>("ball"), glm::vec2(250.0f), 50.0f);
 	hitbox = new Hitbox(glm::vec2(80.0f, 100.0f), glm::vec2(160.0f));
+
+	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {
