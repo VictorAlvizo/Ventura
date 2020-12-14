@@ -2,10 +2,12 @@
 #include "HitboxRenderer.h"
 #include "ResourceManager.h"
 
+class Entity;
+
 class Hitbox {
 public:
 	Hitbox();
-	Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, float rotation = 0.0f);
+	Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, float rotation = 0.0f, Entity * parentEntity = nullptr);
 	~Hitbox();
 
 	void Draw(glm::vec3 color = glm::vec3(0.0f, 1.0f, 0.0f));
@@ -24,6 +26,7 @@ public:
 
 protected:
 	HitboxRenderer * m_Renderer;
+	Entity * m_Entity;
 
 	glm::vec2 m_Pos, m_Size;
 };

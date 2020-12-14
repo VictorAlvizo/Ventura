@@ -9,7 +9,6 @@ Entity::Entity()
 	m_Flipped = false;
 
 	m_Hitbox = nullptr;
-	m_LastHitboxPos = m_Pos;
 }
 
 Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, bool childClass)
@@ -22,8 +21,7 @@ Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size,
 	if (!childClass) {
 		//Set hitbox varibles
 		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation);
-		m_LastHitboxPos = hbPos + pos;
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, this);
 	}
 }
 
@@ -38,8 +36,7 @@ Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, 
 
 	if (!childClass) {
 		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation);
-		m_LastHitboxPos = hbPos + pos;
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, this);
 	}
 }
 
@@ -97,17 +94,11 @@ std::vector<glm::vec2> Entity::GetCorners() { //Default is a rectangle / square
 void Entity::Move(glm::vec2 newPos) {
 	m_Pos = newPos;
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
-	m_LastHitboxPos = m_Pos + m_HitboxOffset;
 }
 
 void Entity::Translate(glm::vec2 trans, float deltaTime) {
-	if (m_LastHitboxPos != m_Hitbox->getPos()) { //Hitbox has moved, for example in collision
-		m_Pos = m_Hitbox->getPos() - m_HitboxOffset;
-	}
-
 	m_Pos += trans * deltaTime;
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
-	m_LastHitboxPos = m_Pos + m_HitboxOffset;
 }
 
 void Entity::Flip(bool flip) {
@@ -117,4 +108,8 @@ void Entity::Flip(bool flip) {
 void Entity::SetRotation(float newRotation) {
 	m_Rotation = newRotation;
 	m_Hitbox->m_Rotation = newRotation;
+}
+
+void Entity::MovePos() {
+	m_Pos = m_Hitbox->getPos() - m_HitboxOffset;
 }

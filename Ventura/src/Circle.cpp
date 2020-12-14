@@ -10,14 +10,14 @@ Circle::Circle(std::shared_ptr<Texture>& texture, glm::vec2 pos, float radius, f
 	:Entity(texture, pos, glm::vec2(radius * 2.0f), rotation, glm::vec2(0.0f), glm::vec2(0.0f), true), m_Radius(radius)
 {
 	float hitRad = (hbRadius == 0.0f) ? radius : hbRadius;
-	m_Hitbox = new HitCircle(hbPos + pos, hitRad, rotation);
+	m_Hitbox = new HitCircle(hbPos + pos, hitRad, rotation, this);
 }
 
 Circle::Circle(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, float radius, float rotation, glm::vec2 hbPos, float hbRadius)
 	:Entity(texture, spriteX, spriteY, pos, glm::vec2(radius * 2.0f), rotation, glm::vec2(0.0f), glm::vec2(0.0f), true), m_Radius(radius)
 {
 	float hitRad = (hbRadius == 0.0f) ? radius : hbRadius;
-	m_Hitbox = new HitCircle(hbPos + pos, hitRad, rotation);
+	m_Hitbox = new HitCircle(hbPos + pos, hitRad, rotation, this);
 }
 
 Circle::~Circle() {

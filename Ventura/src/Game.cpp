@@ -10,6 +10,8 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight)
 
 Game::~Game() {
 	delete m_SpriteRenderer;
+	m_SpriteRenderer = nullptr;
+
 	delete m_TestEntity;
 	delete hitbox;
 }
@@ -51,28 +53,28 @@ void Game::Init() {
 
 void Game::ProcessInput(float deltaTime) {
 	if (m_Keys[GLFW_KEY_W]) {
-		circle->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
+		hitbox->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
 		m_TestEntity->SetRotation(270.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
-		circle->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
+		hitbox->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
 		m_TestEntity->SetRotation(90.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
-		circle->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
+		hitbox->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
-		circle->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
+		hitbox->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
@@ -111,7 +113,7 @@ void Game::Render() {
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollidePoint(m_MousePos, dynamic_cast<HitCircle *>(circle->getHitbox()))) {
-		std::cout << "Collision Detected" << std::endl;
+	if (CollisionHandler::CollideSAT(*m_TestEntity->getHitbox(), *hitbox))  {
+		std::cout << "Collision Detected" << std::endl; 
 	}
 }

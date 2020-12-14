@@ -51,12 +51,13 @@ public:
 	std::string m_Tag;
 
 protected:
+	void MovePos(); //When hitbox moves, adjust the entity position
+
 	std::shared_ptr<Texture> m_Texture;
 	SpriteSheetReader * m_SpriteSheet;
 
 	Hitbox * m_Hitbox;
 	glm::vec2 m_HitboxOffset;
-	glm::vec2 m_LastHitboxPos;
 
 	glm::vec2 m_Pos, m_Size;
 
@@ -67,4 +68,6 @@ protected:
 	bool m_Flipped;
 
 	Component m_Components;
+
+	friend class Hitbox;
 };

@@ -7,8 +7,8 @@ HitCircle::HitCircle()
 	m_Rotation = 0.0f;
 }
 
-HitCircle::HitCircle(glm::vec2 hitboxPos, float radius, float rotation)
-	:Hitbox(hitboxPos, glm::vec2(radius * 2.0f), rotation), m_Radius(radius)
+HitCircle::HitCircle(glm::vec2 hitboxPos, float radius, float rotation, Entity * parentEntity)
+	:Hitbox(hitboxPos, glm::vec2(radius * 2.0f), rotation, parentEntity), m_Radius(radius)
 {
 	m_Texture = ResourceManager::Get<Texture>("hitboxCircle");
 }
