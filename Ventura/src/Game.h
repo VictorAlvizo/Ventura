@@ -6,6 +6,7 @@
 #include "Vendor/imgui/imgui_impl_glfw.h"
 #include "Vendor/imgui/imgui_impl_opengl3.h"
 #include "TextRenderer.h"
+#include "ParticleGenerator.h"
 
 enum class GameState {
 	MENU, ACTIVE
@@ -36,8 +37,7 @@ private:
 
 	SpriteRenderer * m_SpriteRenderer;
 	Entity * m_TestEntity;
-	Entity * circle;
 
-	Hitbox * hitbox;
+	ParticleGenerator* m_ParticleGenerator;
 };
 

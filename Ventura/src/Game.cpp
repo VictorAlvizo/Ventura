@@ -6,6 +6,7 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight)
 	m_State = GameState::ACTIVE; //TODO: Change to menu towards the end
 	m_SpriteRenderer = nullptr;
 	m_TestEntity = nullptr;
+	m_ParticleGenerator = nullptr;
 }
 
 Game::~Game() {
@@ -13,7 +14,10 @@ Game::~Game() {
 	m_SpriteRenderer = nullptr;
 
 	delete m_TestEntity;
-	delete hitbox;
+	m_TestEntity = nullptr;
+
+	delete m_ParticleGenerator;
+	m_ParticleGenerator = nullptr;
 }
 
 void Game::Init() {
@@ -24,6 +28,7 @@ void Game::Init() {
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
 	ResourceManager::LoadTexture("Textures/Ball.png", "ball");
+	ResourceManager::LoadTexture("Textures/ParticleTexture.png", "particle");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -36,7 +41,8 @@ void Game::Init() {
 	ResourceManager::Get<Shader>("hboutline")->UnBind();
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
-	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(250.0f, 320.0f), glm::vec2(250.0f), 0.0f, glm::vec2(80.0f, 100.0f), glm::vec2(90.0f));
+
+	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(250.0f, 150.0f), glm::vec2(250.0f), 0.0f, glm::vec2(80.0f, 100.0f), glm::vec2(90.0f));
 	AnimationCycle knightCycle;
 	knightCycle.LinearX("Idle", 0, 4, 0, 160);
 	knightCycle.LinearX("Walking", 0, 7, 1, 100);
@@ -45,36 +51,33 @@ void Game::Init() {
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
-	circle = new Circle(ResourceManager::Get<Texture>("ball"), glm::vec2(250.0f), 50.0f);
-	hitbox = new Hitbox(glm::vec2(80.0f, 100.0f), glm::vec2(160.0f));
-
-	//holder
+	m_ParticleGenerator = new ParticleGenerator(ResourceManager::Get<Texture>("particle"), glm::vec2(100.0f), glm::vec2(-10.0f, 10.0f, -20.0f, 20.0f), glm::vec2(30.0f, 50.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
 	if (m_Keys[GLFW_KEY_W]) {
-		hitbox->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
 		m_TestEntity->SetRotation(270.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
-		hitbox->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
 		m_TestEntity->SetRotation(90.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
-		hitbox->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
-		hitbox->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
@@ -95,9 +98,8 @@ void Game::Update(float deltaTime) {
 }
 
 void Game::Render() {
-
 	ImGui::Begin("ImGui");
-	ImGui::SliderFloat("Rotation", &hitbox->m_Rotation, 0.0f, 360.0f);
+	//ImGui Code
 	ImGui::End();
 
 	if (m_State == GameState::MENU) {
@@ -105,15 +107,10 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		circle->Draw(*m_SpriteRenderer, glm::vec3(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-		hitbox->Draw();
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	}
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::CollideSAT(*m_TestEntity->getHitbox(), *hitbox))  {
-		std::cout << "Collision Detected" << std::endl; 
-	}
+	//holder
 }
