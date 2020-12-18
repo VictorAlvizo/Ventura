@@ -18,5 +18,5 @@ HitCircle::~HitCircle() {
 }
 
 void HitCircle::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color) {
-	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, false, m_Rotation, color);
+	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, false, m_Rotation, glm::vec4(color, 1.0f));
 }

@@ -17,7 +17,7 @@ SpriteRenderer::~SpriteRenderer() {
 	glDeleteVertexArrays(1, &m_VAO);
 }
 
-void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, float rotate, glm::vec3 color, std::vector<float> texUV) {
+void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, float rotate, glm::vec4 color, std::vector<float> texUV) {
 	m_Shader->Bind();
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(pos, 0.0f));
@@ -30,7 +30,7 @@ void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size,
 	model = glm::scale(model, glm::vec3(size, 1.0f));
 
 	m_Shader->SetMat4("u_Model", model);
-	m_Shader->SetVec3("u_Color", color);
+	m_Shader->SetVec4("u_Color", color);
 	m_Shader->SetBool("u_Flipped", flipped);
 
 	texture.Bind(0);

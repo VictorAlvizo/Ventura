@@ -51,7 +51,8 @@ void Game::Init() {
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
-	m_ParticleGenerator = new ParticleGenerator(ResourceManager::Get<Texture>("particle"), glm::vec2(100.0f), glm::vec2(-10.0f, 10.0f, -20.0f, 20.0f), glm::vec2(30.0f, 50.0f));
+	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 100.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
+	m_ParticleGenerator->m_SpawnPos = glm::vec2(200.0f);
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -94,6 +95,7 @@ void Game::ProcessInput(float deltaTime) {
 }
 
 void Game::Update(float deltaTime) {
+	m_ParticleGenerator->Update(deltaTime);
 	CheckCollisions();
 }
 
@@ -107,6 +109,7 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
+		m_ParticleGenerator->Draw(*m_SpriteRenderer);
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	}
 }

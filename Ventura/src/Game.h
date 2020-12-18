@@ -38,6 +38,6 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Entity * m_TestEntity;
 
-	ParticleGenerator* m_ParticleGenerator;
+	ParticleGenerator * m_ParticleGenerator;
 };
 

@@ -1,4 +1,6 @@
 #pragma once
+#include <stdlib.h>
+#include <time.h>
 #include "SpriteRenderer.h"
 
 struct Particle {
@@ -11,19 +13,26 @@ struct Particle {
 
 class ParticleGenerator {
 public:
-	ParticleGenerator(Texture& texture, glm::vec2 velocity, glm::vec4 posRange, glm::vec2 sizeRange, int maxParticles = 500, float life = 1.0f);
+	ParticleGenerator(Texture& texture, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color = glm::vec3(1.0f), int maxParticles = 500, float life = 1.0f);
 
-	//TODO: Do I want an update loop or do I only want to update information everytime I draw?
 	void Draw(SpriteRenderer& spriteRenderer);
+	void Update(float deltaTime, int reviveAmount = 2, bool diminishColor = true);
 
+	glm::vec2 m_SpawnPos;
+		
 private:
+	void SpawnParticle(Particle& particle);
+
 	std::vector<Particle> m_Particles;
 
 	Texture m_Texture;
 
-	glm::vec4 m_PosRange; //First vec2 is for the range in the x and the next vec2 is for the range in the y
-	glm::vec2 m_SizeRange, m_Velocity;
+	glm::ivec4 m_PosRange; //First vec2 is for the range in the x and the next vec2 is for the range in the y
+	glm::ivec2 m_SizeRange;
+	glm::vec2 m_Velocity;
+	glm::vec3 m_Color;
 
 	int m_MaxAmount;
 	float m_MaxLife;
+	int m_CurrentIndex;
 };
