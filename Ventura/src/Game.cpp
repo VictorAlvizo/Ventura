@@ -1,5 +1,8 @@
 #include "Game.h"
 
+bool moving = false;
+glm::vec2 lastVelocity = glm::vec2(0.0f);
+
 Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
 	:m_Width(screenWidth), m_Height(screenHeight)
 {
@@ -51,10 +54,7 @@ void Game::Init() {
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
-	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("hitboxCircle"), glm::vec2(-400.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f), glm::vec3(1.0f), true);
-	m_ParticleGenerator->m_SpawnPos = glm::vec2(200.0f);
-	m_ParticleGenerator->AppendVelocityList({ glm::vec2(100.0f, 200.0f), glm::vec2(-300.0f, -150), glm::vec2(100.0f, 300.0f), glm::vec2(0.0f, 400.0f)});
-	m_ParticleGenerator->AppendColors({ glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f) });
+	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -63,6 +63,8 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(270.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
+		moving = true;
+		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2), m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2));
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
@@ -70,6 +72,8 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(90.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
+		moving = true;
+		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2) - 25.0f, m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2) - 25.0f);
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
@@ -77,6 +81,8 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
+		moving = true;
+		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2) - 10.0f, m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2) - 10.0f);
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
@@ -84,20 +90,24 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
+		moving = true;
+		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2), m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2) - 10.0f);
 	}
 
 	if (m_Keys[GLFW_KEY_SPACE]) {
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Swing");
+		moving = false;
 	}
 
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
+		moving = false;
 	}
 }
 
 void Game::Update(float deltaTime) {
-	m_ParticleGenerator->Update(deltaTime);
+	m_ParticleGenerator->Update(deltaTime, 1);
 	CheckCollisions();
 }
 
@@ -111,7 +121,10 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
-		m_ParticleGenerator->Draw(*m_SpriteRenderer);
+		if (moving) {
+			m_ParticleGenerator->Draw(*m_SpriteRenderer);
+		}
+
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	}
 }

@@ -30,6 +30,8 @@ public:
 	//Clears all the colors except for the inital one
 	void ClearColors();
 
+	inline bool rotatingEnabled() const { return m_ShouldRotate; }
+
 	glm::vec2 m_SpawnPos;
 		
 private:
