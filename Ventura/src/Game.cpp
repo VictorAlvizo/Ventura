@@ -51,8 +51,10 @@ void Game::Init() {
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
-	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 100.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
+	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("hitboxCircle"), glm::vec2(-400.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f), glm::vec3(1.0f), true);
 	m_ParticleGenerator->m_SpawnPos = glm::vec2(200.0f);
+	m_ParticleGenerator->AppendVelocityList({ glm::vec2(100.0f, 200.0f), glm::vec2(-300.0f, -150), glm::vec2(100.0f, 300.0f), glm::vec2(0.0f, 400.0f)});
+	m_ParticleGenerator->AppendColors({ glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f) });
 }
 
 void Game::ProcessInput(float deltaTime) {
