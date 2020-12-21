@@ -4,6 +4,8 @@
 #include "Component.h"
 #include "ResourceManager.h"
 
+class Camera;
+
 class Entity {
 public:
 	Entity();
@@ -52,12 +54,15 @@ public:
 
 protected:
 	void MovePos(); //When hitbox moves, adjust the entity position
+	void AttachCamera(Camera * camera);
 
 	std::shared_ptr<Texture> m_Texture;
 	SpriteSheetReader * m_SpriteSheet;
 
 	Hitbox * m_Hitbox;
 	glm::vec2 m_HitboxOffset;
+
+	Camera * m_Camera;
 
 	glm::vec2 m_Pos, m_Size;
 
@@ -70,4 +75,5 @@ protected:
 	Component m_Components;
 
 	friend class Hitbox;
+	friend class Camera;
 };

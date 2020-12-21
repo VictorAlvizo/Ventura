@@ -10,6 +10,7 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight)
 	m_SpriteRenderer = nullptr;
 	m_TestEntity = nullptr;
 	m_ParticleGenerator = nullptr;
+	m_Camera = nullptr;
 }
 
 Game::~Game() {
@@ -21,9 +22,14 @@ Game::~Game() {
 
 	delete m_ParticleGenerator;
 	m_ParticleGenerator = nullptr;
+
+	delete m_Camera;
+	m_Camera = nullptr;
 }
 
 void Game::Init() {
+	m_Camera = new Camera(glm::vec2(0.0f));
+
 	ResourceManager::LoadShader("src/Shaders/SpriteVertex.glsl", "src/Shaders/SpriteFragment.glsl", "sprite");
 	ResourceManager::LoadShader("src/Shaders/TextVertex.glsl", "src/Shaders/TextFragment.glsl", "text");
 	ResourceManager::LoadShader("src/Shaders/HBOutlineVertex.glsl", "src/Shaders/HBOutlineFragment.glsl", "hboutline");
@@ -32,15 +38,18 @@ void Game::Init() {
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
 	ResourceManager::LoadTexture("Textures/Ball.png", "ball");
 	ResourceManager::LoadTexture("Textures/ParticleTexture.png", "particle");
+	ResourceManager::LoadTexture("Textures/background.png", "background");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
 	ResourceManager::Get<Shader>("sprite")->Bind();
 	ResourceManager::Get<Shader>("sprite")->SetMat4("u_Projection", projection);
+	ResourceManager::Get<Shader>("sprite")->SetMat4("u_View", m_Camera->UpdateView());
 	ResourceManager::Get<Shader>("sprite")->UnBind();
 
 	ResourceManager::Get<Shader>("hboutline")->Bind();
 	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_Projection", projection);
+	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_View", m_Camera->UpdateView());
 	ResourceManager::Get<Shader>("hboutline")->UnBind();
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
@@ -53,6 +62,8 @@ void Game::Init() {
 
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
+
+	m_Camera->SetEntity(m_TestEntity);
 
 	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
 }
@@ -107,6 +118,15 @@ void Game::ProcessInput(float deltaTime) {
 }
 
 void Game::Update(float deltaTime) {
+	//Update view matrix
+	ResourceManager::Get<Shader>("sprite")->Bind();
+	ResourceManager::Get<Shader>("sprite")->SetMat4("u_View", m_Camera->UpdateView());
+	ResourceManager::Get<Shader>("sprite")->UnBind();
+
+	ResourceManager::Get<Shader>("hboutline")->Bind();
+	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_View", m_Camera->UpdateView());
+	ResourceManager::Get<Shader>("hboutline")->UnBind();
+
 	m_ParticleGenerator->Update(deltaTime, 1);
 	CheckCollisions();
 }
@@ -121,6 +141,9 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
+		//Have to draw the background first otherwise anything drawn before it will be overlayed by the background
+		m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
+
 		if (moving) {
 			m_ParticleGenerator->Draw(*m_SpriteRenderer);
 		}

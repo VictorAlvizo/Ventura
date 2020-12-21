@@ -1,6 +1,10 @@
 #include "CollisionHandler.h"
 
 bool CollisionHandler::CollideAABB(Hitbox& hb1, Hitbox& hb2, bool staticResolution) {
+    if (!hb1.m_ActiveHitbox || !hb2.m_ActiveHitbox) {
+        return false;
+    }
+
     bool xCol = hb1.getPos().x + hb1.getSize().x >= hb2.getPos().x
         && hb2.getPos().x + hb2.getSize().x >= hb1.getPos().x;
 
@@ -35,6 +39,10 @@ bool CollisionHandler::CollideAABB(Hitbox& hb1, Hitbox& hb2, bool staticResoluti
 }
 
 bool CollisionHandler::CollideSAT(Hitbox& hb1, Hitbox& hb2, bool staticResolution) {
+    if (!hb1.m_ActiveHitbox || !hb2.m_ActiveHitbox) {
+        return false;
+    }
+
     std::vector<glm::vec2> axes;
 
     axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(hb1.m_Rotation)), glm::sin(glm::radians(hb1.m_Rotation)))));
@@ -92,6 +100,10 @@ bool CollisionHandler::CollideSAT(Hitbox& hb1, Hitbox& hb2, bool staticResolutio
 }
 
 bool CollisionHandler::CollideCircle(HitCircle * cir1, HitCircle * cir2, bool staticResolution) {
+    if (!cir1->m_ActiveHitbox || !cir2->m_ActiveHitbox) {
+        return false;
+    }
+
     glm::vec2 center1 = glm::vec2(cir1->getPos() + cir1->getRadius());
     glm::vec2 center2 = glm::vec2(cir2->getPos() + cir2->getRadius());
 
@@ -128,6 +140,10 @@ bool CollisionHandler::CollideCircle(HitCircle * cir1, HitCircle * cir2, bool st
 }
 
 bool CollisionHandler::CollideCircleAABB(HitCircle * cir, Hitbox& hitbox, bool staticResolution) {
+    if (!cir->m_ActiveHitbox || !hitbox.m_ActiveHitbox) {
+        return false;
+    }
+
     glm::vec2 circleCenter = glm::vec2(cir->getPos() + cir->getRadius());
 
     glm::vec2 entityHalfs = glm::vec2(hitbox.getSize().x / 2.0f, hitbox.getSize().y / 2.0f);
@@ -169,6 +185,10 @@ bool CollisionHandler::CollideCircleAABB(HitCircle * cir, Hitbox& hitbox, bool s
 }
 
 bool CollisionHandler::CollidePoint(glm::vec2 point, Hitbox& hitbox) {
+    if (!hitbox.m_ActiveHitbox) {
+        return false;
+    }
+
     std::vector<glm::vec2> axes;
 
     axes.push_back(glm::normalize(glm::vec2(glm::cos(glm::radians(hitbox.m_Rotation)), glm::sin(glm::radians(hitbox.m_Rotation)))));
@@ -202,7 +222,7 @@ bool CollisionHandler::CollidePoint(glm::vec2 point, Hitbox& hitbox) {
 
 bool CollisionHandler::CollidePoint(glm::vec2 point, HitCircle * cir) {
     glm::vec2 circleCenter = cir->getPos() + cir->getRadius();
-    return glm::length(circleCenter - point) <= cir->getRadius();
+    return glm::length(circleCenter - point) <= cir->getRadius() && cir->m_ActiveHitbox;
 }
 
 CollisionHandler::CollisionDirction CollisionHandler::colDir(glm::vec2 centerVector) {

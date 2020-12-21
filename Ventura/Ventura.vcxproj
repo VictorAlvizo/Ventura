@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\ParticleGenerator.cpp" />
     <ClCompile Include="src\HitCircle.cpp" />
     <ClCompile Include="src\Hitbox.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="src\TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\ParticleGenerator.h" />
     <ClInclude Include="src\HitCircle.h" />
     <ClInclude Include="src\Hitbox.h" />

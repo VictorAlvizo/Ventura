@@ -7,6 +7,7 @@
 #include "Vendor/imgui/imgui_impl_opengl3.h"
 #include "TextRenderer.h"
 #include "ParticleGenerator.h"
+#include "Camera.h"
 
 enum class GameState {
 	MENU, ACTIVE
@@ -36,8 +37,9 @@ private:
 	unsigned int m_Width, m_Height;
 
 	SpriteRenderer * m_SpriteRenderer;
-	Entity * m_TestEntity;
+	ParticleGenerator* m_ParticleGenerator;
+	Camera * m_Camera;
 
-	ParticleGenerator * m_ParticleGenerator;
+	Entity * m_TestEntity;
 };
 

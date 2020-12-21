@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Camera.h"
 
 Entity::Entity()
 	:m_Pos(0.0f), m_Size(1.0f), m_HitboxOffset(0.0f)
@@ -46,6 +47,8 @@ Entity::~Entity() {
 
 	delete m_Hitbox;
 	m_Hitbox = nullptr;
+
+	m_Camera = nullptr;
 }
 
 void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, glm::vec3 hbColor) {
@@ -94,11 +97,19 @@ std::vector<glm::vec2> Entity::GetCorners() { //Default is a rectangle / square
 void Entity::Move(glm::vec2 newPos) {
 	m_Pos = newPos;
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
+
+	if (m_Camera) {
+		m_Camera->Move(m_Pos);
+	}
 }
 
 void Entity::Translate(glm::vec2 trans, float deltaTime) {
 	m_Pos += trans * deltaTime;
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
+
+	if (m_Camera) {
+		m_Camera->Move(m_Pos);
+	}
 }
 
 void Entity::Flip(bool flip) {
@@ -112,4 +123,12 @@ void Entity::SetRotation(float newRotation) {
 
 void Entity::MovePos() {
 	m_Pos = m_Hitbox->getPos() - m_HitboxOffset;
+
+	if (m_Camera) {
+		m_Camera->Move(m_Pos);
+	}
+}
+
+void Entity::AttachCamera(Camera * camera) {
+	m_Camera = camera;
 }
