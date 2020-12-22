@@ -52,6 +52,10 @@ void Game::Init() {
 	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_View", m_Camera->UpdateView());
 	ResourceManager::Get<Shader>("hboutline")->UnBind();
 
+	ResourceManager::Get<Shader>("text")->Bind();
+	ResourceManager::Get<Shader>("text")->SetMat4("u_View", m_Camera->UpdateView());
+	ResourceManager::Get<Shader>("text")->UnBind();
+
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
 
 	m_TestEntity = new Entity(ResourceManager::Get<Texture>("knight"), 64.0f, 64.0f, glm::vec2(250.0f, 150.0f), glm::vec2(250.0f), 0.0f, glm::vec2(80.0f, 100.0f), glm::vec2(90.0f));
@@ -66,6 +70,9 @@ void Game::Init() {
 	m_Camera->SetEntity(m_TestEntity);
 
 	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
+
+	m_Text = new TextRenderer(m_Width, m_Height, true);
+	m_Text->LoadFont("Fonts/arial.ttf", 24);
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -107,7 +114,6 @@ void Game::ProcessInput(float deltaTime) {
 
 	if (m_Keys[GLFW_KEY_SPACE]) {
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Swing");
-		moving = false;
 	}
 
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
@@ -119,15 +125,23 @@ void Game::ProcessInput(float deltaTime) {
 
 void Game::Update(float deltaTime) {
 	//Update view matrix
+	glm::mat4 cameraView = m_Camera->UpdateView();
+
 	ResourceManager::Get<Shader>("sprite")->Bind();
-	ResourceManager::Get<Shader>("sprite")->SetMat4("u_View", m_Camera->UpdateView());
+	ResourceManager::Get<Shader>("sprite")->SetMat4("u_View", cameraView);
 	ResourceManager::Get<Shader>("sprite")->UnBind();
 
 	ResourceManager::Get<Shader>("hboutline")->Bind();
-	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_View", m_Camera->UpdateView());
+	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_View", cameraView);
 	ResourceManager::Get<Shader>("hboutline")->UnBind();
 
-	m_ParticleGenerator->Update(deltaTime, 1);
+	ResourceManager::Get<Shader>("text")->Bind();
+	ResourceManager::Get<Shader>("text")->SetMat4("u_View", cameraView);
+	ResourceManager::Get<Shader>("text")->UnBind();
+
+	//If not moving don't spawn any more particles
+	m_ParticleGenerator->Update(deltaTime, 1, true, (moving) ? true : false);
+
 	CheckCollisions();
 }
 
@@ -144,10 +158,8 @@ void Game::Render() {
 		//Have to draw the background first otherwise anything drawn before it will be overlayed by the background
 		m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
 
-		if (moving) {
-			m_ParticleGenerator->Draw(*m_SpriteRenderer);
-		}
-
+		m_ParticleGenerator->Draw(*m_SpriteRenderer);
+		m_Text->Text("Hello Ventura", 200, 200, 1, glm::vec3(0.0f, 1.0f, 0.0f));
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	}
 }

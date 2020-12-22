@@ -1,13 +1,14 @@
 #include "TextRenderer.h"
 
-TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, std::shared_ptr<Shader> shader) {
-	m_Shader = shader;
-	m_Shader->Bind();
+TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, bool followCamera) {
+	m_Shader = *ResourceManager::Get<Shader>("text");
+	m_Shader.Bind();
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
-	m_Shader->SetMat4("u_Projection", projection); //Note: Custom shader must have a uniformed called "u_Projection" to work
-	m_Shader->SetInt("u_Text", 0); //Note: There also has to be a sampler2D uniform called "u_Text" to work
-	m_Shader->UnBind();
+	m_Shader.SetMat4("u_Projection", projection);
+	m_Shader.SetInt("u_Text", 0);
+	m_Shader.SetBool("u_FollowCam", followCamera);
+	m_Shader.UnBind();
 
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_VBO);
@@ -21,6 +22,8 @@ TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, 
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBindVertexArray(0);
+
+	m_Shader.UnBind();
 }
 
 bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int fontSize) {
@@ -75,8 +78,8 @@ bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int font
 }
 
 void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color) {
-	m_Shader->Bind();
-	m_Shader->SetVec3("u_TextColor", color); //Note: Same thing as above ^, needs this uniform to work
+	m_Shader.Bind();
+	m_Shader.SetVec3("u_TextColor", color);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(m_VAO);
@@ -113,5 +116,5 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	m_Shader->UnBind();
+	m_Shader.UnBind();
 }

@@ -18,7 +18,7 @@ public:
 	ParticleGenerator(Texture& texture, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color = glm::vec3(1.0f), bool rotate = false, int maxParticles = 500, float life = 1.0f);
 
 	void Draw(SpriteRenderer& spriteRenderer);
-	void Update(float deltaTime, int reviveAmount = 2, bool diminishColor = true);
+	void Update(float deltaTime, int reviveAmount = 2, bool diminishColor = true, bool spawnMore = true);
 
 	void AppendVelocityList(std::vector<glm::vec2> velocityList);
 	void RemoveVelocity(glm::vec2 velocity);

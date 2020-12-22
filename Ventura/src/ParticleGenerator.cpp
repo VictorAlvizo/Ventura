@@ -25,14 +25,16 @@ void ParticleGenerator::Draw(SpriteRenderer& spriteRenderer) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void ParticleGenerator::Update(float deltaTime, int reviveAmount, bool diminishColor) {
-	for (unsigned int i = 0; i < reviveAmount; i++) {
-		if (m_CurrentIndex + (i + 1) >= m_Particles.size()) {
-			m_CurrentIndex = 0;
-		}
+void ParticleGenerator::Update(float deltaTime, int reviveAmount, bool diminishColor, bool spawnMore) {
+	if (spawnMore) {
+		for (unsigned int i = 0; i < reviveAmount; i++) {
+			if (m_CurrentIndex + (i + 1) >= m_Particles.size()) {
+				m_CurrentIndex = 0;
+			}
 
-		m_CurrentIndex++;
-		SpawnParticle(m_Particles[m_CurrentIndex + i]);
+			m_CurrentIndex++;
+			SpawnParticle(m_Particles[m_CurrentIndex + i]);
+		}
 	}
 
 	for (Particle& particle : m_Particles) {

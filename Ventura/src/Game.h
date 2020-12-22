@@ -36,6 +36,8 @@ public:
 private:
 	unsigned int m_Width, m_Height;
 
+	TextRenderer * m_Text;
+
 	SpriteRenderer * m_SpriteRenderer;
 	ParticleGenerator* m_ParticleGenerator;
 	Camera * m_Camera;
