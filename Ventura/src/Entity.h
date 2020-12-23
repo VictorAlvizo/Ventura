@@ -55,6 +55,7 @@ public:
 protected:
 	void MovePos(); //When hitbox moves, adjust the entity position
 	void AttachCamera(Camera * camera);
+	void DetachCamera();
 
 	std::shared_ptr<Texture> m_Texture;
 	SpriteSheetReader * m_SpriteSheet;

@@ -11,6 +11,8 @@ public:
 
 	std::vector<float> getTexUV(int x, int y, bool isFlipped);
 
+	inline glm::vec2 getSpriteSize() const { return m_SpriteSize; }
+
 private:
 	std::vector<std::vector<float>> m_TexUVs;
 

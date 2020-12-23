@@ -23,7 +23,6 @@ Game::~Game() {
 	delete m_ParticleGenerator;
 	m_ParticleGenerator = nullptr;
 
-	delete m_Camera;
 	m_Camera = nullptr;
 }
 
@@ -71,7 +70,7 @@ void Game::Init() {
 
 	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
 
-	m_Text = new TextRenderer(m_Width, m_Height, true);
+	m_Text = new TextRenderer(m_Width, m_Height, false);
 	m_Text->LoadFont("Fonts/arial.ttf", 24);
 }
 
@@ -114,6 +113,7 @@ void Game::ProcessInput(float deltaTime) {
 
 	if (m_Keys[GLFW_KEY_SPACE]) {
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Swing");
+		m_Camera->Disconnect();
 	}
 
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {

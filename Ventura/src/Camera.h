@@ -13,6 +13,8 @@ public:
 	void Move(glm::vec2 pos);
 	void Translate(glm::vec2 transPos, float deltaTime);
 	void SetEntity(Entity * entity);
+	//If there is an entity attached to this camera, stop following it
+	void Disconnect();
 
 	glm::mat4 UpdateView();
 	

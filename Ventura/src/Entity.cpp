@@ -4,12 +4,13 @@
 Entity::Entity()
 	:m_Pos(0.0f), m_Size(1.0f), m_HitboxOffset(0.0f)
 {
-	m_SpriteSheet = nullptr;
 	m_Rotation = 0.0f;
 	m_Destroyed = false;
 	m_Flipped = false;
 
+	m_SpriteSheet = nullptr;
 	m_Hitbox = nullptr;
+	m_Camera = nullptr;
 }
 
 Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, bool childClass)
@@ -48,6 +49,7 @@ Entity::~Entity() {
 	delete m_Hitbox;
 	m_Hitbox = nullptr;
 
+	delete m_Camera;
 	m_Camera = nullptr;
 }
 
@@ -99,7 +101,7 @@ void Entity::Move(glm::vec2 newPos) {
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
 
 	if (m_Camera) {
-		m_Camera->Move(m_Pos);
+		m_Camera->Move(glm::vec2(m_Pos.x - (m_Size.x), m_Pos.y - (m_Size.y / 2.0f)));
 	}
 }
 
@@ -108,7 +110,7 @@ void Entity::Translate(glm::vec2 trans, float deltaTime) {
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
 
 	if (m_Camera) {
-		m_Camera->Move(m_Pos);
+		m_Camera->Move(glm::vec2(m_Pos.x - (m_Size.x), m_Pos.y - (m_Size.y / 2.0f)));
 	}
 }
 
@@ -125,10 +127,14 @@ void Entity::MovePos() {
 	m_Pos = m_Hitbox->getPos() - m_HitboxOffset;
 
 	if (m_Camera) {
-		m_Camera->Move(m_Pos);
+		m_Camera->Move(glm::vec2(m_Pos.x - (m_Size.x), m_Pos.y - (m_Size.y / 2.0f)));
 	}
 }
 
 void Entity::AttachCamera(Camera * camera) {
 	m_Camera = camera;
+}
+
+void Entity::DetachCamera() {
+	m_Camera = nullptr;
 }
