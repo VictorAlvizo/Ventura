@@ -45,6 +45,19 @@ Texture::~Texture() {
 	glDeleteTextures(1, &m_TextureID);
 }
 
+void Texture::EmptyTexture(unsigned int width, unsigned int height) {
+	m_Width = width;
+	m_Height = height;
+
+	glGenTextures(1, &m_TextureID);
+	glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
 void Texture::Bind(int textureUnit) {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_2D, m_TextureID);

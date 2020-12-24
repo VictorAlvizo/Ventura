@@ -5,7 +5,6 @@
 
 class Camera {
 public:
-	//TODO: Add a follow entity mode similar to the hitbox
 	Camera();
 	Camera(glm::vec2 pos, Entity * entity = nullptr);
 	~Camera();

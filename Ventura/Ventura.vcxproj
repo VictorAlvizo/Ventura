@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Filter.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\ParticleGenerator.cpp" />
     <ClCompile Include="src\HitCircle.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="src\TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Filter.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\ParticleGenerator.h" />
     <ClInclude Include="src\HitCircle.h" />
@@ -447,6 +449,8 @@
     <ClInclude Include="src\TextRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Shaders\FilterFragment.glsl" />
+    <None Include="src\Shaders\FilterVertex.glsl" />
     <None Include="src\Shaders\HBOutlineFragment.glsl" />
     <None Include="src\Shaders\HBOutlineVertex.glsl" />
     <None Include="src\Shaders\SpriteFragment.glsl" />

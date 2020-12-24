@@ -81,8 +81,8 @@ int main() {
         ventura.ProcessInput(deltaTime);
         ventura.Update(deltaTime);
 
-        glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();

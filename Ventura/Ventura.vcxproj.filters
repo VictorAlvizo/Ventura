@@ -87,6 +87,9 @@
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Filter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vendor\glm\detail\_features.hpp">
@@ -893,6 +896,9 @@
     <ClInclude Include="src\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Vendor\glm\detail\func_common.inl">
@@ -1299,5 +1305,7 @@
     <None Include="src\Shaders\TextFragment.glsl" />
     <None Include="src\Shaders\HBOutlineVertex.glsl" />
     <None Include="src\Shaders\HBOutlineFragment.glsl" />
+    <None Include="src\Shaders\FilterVertex.glsl" />
+    <None Include="src\Shaders\FilterFragment.glsl" />
   </ItemGroup>
 </Project>

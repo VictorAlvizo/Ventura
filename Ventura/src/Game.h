@@ -8,6 +8,7 @@
 #include "TextRenderer.h"
 #include "ParticleGenerator.h"
 #include "Camera.h"
+#include "Filter.h"
 
 enum class GameState {
 	MENU, ACTIVE
@@ -39,8 +40,10 @@ private:
 	TextRenderer * m_Text;
 
 	SpriteRenderer * m_SpriteRenderer;
-	ParticleGenerator* m_ParticleGenerator;
+	ParticleGenerator * m_ParticleGenerator;
 	Camera * m_Camera;
+
+	Filter * m_Filter;
 
 	Entity * m_TestEntity;
 };

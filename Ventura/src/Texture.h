@@ -10,6 +10,9 @@ public:
 	Texture(const std::string& path);
 	~Texture();
 
+	//Primarily for  framebuffers
+	void EmptyTexture(unsigned int width, unsigned int height);
+
 	void Bind(int textureUnit = 0);
 	void UnBind();
 
@@ -20,5 +23,7 @@ private:
 	unsigned int m_TextureID;
 
 	int m_Width, m_Height, m_NrChannels;
+
+	friend class Filter;
 };
 

@@ -11,6 +11,7 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight)
 	m_TestEntity = nullptr;
 	m_ParticleGenerator = nullptr;
 	m_Camera = nullptr;
+	m_Filter = nullptr;
 }
 
 Game::~Game() {
@@ -23,6 +24,9 @@ Game::~Game() {
 	delete m_ParticleGenerator;
 	m_ParticleGenerator = nullptr;
 
+	delete m_Filter;
+	m_Filter = nullptr;
+
 	m_Camera = nullptr;
 }
 
@@ -32,6 +36,7 @@ void Game::Init() {
 	ResourceManager::LoadShader("src/Shaders/SpriteVertex.glsl", "src/Shaders/SpriteFragment.glsl", "sprite");
 	ResourceManager::LoadShader("src/Shaders/TextVertex.glsl", "src/Shaders/TextFragment.glsl", "text");
 	ResourceManager::LoadShader("src/Shaders/HBOutlineVertex.glsl", "src/Shaders/HBOutlineFragment.glsl", "hboutline");
+	ResourceManager::LoadShader("src/Shaders/FilterVertex.glsl", "src/Shaders/FilterFragment.glsl", "filter");
 
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
@@ -69,6 +74,8 @@ void Game::Init() {
 	m_Camera->SetEntity(m_TestEntity);
 
 	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
+
+	m_Filter = new Filter(m_Width, m_Height);
 
 	m_Text = new TextRenderer(m_Width, m_Height, false);
 	m_Text->LoadFont("Fonts/arial.ttf", 24);
@@ -155,12 +162,17 @@ void Game::Render() {
 	}
 
 	if (m_State == GameState::ACTIVE) {
+		m_Filter->BeginFilter();
+
 		//Have to draw the background first otherwise anything drawn before it will be overlayed by the background
 		m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
 
 		m_ParticleGenerator->Draw(*m_SpriteRenderer);
 		m_Text->Text("Hello Ventura", 200, 200, 1, glm::vec3(0.0f, 1.0f, 0.0f));
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
+
+		m_Filter->EndFilter();
+		m_Filter->FilterRender(glfwGetTime());
 	}
 }
 
