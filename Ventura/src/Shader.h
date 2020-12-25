@@ -22,6 +22,8 @@ public:
 	void SetBool(const std::string& name, bool value);
 	void SetInt(const std::string& name, int value);
 	void SetFloat(const std::string& name, float value);
+	void SetFloatArr(const std::string& name, int arrSize, float vals[]);
+	void SetFloat2(const std::string& name, int rowSize, float ** vals); //TODO: Set custom
 	void SetVec2(const std::string& name, glm::vec2 vec2);
 	void SetVec3(const std::string& name, glm::vec3 vec3);
 	void SetVec4(const std::string& name, glm::vec4 vec4);

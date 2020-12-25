@@ -171,8 +171,8 @@ void Game::Render() {
 		m_Text->Text("Hello Ventura", 200, 200, 1, glm::vec3(0.0f, 1.0f, 0.0f));
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 
-		m_Filter->EndFilter();
-		m_Filter->FilterRender(glfwGetTime());
+		m_Filter->EndFilter(m_Width, m_Height);
+		m_Filter->FilterRender(glfwGetTime(), glm::vec3(1.0f, 0.5f, 0.7f), FilterMode::SHARPEN, Distortion::MIRAGE, 0.6);
 	}
 }
 

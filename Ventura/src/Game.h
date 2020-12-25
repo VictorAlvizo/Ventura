@@ -34,9 +34,9 @@ public:
 
 	GameState m_State;
 
-private:
 	unsigned int m_Width, m_Height;
 
+private:
 	TextRenderer * m_Text;
 
 	SpriteRenderer * m_SpriteRenderer;
@@ -46,5 +46,7 @@ private:
 	Filter * m_Filter;
 
 	Entity * m_TestEntity;
+
+	Hitbox * hitbox;
 };
 

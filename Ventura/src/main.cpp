@@ -14,6 +14,8 @@ Game ventura(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 void FramebufferSizeCallback(GLFWwindow * window, int width, int height) {
     glViewport(0, 0, width, height);
+    ventura.m_Width = width;
+    ventura.m_Height = height;
 }
 
 int main() {
@@ -105,12 +107,11 @@ int main() {
 }
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode) {
-    //TODO: May make a "are you sure?" option when doing this or a pause menu
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
 
-    //TODO: Implment logic so keys aren't detected mutiple times in 1 key press
+    //TODO: Implament logic so keys aren't detected mutiple times in 1 key press
     if (key >= 0 && key <= 1024) {
         if (action == GLFW_PRESS) {
             ventura.m_Keys[key] = true;

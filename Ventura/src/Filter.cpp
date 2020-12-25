@@ -1,45 +1,68 @@
 #include "Filter.h"
 
 Filter::Filter(unsigned int width, unsigned int height) 
-	:m_Width(width), m_Height(height)
+	:m_InitalWidth(width), m_InitalHeight(height)
 {
 	m_Shader = *ResourceManager::Get<Shader>("filter");
 
 	glGenFramebuffers(1, &m_FBO);
-	glGenRenderbuffers(1, &m_RBO);
-
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 
 	m_Texture = Texture();
-	m_Texture.EmptyTexture(m_Width, m_Height);
+	m_Texture.EmptyTexture(m_InitalWidth, m_InitalHeight);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture.m_TextureID, 0);
-
-	glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		std::cout << "Error: Failed to initlize the Framebuffer! Error Meesage:" << std::endl << ErrorCode(glCheckFramebufferStatus(GL_FRAMEBUFFER)) << std::endl;
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	init();
+	Init();
 }
 
 Filter::~Filter() {
 	glDeleteFramebuffers(1, &m_FBO);
-	glDeleteRenderbuffers(1, &m_RBO);
 	glDeleteVertexArrays(1, &m_VAO);
 }
 
 void Filter::BeginFilter() {
+	glViewport(0, 0, m_InitalWidth, m_InitalHeight);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Filter::FilterRender(float time) {
+void Filter::FilterRender(float time, glm::vec3 colorOverlay, FilterMode mode, Distortion disEffect, float strength, float offsetDiv) {
+	float offset = 1.0f / offsetDiv;
+
+	float offsetArr[9][2] = {
+		{-offset, offset}, //Top left
+		{0.0f, offset}, //Top center
+		{offset, offset}, //Top right
+		{-offset, 0.0f}, //Center left
+		{0.0f, 0.0f}, //Center
+		{offset, 0.0f}, //Center right
+		{-offset, -offset}, //Bottom left
+		{0.0f, -offset}, //Bottom center
+		{offset, -offset} //Bottom right
+	};
+
+	//Set up default uniforms
 	m_Shader.Bind();
+	m_Shader.SetFloat("u_Time", time);
+	m_Shader.SetFloat("u_Strength", strength);
+	m_Shader.SetFloat2("u_Offsets", 9, (float **)offsetArr);
+	m_Shader.SetVec3("u_ColorOverlay", colorOverlay);
+	m_Shader.SetInt("u_DistortionType", static_cast<int>(disEffect));
+
+	if (mode != FilterMode::NONE) {
+		m_Shader.SetBool("u_KernelEnabled", true);
+		m_Shader.SetFloatArr("u_Kernel", 9, getKernel(mode));
+	}
+	else {
+		m_Shader.SetBool("u_KernelEnabled", false);
+	}
+
 	glBindVertexArray(m_VAO);
 
 	m_Texture.Bind();
@@ -49,13 +72,14 @@ void Filter::FilterRender(float time) {
 
 }
 
-void Filter::EndFilter() {
+void Filter::EndFilter(unsigned int updatedWidth, unsigned int updatedHeight) {
+	glViewport(0, 0, updatedWidth, updatedHeight);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Filter::init() {
+void Filter::Init() {
 	float vertices[] = {
 		//Coordinate   //Tex Coordinate
 		-1.0f, -1.0f,  0.0f, 0.0f,
@@ -123,5 +147,38 @@ std::string Filter::ErrorCode(unsigned int code) {
 		default:
 			return "Error unknown";
 			break;
+	}
+}
+
+float* Filter::getKernel(FilterMode mode) { //TODO: Custom kernerls using a map data structure
+	if (mode == FilterMode::NONE) {
+		return nullptr;
+	}
+	else if (mode == FilterMode::SHARPEN) {
+		static float sharpenKernel[9] = {
+			-1, -1, -1,
+			-1,  9, -1,
+			-1, -1, -1
+		};
+
+		return sharpenKernel;
+	}
+	else if (mode == FilterMode::BLUR) {
+		static float blurKernel[9] = {
+			1.0 / 16, 2.0 / 16, 1.0 / 16,
+			2.0 / 16, 4.0 / 16, 2.0 / 16,
+			1.0 / 16, 2.0 / 16, 1.0 / 16
+		};
+
+		return blurKernel;
+	}
+	else if (mode == FilterMode::EDGEDETECTION) {
+		static float edgeKernel[9] = {
+			1, 1, 1,
+			1, 8, 1,
+			1, 1, 1
+		};
+
+		return edgeKernel;
 	}
 }
