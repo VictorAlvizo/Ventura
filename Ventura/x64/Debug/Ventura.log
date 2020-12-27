@@ -1,6 +1,5 @@
 ﻿  Game.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Game.cpp(175,114): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Game.cpp(175,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Victor\Desktop\Ventura\Ventura\src\Game.cpp(184,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(36): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
 C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(26): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
 C:\Users\Victor\Desktop\Ventura\Ventura\src\Component.h(34): warning C4715: 'Component::Get<AnimationCycle>': not all control paths return a value

@@ -21,8 +21,24 @@ Filter::Filter(unsigned int width, unsigned int height)
 }
 
 Filter::~Filter() {
+	for (auto const& kernel : m_Kernels) {
+		free(kernel.second);
+	}
+
 	glDeleteFramebuffers(1, &m_FBO);
 	glDeleteVertexArrays(1, &m_VAO);
+}
+
+void Filter::AddKernel(const std::string& kernelName, float kernel[]) {
+	if (sizeof(kernel) == 8) {
+		//Don't want to data to be deleted after going out of scope; store on the heap
+		float * arr = static_cast<float *>(std::malloc(9 * sizeof(float)));
+		memcpy(arr, kernel, 9 * sizeof(float));
+		m_Kernels[kernelName] = arr;
+	}
+	else {
+		std::cout << "Error: Invalid kernal size, must contain 9 floats" << std::endl;
+	}
 }
 
 void Filter::BeginFilter() {
@@ -69,7 +85,40 @@ void Filter::FilterRender(float time, glm::vec3 colorOverlay, FilterMode mode, D
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
 	m_Shader.UnBind();
+}
 
+void Filter::FilterRender(float time, std::string filterName, glm::vec3 colorOverlay, Distortion disEffect, float strength, float offsetDiv) {
+	float offset = 1.0f / offsetDiv;
+
+	float offsetArr[9][2] = {
+		{-offset, offset}, //Top left
+		{0.0f, offset}, //Top center
+		{offset, offset}, //Top right
+		{-offset, 0.0f}, //Center left
+		{0.0f, 0.0f}, //Center
+		{offset, 0.0f}, //Center right
+		{-offset, -offset}, //Bottom left
+		{0.0f, -offset}, //Bottom center
+		{offset, -offset} //Bottom right
+	};
+
+	//Set up default uniforms
+	m_Shader.Bind();
+	m_Shader.SetFloat("u_Time", time);
+	m_Shader.SetFloat("u_Strength", strength);
+	m_Shader.SetFloat2("u_Offsets", 9, (float**)offsetArr);
+	m_Shader.SetVec3("u_ColorOverlay", colorOverlay);
+	m_Shader.SetInt("u_DistortionType", static_cast<int>(disEffect));
+
+	m_Shader.SetBool("u_KernelEnabled", true);
+	m_Shader.SetFloatArr("u_Kernel", 9, getKernel(filterName));
+
+	glBindVertexArray(m_VAO);
+
+	m_Texture.Bind();
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+	m_Shader.UnBind();
 }
 
 void Filter::EndFilter(unsigned int updatedWidth, unsigned int updatedHeight) {
@@ -150,7 +199,7 @@ std::string Filter::ErrorCode(unsigned int code) {
 	}
 }
 
-float* Filter::getKernel(FilterMode mode) { //TODO: Custom kernerls using a map data structure
+float* Filter::getKernel(FilterMode mode) {
 	if (mode == FilterMode::NONE) {
 		return nullptr;
 	}
@@ -180,5 +229,15 @@ float* Filter::getKernel(FilterMode mode) { //TODO: Custom kernerls using a map 
 		};
 
 		return edgeKernel;
+	}
+}
+
+float* Filter::getKernel(const std::string& name) {
+	if (m_Kernels.find(name) != m_Kernels.end()) {
+		return m_Kernels[name];
+	}
+	else {
+		std::cout << "Error: " << "Kernel " << name << " was not found" << std::endl;
+		return nullptr;
 	}
 }

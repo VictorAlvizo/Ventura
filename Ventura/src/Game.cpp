@@ -77,6 +77,14 @@ void Game::Init() {
 
 	m_Filter = new Filter(m_Width, m_Height);
 
+	float kernel[9] = {
+		-2, -1, 0,
+		-1,  1, 1,
+		 0,  1, 2
+	};
+
+	m_Filter->AddKernel("Emboss", kernel);
+
 	m_Text = new TextRenderer(m_Width, m_Height, false);
 	m_Text->LoadFont("Fonts/arial.ttf", 24);
 }
@@ -172,7 +180,7 @@ void Game::Render() {
 		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 
 		m_Filter->EndFilter(m_Width, m_Height);
-		m_Filter->FilterRender(glfwGetTime(), glm::vec3(1.0f, 0.5f, 0.7f), FilterMode::SHARPEN, Distortion::MIRAGE, 0.6);
+		m_Filter->FilterRender(glfwGetTime(), "Emboss");
 	}
 }
 
