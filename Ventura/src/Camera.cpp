@@ -6,8 +6,8 @@ Camera::Camera()
 	//holder
 }
 
-Camera::Camera(glm::vec2 pos, Entity * entity)
-	:m_Pos(pos), m_FollowEntity(entity)
+Camera::Camera(glm::vec2 pos, glm::vec2 windowSize, Entity * entity)
+	:m_Pos(pos), m_WindowSize(windowSize), m_FollowEntity(entity)
 {
 	if (m_FollowEntity) { //Entity to follow there, attach itself to entity
 		m_FollowEntity->AttachCamera(this);
@@ -23,7 +23,6 @@ void Camera::Move(glm::vec2 pos) {
 }
 
 void Camera::Translate(glm::vec2 transPos, float deltaTime) {
-	//TODO: If this for some reason does not work out move to the 4 if statement mode
 	m_Pos += transPos * deltaTime;
 }
 

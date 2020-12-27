@@ -1,5 +1,6 @@
 #pragma once
 #include "Circle.h"
+#include "Camera.h"
 
 class CollisionHandler {
 public:
@@ -9,6 +10,7 @@ public:
 	static bool CollideCircleAABB(HitCircle * cir, Hitbox& hitbox, bool staticResolution = true);
 	static bool CollidePoint(glm::vec2 point, Hitbox& hitbox);
 	static bool CollidePoint(glm::vec2 point, HitCircle * cir);
+	static bool isInvisible(Camera& camera, Hitbox& hitbox);
 
 private:
 	enum class CollisionDirction {

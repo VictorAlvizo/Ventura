@@ -225,6 +225,11 @@ bool CollisionHandler::CollidePoint(glm::vec2 point, HitCircle * cir) {
     return glm::length(circleCenter - point) <= cir->getRadius() && cir->m_ActiveHitbox;
 }
 
+bool CollisionHandler::isInvisible(Camera& camera, Hitbox& hitbox) {
+    return hitbox.getPos().x + hitbox.getSize().x <= camera.getPos().x || hitbox.getPos().x >= camera.getPos().x + camera.getWindowSize().x
+        || hitbox.getPos().y + hitbox.getSize().y <= camera.getPos().y || hitbox.getPos().y >= camera.getPos().y + camera.getWindowSize().y;
+}
+
 CollisionHandler::CollisionDirction CollisionHandler::colDir(glm::vec2 centerVector) {
     glm::vec2 directions[4] = {
         glm::vec2(1.0f, 0.0f), //Right

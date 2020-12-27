@@ -34,5 +34,7 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 	Entity * m_TestEntity;
+
+	HitCircle * m_Cirle;
 };
 
