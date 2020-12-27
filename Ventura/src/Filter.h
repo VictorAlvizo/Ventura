@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 
 enum class FilterMode {
-	NONE, SHARPEN, BLUR, EDGEDETECTION
+	NONE, SHARPEN, BLUR, EDGEDETECTION, EMBOSS
 };
 
 enum class Distortion {
@@ -41,4 +41,3 @@ private:
 	Shader m_Shader;
 	Texture m_Texture;
 };
-

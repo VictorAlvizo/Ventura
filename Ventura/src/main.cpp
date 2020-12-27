@@ -4,7 +4,7 @@
 #include "Game.h"
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode);
-void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods);
 void MousePosCallback(GLFWwindow * window, double xPos, double yPos);
 
 const unsigned int SCREEN_WIDTH = 800;
@@ -22,7 +22,6 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 #ifdef  __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -31,10 +30,10 @@ int main() {
     GLFWwindow * window;
 
     if (!glfwInit()) {
-        std::cout << "Error: " << "Failed to initialize GLFW" << std::endl;
+        std::cout << "Error: Failed to initialize GLFW" << std::endl;
     }
 
-    //TODO: Figure out how to let user choose their moniter
+    //TODO: Figure out how to let the user choose their moniter
     window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ventura", nullptr, nullptr);
 
     if (!window) {
@@ -99,7 +98,6 @@ int main() {
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-
     ImGui::DestroyContext();
 
     glfwTerminate();
@@ -122,10 +120,10 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
     }
 }
 
-void MousePosCallback(GLFWwindow* window, double xPos, double yPos) {
+void MousePosCallback(GLFWwindow * window, double xPos, double yPos) {
     ventura.m_MousePos = glm::vec2(xPos, yPos);
 }
 
-void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods) {
     ventura.m_MouseButtons[button] = (action == GLFW_PRESS) ? true : false;
 }

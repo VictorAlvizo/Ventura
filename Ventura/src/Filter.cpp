@@ -230,6 +230,15 @@ float* Filter::getKernel(FilterMode mode) {
 
 		return edgeKernel;
 	}
+	else if (mode == FilterMode::EMBOSS) {
+		static float embossKernel[9] = {
+			-2, -1, 0,
+			-1,  1, 1,
+			 0,  1, 2
+		};
+
+		return embossKernel;
+	}
 }
 
 float* Filter::getKernel(const std::string& name) {

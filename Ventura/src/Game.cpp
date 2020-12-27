@@ -1,17 +1,10 @@
 #include "Game.h"
 
-bool moving = false;
-glm::vec2 lastVelocity = glm::vec2(0.0f);
-
 Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
 	:m_Width(screenWidth), m_Height(screenHeight)
 {
-	m_State = GameState::ACTIVE; //TODO: Change to menu towards the end
 	m_SpriteRenderer = nullptr;
 	m_TestEntity = nullptr;
-	m_ParticleGenerator = nullptr;
-	m_Camera = nullptr;
-	m_Filter = nullptr;
 }
 
 Game::~Game() {
@@ -20,12 +13,6 @@ Game::~Game() {
 
 	delete m_TestEntity;
 	m_TestEntity = nullptr;
-
-	delete m_ParticleGenerator;
-	m_ParticleGenerator = nullptr;
-
-	delete m_Filter;
-	m_Filter = nullptr;
 
 	m_Camera = nullptr;
 }
@@ -40,8 +27,6 @@ void Game::Init() {
 
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
-	ResourceManager::LoadTexture("Textures/Ball.png", "ball");
-	ResourceManager::LoadTexture("Textures/ParticleTexture.png", "particle");
 	ResourceManager::LoadTexture("Textures/background.png", "background");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
@@ -72,21 +57,6 @@ void Game::Init() {
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
 	m_Camera->SetEntity(m_TestEntity);
-
-	m_ParticleGenerator = new ParticleGenerator(*ResourceManager::Get<Texture>("particle"), glm::vec2(0.0f, 0.0f), glm::vec4(-5, 5, -5, 5), glm::ivec2(30.0f, 50.0f));
-
-	m_Filter = new Filter(m_Width, m_Height);
-
-	float kernel[9] = {
-		-2, -1, 0,
-		-1,  1, 1,
-		 0,  1, 2
-	};
-
-	m_Filter->AddKernel("Emboss", kernel);
-
-	m_Text = new TextRenderer(m_Width, m_Height, false);
-	m_Text->LoadFont("Fonts/arial.ttf", 24);
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -95,8 +65,6 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(270.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
-		moving = true;
-		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2), m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2));
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
@@ -104,8 +72,6 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(90.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
-		moving = true;
-		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2) - 25.0f, m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2) - 25.0f);
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
@@ -113,8 +79,6 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
-		moving = true;
-		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2) - 10.0f, m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2) - 10.0f);
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
@@ -122,19 +86,15 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
-		moving = true;
-		m_ParticleGenerator->m_SpawnPos = glm::vec2(m_TestEntity->getPos().x + (m_TestEntity->getSize().x / 2), m_TestEntity->getPos().y + (m_TestEntity->getSize().y / 2) - 10.0f);
 	}
 
 	if (m_Keys[GLFW_KEY_SPACE]) {
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Swing");
-		m_Camera->Disconnect();
 	}
 
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
-		moving = false;
 	}
 }
 
@@ -154,9 +114,6 @@ void Game::Update(float deltaTime) {
 	ResourceManager::Get<Shader>("text")->SetMat4("u_View", cameraView);
 	ResourceManager::Get<Shader>("text")->UnBind();
 
-	//If not moving don't spawn any more particles
-	m_ParticleGenerator->Update(deltaTime, 1, true, (moving) ? true : false);
-
 	CheckCollisions();
 }
 
@@ -165,23 +122,9 @@ void Game::Render() {
 	//ImGui Code
 	ImGui::End();
 
-	if (m_State == GameState::MENU) {
-		//holder
-	}
-
-	if (m_State == GameState::ACTIVE) {
-		m_Filter->BeginFilter();
-
-		//Have to draw the background first otherwise anything drawn before it will be overlayed by the background
-		m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
-
-		m_ParticleGenerator->Draw(*m_SpriteRenderer);
-		m_Text->Text("Hello Ventura", 200, 200, 1, glm::vec3(0.0f, 1.0f, 0.0f));
-		m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
-
-		m_Filter->EndFilter(m_Width, m_Height);
-		m_Filter->FilterRender(glfwGetTime(), "Emboss");
-	}
+	//Have to draw the background first otherwise anything drawn before it will be overlayed by the background
+	m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
+	m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 }
 
 void Game::CheckCollisions() {

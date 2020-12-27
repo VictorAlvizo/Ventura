@@ -10,10 +10,6 @@
 #include "Camera.h"
 #include "Filter.h"
 
-enum class GameState {
-	MENU, ACTIVE
-};
-
 class Game {
 public:
 	Game(unsigned int screenWidth, unsigned int screenHeight);
@@ -32,21 +28,11 @@ public:
 	bool m_MouseButtons[8];
 	glm::vec2 m_MousePos;
 
-	GameState m_State;
-
 	unsigned int m_Width, m_Height;
 
 private:
-	TextRenderer * m_Text;
-
 	SpriteRenderer * m_SpriteRenderer;
-	ParticleGenerator * m_ParticleGenerator;
 	Camera * m_Camera;
-
-	Filter * m_Filter;
-
 	Entity * m_TestEntity;
-
-	Hitbox * hitbox;
 };
 
