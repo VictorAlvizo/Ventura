@@ -1,5 +1,7 @@
 #include "Game.h"
 
+float volume = 0.1f;
+
 Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
 	:m_Width(screenWidth), m_Height(screenHeight)
 {
@@ -55,34 +57,32 @@ void Game::Init() {
 
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
-	
-	m_Cirle = new HitCircle(glm::vec2(200.0f), 40.0f);
 }
 
 void Game::ProcessInput(float deltaTime) {
 	if (m_Keys[GLFW_KEY_W]) {
-		m_Cirle->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
 		m_TestEntity->SetRotation(270.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
-		m_Cirle->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
 		m_TestEntity->SetRotation(90.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
-		m_Cirle->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
-		m_Cirle->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
+		m_TestEntity->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
@@ -125,11 +125,8 @@ void Game::Render() {
 	//Have to draw the background first otherwise anything drawn before it will be overlayed by the background
 	m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
 	m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
-	m_Cirle->Draw(*m_SpriteRenderer);
 }
 
 void Game::CheckCollisions() {
-	if (CollisionHandler::isInvisible(*m_Camera, *m_Cirle)) {
-		std::cout << "The entity is invisible" << std::endl;
-	}
+	//holder
 }

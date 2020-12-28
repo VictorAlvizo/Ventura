@@ -10,6 +10,8 @@
 #include "Camera.h"
 #include "Filter.h"
 
+#include "Audio.h"
+
 class Game {
 public:
 	Game(unsigned int screenWidth, unsigned int screenHeight);
@@ -34,7 +36,5 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 	Entity * m_TestEntity;
-
-	HitCircle * m_Cirle;
 };
 
