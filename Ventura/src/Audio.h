@@ -12,7 +12,8 @@ struct Sound {
 
 class Audio {
 public:
-	Audio();
+	//Leave as is normally, but if you're going to add this as a component, set to false
+	Audio(bool deathAllowed = true);
 	~Audio();
 
 	void AddSound(const std::string& referenceName, const std::string& soundFileName, bool loop = false, float volumePercentage = 1.0f);
@@ -25,8 +26,12 @@ public:
 	bool isPlaying(const std::string& soundName);
 
 private:
+	bool m_DeathEnabled; //Usage explained inside the deconstructer
+
 	irrklang::ISoundEngine * m_SoundEngine = irrklang::createIrrKlangDevice();
 
 	std::unordered_map<std::string, Sound> m_Sounds;
+
+	friend class Component;
 };
 

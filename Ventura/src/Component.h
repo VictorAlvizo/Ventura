@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include "AnimationCycle.h"
+#include "Audio.h"
 
 class Component {
 public:
@@ -17,6 +18,12 @@ public:
 		m_ACComponents[compName] = std::make_unique<AnimationCycle>(cycle);
 	}
 
+	template<>
+	void Add<Audio>(const std::string& compName, Audio& audio) {
+		m_AudioComponents[compName] = std::make_unique<Audio>(audio);
+		m_AudioComponents[compName]->m_DeathEnabled = true;
+	}
+
 	template<typename T>
 	std::unique_ptr<T>& Get(const std::string& name) {
 		std::cout << "Error: Not a recognized component" << std::endl;
@@ -29,10 +36,21 @@ public:
 			return m_ACComponents[name];
 		}
 		else {
-			std::cout << "Error: Animation Component " << name << " could not be found" << std::endl;
+			std::cout << "Error: Animation component " << name << " could not be found" << std::endl;
+		}
+	}
+
+	template<>
+	std::unique_ptr<Audio>& Get(const std::string& name) {
+		if (m_AudioComponents.find(name) != m_AudioComponents.end()) {
+			return m_AudioComponents[name];
+		}
+		else {
+			std::cout << "Error: Audio component " << name << " could not be found" << std::endl;
 		}
 	}
 
 private:
 	std::unordered_map<std::string, std::unique_ptr<AnimationCycle>> m_ACComponents;
+	std::unordered_map<std::string, std::unique_ptr<Audio>> m_AudioComponents;
 };

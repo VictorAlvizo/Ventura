@@ -34,6 +34,11 @@ public:
 		m_Components.Add<AnimationCycle>(compName, newComponent);
 	}
 
+	template<>
+	void AddComponent<Audio>(const std::string& compName, Audio& newAudio) {
+		m_Components.Add<Audio>(compName, newAudio);
+	}
+
 	template<typename T>
 	std::unique_ptr<T>& GetComponent(const std::string& name) {
 		return m_Components.Get(name);
@@ -42,6 +47,11 @@ public:
 	template<>
 	std::unique_ptr<AnimationCycle>& GetComponent(const std::string& name) {
 		return m_Components.Get<AnimationCycle>(name);
+	}
+
+	template<>
+	std::unique_ptr<Audio>& GetComponent(const std::string& name) {
+		return m_Components.Get<Audio>(name);
 	}
 
 	inline glm::vec2 getPos() const { return m_Pos; }

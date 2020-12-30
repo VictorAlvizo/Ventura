@@ -6,4 +6,5 @@ Component::Component() {
 
 Component::~Component() {
 	m_ACComponents.clear();
+	m_AudioComponents.clear();
 }

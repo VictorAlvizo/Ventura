@@ -57,6 +57,13 @@ void Game::Init() {
 
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
+
+	//Weird rule here, MUST SET CONSTUCTER TO TRUE if going to be adding audio as a component
+	//Otherwise, don't mess with it, as you will probably cause a memory leak
+	Audio audio(false);
+	m_TestEntity->AddComponent<Audio>("BackgroundAudio", audio);
+	m_TestEntity->GetComponent<Audio>("BackgroundAudio")->AddSound("Song", "Audio/breakout.mp3", true);
+	m_TestEntity->GetComponent<Audio>("BackgroundAudio")->PlaySound("Song");
 }
 
 void Game::ProcessInput(float deltaTime) {

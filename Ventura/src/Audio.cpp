@@ -1,13 +1,20 @@
 #include "Audio.h"
 
-Audio::Audio() {
+Audio::Audio(bool deathAllowed) 
+	:m_DeathEnabled(deathAllowed)
+{
 	//holder
 }
 
 Audio::~Audio() {
-	irrklang::ISoundSource * sounbd = m_SoundEngine->addSoundSourceFromFile("dsa");
-
-	m_SoundEngine->drop();
+	/* When adding a local audio varible as a component, the deconstructer would be called 
+	as it would go out of scope right after, causing it to drop the sound engine. So All
+	access to audio is lost. Had to make this bool to for a hacked solution, so the drop
+	part won't be called in those situations and only until the component sets it to true
+	then it may call the deconstructer */
+	if (m_DeathEnabled) {
+		m_SoundEngine->drop();
+	}
 }
 
 void Audio::AddSound(const std::string& referenceName, const std::string& soundFileName, bool loop, float volumePercentage) {

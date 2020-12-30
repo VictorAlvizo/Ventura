@@ -78,6 +78,12 @@ void AnimationCycle::AnimationThread() {
 	while (!m_TerminateAnimation) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(m_CurrentCycle.m_AnimationSpeed));
 
+		//Not 100% if this fixed the problem, but by checking here again, if the deconstructer ends the class this may "late to the party"
+		//and still want to use the mutex after the class has been destroyed due to the sleep statment.
+		if (m_TerminateAnimation) {
+			break;
+		}
+
 		//Don't want to lock the entire while loop, so encapsulated within a custom scope. Avoid a race condition with m_CurrentCycle
 		{
 			std::lock_guard<std::mutex> lock(m_AnimationMutex);
