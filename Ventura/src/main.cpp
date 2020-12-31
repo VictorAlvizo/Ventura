@@ -7,10 +7,11 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods);
 void MousePosCallback(GLFWwindow * window, double xPos, double yPos);
 
+//TODO: Find a way allow to developer to edit window size without having to touch main.cpp
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
-Game ventura(SCREEN_WIDTH, SCREEN_HEIGHT);
+Game ventura(SCREEN_WIDTH, SCREEN_HEIGHT, 9.8f);
 
 void FramebufferSizeCallback(GLFWwindow * window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -33,7 +34,6 @@ int main() {
         std::cout << "Error: Failed to initialize GLFW" << std::endl;
     }
 
-    //TODO: Figure out how to let the user choose their moniter
     window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ventura", nullptr, nullptr);
 
     if (!window) {
@@ -105,17 +105,14 @@ int main() {
 }
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
-    }
-
-    //TODO: Implament logic so keys aren't detected mutiple times in 1 key press
     if (key >= 0 && key <= 1024) {
         if (action == GLFW_PRESS) {
             ventura.m_Keys[key] = true;
+            ventura.m_KeyAllowment[key] = 1;
         }
         else if (action == GLFW_RELEASE) {
             ventura.m_Keys[key] = false;
+            ventura.m_KeyAllowment[key] = 0;
         }
     }
 }

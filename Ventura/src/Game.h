@@ -14,7 +14,7 @@
 
 class Game {
 public:
-	Game(unsigned int screenWidth, unsigned int screenHeight);
+	Game(unsigned int screenWidth, unsigned int screenHeight, float gravity);
 	~Game();
 
 	void Init();
@@ -23,18 +23,22 @@ public:
 	void Update(float deltaTime);
 	void Render();
 
-	void CheckCollisions();
-
 	//Mouse and keyboard information
 	char m_Keys[1024];
+	int m_KeyAllowment[1024]; //Counter for when you don't want ghost presses/key holds detected
 	bool m_MouseButtons[8];
 	glm::vec2 m_MousePos;
 
 	unsigned int m_Width, m_Height;
+	float m_Gravity;
 
 private:
+	void CheckCollisions();
+
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
+
 	Entity * m_TestEntity;
+	Hitbox * m_GroundFloor;
 };
 

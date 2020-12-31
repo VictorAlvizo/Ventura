@@ -158,24 +158,26 @@ bool CollisionHandler::CollideCircleAABB(HitCircle * cir, Hitbox& hitbox, bool s
     difference = closest - circleCenter;
 
     if (glm::length(difference) < cir->getRadius()) {
-        float diff = cir->getRadius() - glm::length(difference);
+        if (staticResolution) {
+            float diff = cir->getRadius() - glm::length(difference);
 
-        switch (CollisionHandler::colDir(difference)) {
-        case CollisionDirction::RIGHT:
-            cir->Move(glm::vec2(cir->getPos().x + diff, cir->getPos().y));
-            break;
+            switch (CollisionHandler::colDir(difference)) {
+            case CollisionDirction::RIGHT:
+                cir->Move(glm::vec2(cir->getPos().x + diff, cir->getPos().y));
+                break;
 
-        case CollisionDirction::LEFT:
-            cir->Move(glm::vec2(cir->getPos().x - diff, cir->getPos().y));
-            break;
+            case CollisionDirction::LEFT:
+                cir->Move(glm::vec2(cir->getPos().x - diff, cir->getPos().y));
+                break;
 
-        case CollisionDirction::TOP:
-            cir->Move(glm::vec2(cir->getPos().x, cir->getPos().y - diff));
-            break;
+            case CollisionDirction::TOP:
+                cir->Move(glm::vec2(cir->getPos().x, cir->getPos().y - diff));
+                break;
 
-        default:
-            cir->Move(glm::vec2(cir->getPos().x, cir->getPos().y + diff));
-            break;
+            default:
+                cir->Move(glm::vec2(cir->getPos().x, cir->getPos().y + diff));
+                break;
+            }
         }
 
         return true;
@@ -231,6 +233,8 @@ bool CollisionHandler::isInvisible(Camera& camera, Hitbox& hitbox) {
 }
 
 CollisionHandler::CollisionDirction CollisionHandler::colDir(glm::vec2 centerVector) {
+    //TODO: For elongated shapes this may not work, have to change to a more accurate way of finding it
+
     glm::vec2 directions[4] = {
         glm::vec2(1.0f, 0.0f), //Right
         glm::vec2(-1.0f, 0.0f), //Left

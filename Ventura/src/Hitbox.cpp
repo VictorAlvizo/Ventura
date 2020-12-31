@@ -2,7 +2,7 @@
 #include "Entity.h"
 
 Hitbox::Hitbox()
-	:m_Pos(0.0f), m_Size(1.0f)
+	:m_Pos(0.0f), m_Size(1.0f), m_Rotation(0.0f), m_Mass(1.0f), m_Velocity(0.0f)
 {
 	m_Renderer = new HitboxRenderer(ResourceManager::Get<Shader>("hboutline"));
 	m_ShowHitbox = true;
@@ -10,8 +10,8 @@ Hitbox::Hitbox()
 	m_Entity = nullptr;
 }
 
-Hitbox::Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, float rotation, Entity * parentEntity)
-	:m_Pos(hitboxPos), m_Size(hitboxSize), m_Rotation(rotation), m_Entity(parentEntity)
+Hitbox::Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, float rotation, float mass, Entity * parentEntity)
+	:m_Pos(hitboxPos), m_Size(hitboxSize), m_Rotation(rotation), m_Entity(parentEntity), m_Mass(mass), m_Velocity(0.0f)
 {
 	m_Renderer = new HitboxRenderer(ResourceManager::Get<Shader>("hboutline"));
 	m_ShowHitbox = true;
@@ -22,7 +22,7 @@ Hitbox::~Hitbox() {
 	delete m_Renderer;
 	m_Renderer = nullptr;
 
-	m_Entity = nullptr; //Can't delete, will cause both places trying to delete eachother if entity
+	m_Entity = nullptr; //Can't delete, will cause both classes trying to delete eachother
 }
 
 void Hitbox::Draw(glm::vec3 color) {
@@ -39,8 +39,8 @@ void Hitbox::Move(glm::vec2 newPos) {
 	}
 }
 
-void Hitbox::Translate(glm::vec2 trans, float deltaTime) {
-	m_Pos += trans * deltaTime;
+void Hitbox::Translate(float deltaTime) {
+	m_Pos += m_Velocity * deltaTime;
 
 	if (m_Entity) {
 		m_Entity->MovePos();

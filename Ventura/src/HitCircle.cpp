@@ -4,11 +4,10 @@ HitCircle::HitCircle()
 	:Hitbox(), m_Radius(1)
 {
 	m_Texture = ResourceManager::Get<Texture>("hitboxCircle");
-	m_Rotation = 0.0f;
 }
 
-HitCircle::HitCircle(glm::vec2 hitboxPos, float radius, float rotation, Entity * parentEntity)
-	:Hitbox(hitboxPos, glm::vec2(radius * 2.0f), rotation, parentEntity), m_Radius(radius)
+HitCircle::HitCircle(glm::vec2 hitboxPos, float radius, float rotation, float mass, Entity * parentEntity)
+	:Hitbox(hitboxPos, glm::vec2(radius * 2.0f), rotation, mass, parentEntity), m_Radius(radius)
 {
 	m_Texture = ResourceManager::Get<Texture>("hitboxCircle");
 }

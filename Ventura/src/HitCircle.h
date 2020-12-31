@@ -5,7 +5,7 @@
 class HitCircle : public Hitbox {
 public:
 	HitCircle();
-	HitCircle(glm::vec2 hitboxPos, float radius, float rotation = 0.0f, Entity * parentEntity = nullptr);
+	HitCircle(glm::vec2 hitboxPos, float radius, float rotation = 0.0f, float mass = 1.0f, Entity * parentEntity = nullptr);
 	~HitCircle();
 
 	void Draw(SpriteRenderer& spriteRenderer, glm::vec3 color = glm::vec3(0.0f, 1.0f, 0.0f));

@@ -2,8 +2,8 @@
 
 float volume = 0.1f;
 
-Game::Game(unsigned int screenWidth, unsigned int screenHeight) 
-	:m_Width(screenWidth), m_Height(screenHeight)
+Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
+	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
 	m_SpriteRenderer = nullptr;
 	m_TestEntity = nullptr;
@@ -30,6 +30,7 @@ void Game::Init() {
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
 	ResourceManager::LoadTexture("Textures/background.png", "background");
+	ResourceManager::LoadTexture("Textures/Emoji.png", "HeartEyes");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -64,39 +65,52 @@ void Game::Init() {
 	m_TestEntity->AddComponent<Audio>("BackgroundAudio", audio);
 	m_TestEntity->GetComponent<Audio>("BackgroundAudio")->AddSound("Song", "Audio/breakout.mp3", true);
 	m_TestEntity->GetComponent<Audio>("BackgroundAudio")->PlaySound("Song");
+
+	Audio audioSFX(false);
+	m_TestEntity->AddComponent<Audio>("SFX", audioSFX);
+	m_TestEntity->GetComponent<Audio>("SFX")->AddSound("Swing", "Audio/SwordSwing.mp3");
+
+	m_GroundFloor = new Hitbox(glm::vec2(0.0f, 550.0f), glm::vec2(800.0f, 50.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
 	if (m_Keys[GLFW_KEY_W]) {
-		m_TestEntity->Translate(glm::vec2(0.0f, -200.0f), deltaTime);
+		m_TestEntity->m_Velocity = glm::vec2(0.0f, -200.0f);
+		m_TestEntity->Translate(deltaTime);
 		m_TestEntity->SetRotation(270.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_S]) {
-		m_TestEntity->Translate(glm::vec2(0.0f, 200.0f), deltaTime);
+		m_TestEntity->m_Velocity = glm::vec2(0.0f, 200.0f);
+		m_TestEntity->Translate(deltaTime);
 		m_TestEntity->SetRotation(90.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_A]) {
-		m_TestEntity->Translate(glm::vec2(-200.0f, 0.0f), deltaTime);
+		m_TestEntity->m_Velocity = glm::vec2(-200.0f, 0.0f);
+		m_TestEntity->Translate(deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(true);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
 	if (m_Keys[GLFW_KEY_D]) {
-		m_TestEntity->Translate(glm::vec2(200.0f, 0.0f), deltaTime);
+		m_TestEntity->m_Velocity = glm::vec2(200.0f, 0.0f);
+		m_TestEntity->Translate(deltaTime);
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->Flip(false);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Walking");
 	}
 
-	if (m_Keys[GLFW_KEY_SPACE]) {
+	//Second part of if statement makes sure space is only detcected once. Purpose of m_KeyAllowement
+	if (m_Keys[GLFW_KEY_SPACE] && m_KeyAllowment[GLFW_KEY_SPACE] == 1) {
+		m_KeyAllowment[GLFW_KEY_SPACE] = 0; //Key has been processed once, don't register again until pressed again
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Swing");
+		m_TestEntity->GetComponent<Audio>("SFX")->PlaySound("Swing");
 	}
 
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
@@ -132,8 +146,11 @@ void Game::Render() {
 	//Have to draw the background first otherwise anything drawn before it will be overlayed by the background
 	m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
 	m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
+	m_GroundFloor->Draw(glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 void Game::CheckCollisions() {
-	//holder
+	if (CollisionHandler::CollideAABB(*m_TestEntity->getHitbox(), *m_GroundFloor)) {
+		std::cout << "Entity is touching the ground" << std::endl;
+	}
 }

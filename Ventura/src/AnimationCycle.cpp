@@ -78,8 +78,9 @@ void AnimationCycle::AnimationThread() {
 	while (!m_TerminateAnimation) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(m_CurrentCycle.m_AnimationSpeed));
 
-		//Not 100% if this fixed the problem, but by checking here again, if the deconstructer ends the class this may "late to the party"
-		//and still want to use the mutex after the class has been destroyed due to the sleep statment.
+		/*TODO: There is a bug here. Once the class has been destroyed this thread does not know that
+		and tries to access the classes' varibles. Causing the error. Need to find a way to notify the
+		thread the class is about to be destroyed and to destroy itself before that. */
 		if (m_TerminateAnimation) {
 			break;
 		}

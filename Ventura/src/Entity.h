@@ -9,9 +9,9 @@ class Camera;
 class Entity {
 public:
 	Entity();
-	Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), bool childClass = false);
+	Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), float mass = 1.0f, bool childClass = false);
 	//Only if you want animated sprites / use of a spritesheet. Provide the dimensions of 1 sprite
-	Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), bool childClass = false);
+	Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), float mass = 1.0f, bool childClass = false);
 	~Entity();
 
 	virtual void Draw(SpriteRenderer& spriteRenderer, glm::vec3 color = glm::vec3(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f));
@@ -20,7 +20,7 @@ public:
 	virtual std::vector<glm::vec2> GetCorners();
 
 	void Move(glm::vec2 newPos);
-	void Translate(glm::vec2 trans, float deltaTime);
+	void Translate(float deltaTime);
 	void Flip(bool flip);
 	void SetRotation(float newRotation);
 
@@ -57,10 +57,12 @@ public:
 	inline glm::vec2 getPos() const { return m_Pos; }
 	inline glm::vec2 getSize() const { return m_Size; }
 	inline float getRotation() const { return m_Rotation; }
+	inline float getMass() const { return m_Mass; }
 	inline Hitbox* getHitbox() const { return m_Hitbox; }
 	inline bool isFlipped() const { return m_Flipped; }
 
 	std::string m_Tag;
+	glm::vec2 m_Velocity;
 
 protected:
 	void MovePos(); //When hitbox moves, adjust the entity position
@@ -79,6 +81,7 @@ protected:
 
 	//This is an anti-pattern but it actually works as I need to update the hitbox rotation when this does as well
 	float m_Rotation; 
+	float m_Mass; //For any physics calculations
 
 	bool m_Destroyed;
 	bool m_Flipped;

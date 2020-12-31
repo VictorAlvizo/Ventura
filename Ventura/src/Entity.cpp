@@ -2,9 +2,8 @@
 #include "Camera.h"
 
 Entity::Entity()
-	:m_Pos(0.0f), m_Size(1.0f), m_HitboxOffset(0.0f)
+	:m_Pos(0.0f), m_Size(1.0f), m_HitboxOffset(0.0f), m_Mass(1.0f), m_Velocity(0.0f), m_Rotation(0.0f)
 {
-	m_Rotation = 0.0f;
 	m_Destroyed = false;
 	m_Flipped = false;
 
@@ -13,32 +12,35 @@ Entity::Entity()
 	m_Camera = nullptr;
 }
 
-Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, bool childClass)
-	:m_Texture(texture), m_Pos(pos), m_Size(size), m_HitboxOffset(hbPos), m_Rotation(rotation)
+Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, float mass, bool childClass)
+	:m_Texture(texture), m_Pos(pos), m_Size(size), m_Rotation(rotation), m_HitboxOffset(hbPos), m_Mass(mass), m_Velocity(0.0f)
 {
 	m_SpriteSheet = nullptr;
+	m_Camera = nullptr;
+
 	m_Destroyed = false;
 	m_Flipped = false;
 
 	if (!childClass) {
 		//Set hitbox varibles
 		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, this);
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, m_Mass, this);
 	}
 }
 
-Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, bool childClass)
-	:m_Texture(texture), m_Pos(pos), m_Size(size), m_HitboxOffset(hbPos)
+Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 hbPos, glm::vec2 hbSize, float mass, bool childClass)
+	:m_Texture(texture), m_Pos(pos), m_Size(size), m_Rotation(rotation), m_HitboxOffset(hbPos), m_Mass(mass), m_Velocity(0.0f)
 {
 	//Not wanting a glm::vec2 for sprite size to avoid ambiguity between the overloaded functions
 	m_SpriteSheet = new SpriteSheetReader(texture, glm::vec2(spriteX, spriteY));
-	m_Rotation = 0.0f;
+	m_Camera = nullptr;
+
 	m_Destroyed = false;
 	m_Flipped = false;
 
 	if (!childClass) {
 		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, this);
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, m_Mass, this);
 	}
 }
 
@@ -105,8 +107,8 @@ void Entity::Move(glm::vec2 newPos) {
 	}
 }
 
-void Entity::Translate(glm::vec2 trans, float deltaTime) {
-	m_Pos += trans * deltaTime;
+void Entity::Translate(float deltaTime) {
+	m_Pos += m_Velocity * deltaTime;
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
 
 	if (m_Camera) {
