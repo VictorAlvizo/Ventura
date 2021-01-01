@@ -21,6 +21,7 @@ public:
 
 	void Move(glm::vec2 newPos);
 	void Translate(float deltaTime);
+	void GravityMovement(float gravity, float deltaTime);
 	void Flip(bool flip);
 	void SetRotation(float newRotation);
 

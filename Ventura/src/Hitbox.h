@@ -13,6 +13,7 @@ public:
 	void Draw(glm::vec3 color = glm::vec3(0.0f, 1.0f, 0.0f));
 	void Move(glm::vec2 newPos);
 	void Translate(float deltaTime);
+	void GravityMovement(float gravity, float deltaTime);
 
 	virtual std::vector<glm::vec2> GetHitboxCorners();
 

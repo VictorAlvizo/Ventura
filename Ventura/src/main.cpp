@@ -11,7 +11,7 @@ void MousePosCallback(GLFWwindow * window, double xPos, double yPos);
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
-Game ventura(SCREEN_WIDTH, SCREEN_HEIGHT, 9.8f);
+Game ventura(SCREEN_WIDTH, SCREEN_HEIGHT, 50.0f);
 
 void FramebufferSizeCallback(GLFWwindow * window, int width, int height) {
     glViewport(0, 0, width, height);

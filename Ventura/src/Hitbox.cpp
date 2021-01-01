@@ -47,6 +47,15 @@ void Hitbox::Translate(float deltaTime) {
 	}
 }
 
+void Hitbox::GravityMovement(float gravity, float deltaTime) {
+	m_Pos.y += gravity * deltaTime;
+
+	//Would recommend only choosing to effect either the entity or its hitbox, not both at the same time.
+	if (m_Entity) {
+		m_Entity->MovePos();
+	}
+}
+
 std::vector<glm::vec2> Hitbox::GetHitboxCorners() {
 	std::vector<glm::vec2> corners;
 	glm::vec2 center = glm::vec2(m_Pos.x + (m_Size.x / 2.0f), m_Pos.y + (m_Size.y / 2.0f));

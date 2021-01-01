@@ -30,7 +30,6 @@ void Game::Init() {
 	ResourceManager::LoadTexture("Textures/knight.png", "knight");
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
 	ResourceManager::LoadTexture("Textures/background.png", "background");
-	ResourceManager::LoadTexture("Textures/Emoji.png", "HeartEyes");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
@@ -134,6 +133,9 @@ void Game::Update(float deltaTime) {
 	ResourceManager::Get<Shader>("text")->Bind();
 	ResourceManager::Get<Shader>("text")->SetMat4("u_View", cameraView);
 	ResourceManager::Get<Shader>("text")->UnBind();
+
+	//Objects you want effected by gravity update them with GravityMovement() here in the update loop
+	m_TestEntity->GravityMovement(m_Gravity, deltaTime);
 
 	CheckCollisions();
 }

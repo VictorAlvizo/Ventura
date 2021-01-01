@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\FileSystem.cpp" />
     <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\Filter.cpp" />
     <ClCompile Include="src\Camera.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="src\TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\FileSystem.h" />
     <ClInclude Include="src\Audio.h" />
     <ClInclude Include="src\Filter.h" />
     <ClInclude Include="src\Camera.h" />
