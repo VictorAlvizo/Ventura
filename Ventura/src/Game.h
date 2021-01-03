@@ -39,5 +39,7 @@ private:
 
 	Entity * m_TestEntity;
 	Hitbox * m_GroundFloor;
+
+	Entity coolBeans;
 };
 

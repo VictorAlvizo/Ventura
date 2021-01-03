@@ -5,12 +5,13 @@
 #include <sstream>
 #include <algorithm>
 #include "Vendor/glm/glm.hpp"
+#include "Entity.h"
 
 //TODO: May update to a JSON file instead of a txt file later on
 class FileSystem {
 public:
 	//WARNING: They look very alike but retriving data from the wrong type is most likely bad news!
-	//Also, don't try storing objects unless they have an operator overloader for << and >>
+	//Also, don't try storing objects unless they have an operator overloader for << and >>, look at entity header for reference
 	template<typename T>
 	static void Store(std::string filepath, std::string dataName, T data, bool overwrite) {
 		std::replace(dataName.begin(), dataName.end(), ' ', '_'); //Replace all spaces with _ for easier reading
@@ -95,9 +96,11 @@ public:
 
 	template<typename T>
 	static T Retrive(std::string filePath, std::string dataName) {
+		T emptyReturn;
+
 		if (!FileExist(filePath)) {
 			std::cout << "Error: File " << filePath << " does not exist" << std::endl;
-			return -1;
+			return emptyReturn;
 		}
 
 		std::ifstream file(filePath);
@@ -116,7 +119,7 @@ public:
 
 		}
 
-		return -1;
+		return emptyReturn;
 		file.close();
 	}
 

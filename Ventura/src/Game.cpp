@@ -58,7 +58,7 @@ void Game::Init() {
 	m_TestEntity->AddComponent<AnimationCycle>("KnightAnimation", knightCycle);
 	m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
 
-	//Weird rule here, MUST SET CONSTUCTER TO TRUE if going to be adding audio as a component
+	//Weird rule here, MUST SET CONSTUCTER TO FALSE if going to be adding audio as a component
 	//Otherwise, don't mess with it, as you will probably cause a memory leak
 	Audio audio(false);
 	m_TestEntity->AddComponent<Audio>("BackgroundAudio", audio);
@@ -70,6 +70,8 @@ void Game::Init() {
 	m_TestEntity->GetComponent<Audio>("SFX")->AddSound("Swing", "Audio/SwordSwing.mp3");
 
 	m_GroundFloor = new Hitbox(glm::vec2(0.0f, 550.0f), glm::vec2(800.0f, 50.0f));
+
+ 	coolBeans = FileSystem::Retrive<Entity>("EntityInfo.txt", "Knight");
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -112,6 +114,11 @@ void Game::ProcessInput(float deltaTime) {
 		m_TestEntity->GetComponent<Audio>("SFX")->PlaySound("Swing");
 	}
 
+	//Example of saving the entity information
+	if (m_Keys[GLFW_KEY_K] && m_KeyAllowment[GLFW_KEY_K] == 1) {
+		FileSystem::Store<Entity>("EntityInfo.txt", "Knight", *m_TestEntity, true);
+	}
+
 	if (!m_Keys[GLFW_KEY_W] && !m_Keys[GLFW_KEY_A] && !m_Keys[GLFW_KEY_S] && !m_Keys[GLFW_KEY_D]) {
 		m_TestEntity->SetRotation(0.0f);
 		m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->Animate("Idle");
@@ -149,6 +156,7 @@ void Game::Render() {
 	m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("background"), glm::vec2(0.0f), glm::vec2(m_Width, m_Height));
 	m_TestEntity->Draw(*m_SpriteRenderer, m_TestEntity->GetComponent<AnimationCycle>("KnightAnimation")->getSpritePos());
 	m_GroundFloor->Draw(glm::vec3(0.0f, 0.0f, 1.0f));
+	coolBeans.Draw(*m_SpriteRenderer, glm::ivec2(0), glm::vec3(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 void Game::CheckCollisions() {

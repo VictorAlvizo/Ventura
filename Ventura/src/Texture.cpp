@@ -5,9 +5,11 @@ Texture::Texture() {
 	m_Height = 0;
 	m_Width = 0;
 	m_NrChannels = 0;
+	m_TexturePath = "";
 }
 
-Texture::Texture(const std::string& path) {
+Texture::Texture(const std::string& path) 
+{
 	glGenTextures(1, &m_TextureID);
 	glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
@@ -17,6 +19,7 @@ Texture::Texture(const std::string& path) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	unsigned char * data = stbi_load(path.c_str(), &m_Width, &m_Height, &m_NrChannels, 0);
+	m_TexturePath = path;
 
 	if (data) {
 		GLenum format = GL_RED;

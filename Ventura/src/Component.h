@@ -15,23 +15,23 @@ public:
 
 	template<>
 	void Add<AnimationCycle>(const std::string& compName, AnimationCycle& cycle) {
-		m_ACComponents[compName] = std::make_unique<AnimationCycle>(cycle);
+		m_ACComponents[compName] = std::make_shared<AnimationCycle>(cycle);
 	}
 
 	template<>
 	void Add<Audio>(const std::string& compName, Audio& audio) {
-		m_AudioComponents[compName] = std::make_unique<Audio>(audio);
+		m_AudioComponents[compName] = std::make_shared<Audio>(audio);
 		m_AudioComponents[compName]->m_DeathEnabled = true;
 	}
 
 	template<typename T>
-	std::unique_ptr<T>& Get(const std::string& name) {
+	std::shared_ptr<T>& Get(const std::string& name) {
 		std::cout << "Error: Not a recognized component" << std::endl;
 		return nullptr;
 	}
 
 	template<> 
-	std::unique_ptr<AnimationCycle>& Get(const std::string& name) {
+	std::shared_ptr<AnimationCycle>& Get(const std::string& name) {
 		if (m_ACComponents.find(name) != m_ACComponents.end()) {
 			return m_ACComponents[name];
 		}
@@ -41,7 +41,7 @@ public:
 	}
 
 	template<>
-	std::unique_ptr<Audio>& Get(const std::string& name) {
+	std::shared_ptr<Audio>& Get(const std::string& name) {
 		if (m_AudioComponents.find(name) != m_AudioComponents.end()) {
 			return m_AudioComponents[name];
 		}
@@ -51,6 +51,6 @@ public:
 	}
 
 private:
-	std::unordered_map<std::string, std::unique_ptr<AnimationCycle>> m_ACComponents;
-	std::unordered_map<std::string, std::unique_ptr<Audio>> m_AudioComponents;
+	std::unordered_map<std::string, std::shared_ptr<AnimationCycle>> m_ACComponents;
+	std::unordered_map<std::string, std::shared_ptr<Audio>> m_AudioComponents;
 };

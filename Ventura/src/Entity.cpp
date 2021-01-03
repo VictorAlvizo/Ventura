@@ -6,6 +6,9 @@ Entity::Entity()
 {
 	m_Destroyed = false;
 	m_Flipped = false;
+	m_Copied = false;
+	m_FromFile = false;
+	m_Tag = "Entity";
 
 	m_SpriteSheet = nullptr;
 	m_Hitbox = nullptr;
@@ -20,6 +23,9 @@ Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size,
 
 	m_Destroyed = false;
 	m_Flipped = false;
+	m_Copied = false;
+	m_FromFile = false;
+	m_Tag = "Entity";
 
 	if (!childClass) {
 		//Set hitbox varibles
@@ -37,6 +43,9 @@ Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, 
 
 	m_Destroyed = false;
 	m_Flipped = false;
+	m_Copied = false;
+	m_FromFile = false;
+	m_Tag = "Entity";
 
 	if (!childClass) {
 		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
@@ -44,15 +53,56 @@ Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, 
 	}
 }
 
-Entity::~Entity() {
-	delete m_SpriteSheet;
-	m_SpriteSheet = nullptr;
-
-	delete m_Hitbox;
-	m_Hitbox = nullptr;
-
-	delete m_Camera;
+Entity::Entity(const Entity& copy) {
+	//Component does not get copied, you have add them again. Copying the components donsen't work well
+	//as they're pointers. So they would both have the same values no matter what
+	//Camera not copied as well, also hitbox settings revert as if brand new cause well... it is
+	m_Copied = (m_FromFile) ? false : true;
+	m_Destroyed = copy.m_Destroyed;
+	m_Flipped = copy.m_Flipped;
+	m_Tag = copy.m_Tag;
+	m_Rotation = copy.m_Rotation;
+	m_Mass = copy.m_Mass;
+	m_Pos = copy.m_Pos;
+	m_Velocity = copy.m_Velocity;
+	m_Size = copy.m_Size;
+	m_SpriteSheet = (copy.m_SpriteSheet) ? new SpriteSheetReader(copy.m_Texture, copy.m_SpriteSheet->getSpriteSize()) : nullptr;
 	m_Camera = nullptr;
+	m_Hitbox = new Hitbox(copy.getHitbox()->getPos(), copy.getHitbox()->getSize(), copy.getHitbox()->m_Rotation, copy.getHitbox()->getMass(), this);
+	m_HitboxOffset = copy.m_HitboxOffset;
+	m_Texture = copy.m_Texture;
+}
+
+void Entity::operator=(const Entity& copy) {
+	std::cout << "Assignment Operator" << std::endl;
+
+	m_Copied = true;
+	m_Destroyed = copy.m_Destroyed;
+	m_Flipped = copy.m_Flipped;
+	m_Tag = copy.m_Tag;
+	m_Rotation = copy.m_Rotation;
+	m_Mass = copy.m_Mass;
+	m_Pos = copy.m_Pos;
+	m_Velocity = copy.m_Velocity;
+	m_Size = copy.m_Size;
+	m_SpriteSheet = (copy.m_SpriteSheet) ? new SpriteSheetReader(copy.m_Texture, copy.m_SpriteSheet->getSpriteSize()) : nullptr;
+	m_Camera = nullptr;
+	m_Hitbox = new Hitbox(copy.getHitbox()->getPos(), copy.getHitbox()->getSize(), copy.getHitbox()->m_Rotation, copy.getHitbox()->getMass(), this);
+	m_HitboxOffset = copy.m_HitboxOffset;
+	m_Texture = copy.m_Texture;
+}
+
+Entity::~Entity() {
+	if (!m_Copied) {
+		delete m_SpriteSheet;
+		m_SpriteSheet = nullptr;
+
+		delete m_Hitbox;
+		m_Hitbox = nullptr;
+
+		delete m_Camera;
+		m_Camera = nullptr;
+	}
 }
 
 void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, glm::vec3 hbColor) {

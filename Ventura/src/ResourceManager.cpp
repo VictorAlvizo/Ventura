@@ -32,3 +32,23 @@ void ResourceManager::LoadTexture(const std::string& texturePath, const std::str
 		m_Textures[name] = texture;
 	}
 }
+
+std::shared_ptr<Shader>& ResourceManager::GetShaderFromFileName(const std::string& vertexPath, const std::string& fragmentPath, const std::string geometryPath) {
+	for (auto const& shader : m_Shaders) {
+		if (shader.second->getVertexPath() == vertexPath && shader.second->getFragmentPath() == fragmentPath && shader.second->getGeometryPath() == geometryPath) {
+			return m_Shaders[shader.first];
+		}
+	}
+
+	std::cout << "Error: Shader with paths: " << vertexPath << "," << fragmentPath << "," << geometryPath << " not found" << std::endl;
+}
+
+std::shared_ptr<Texture>& ResourceManager::GetTextureFromFileName(const std::string& fileName) {
+	for (auto const& texture : m_Textures) {
+		if (texture.second->getPath() == fileName) {
+			return m_Textures[texture.first];
+		}
+	}
+
+	std::cout << "Error: Texture with path: " << fileName << " was not found" << std::endl;
+}

@@ -1,10 +1,14 @@
 #include "Shader.h"
 
-Shader::Shader() {
+Shader::Shader() 
+	:m_VertexPath(""), m_FragmentPath(""), m_GeometryPath("")
+{
 	m_ProgramID = -1;
 }
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
+Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) 
+	:m_VertexPath(vertexPath), m_FragmentPath(fragmentPath), m_GeometryPath("")
+{
 	std::string vertexSrc = readShader(vertexPath);
 	std::string fragmentSrc = readShader(fragmentPath);
 
@@ -29,7 +33,9 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
 	glDeleteShader(fragmentShader);
 }
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath) {
+Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath) 
+	:m_VertexPath(vertexPath), m_FragmentPath(fragmentPath), m_GeometryPath(geometryPath)
+{
 	std::string vertexSrc = readShader(vertexPath);
 	std::string fragmentSrc = readShader(fragmentPath);
 	std::string geometrySrc = readShader(geometryPath);

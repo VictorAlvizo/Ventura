@@ -29,6 +29,10 @@ public:
 	void SetVec4(const std::string& name, glm::vec4 vec4);
 	void SetMat4(const std::string& name, glm::mat4 mat4);
 
+	inline std::string getVertexPath() const { return m_VertexPath; }
+	inline std::string getFragmentPath() const { return m_FragmentPath; }
+	inline std::string getGeometryPath() const { return m_GeometryPath; }
+
 private:
 	std::string readShader(const std::string& shaderPath);
 	unsigned int createShader(unsigned int type, const char * src);
@@ -38,5 +42,6 @@ private:
 	unsigned int m_ProgramID;
 
 	std::unordered_map<std::string, unsigned int> m_UniformCache;
+	std::string m_VertexPath, m_FragmentPath, m_GeometryPath;
 };
 
