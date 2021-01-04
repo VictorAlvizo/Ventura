@@ -36,10 +36,5 @@ private:
 
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
-
-	Entity * m_TestEntity;
-	Hitbox * m_GroundFloor;
-
-	Entity coolBeans;
 };
 
