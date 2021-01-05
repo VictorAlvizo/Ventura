@@ -18,22 +18,7 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Vendor\imgui\imgui.cpp">
@@ -51,49 +36,64 @@
     <ClCompile Include="src\Vendor\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SpriteSheetReader.cpp">
+    <ClCompile Include="src\EngineSrc\AnimationCycle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entity.cpp">
+    <ClCompile Include="src\EngineSrc\Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CollisionHandler.cpp">
+    <ClCompile Include="src\EngineSrc\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TextRenderer.cpp">
+    <ClCompile Include="src\EngineSrc\Circle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Component.cpp">
+    <ClCompile Include="src\EngineSrc\CollisionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\AnimationCycle.cpp">
+    <ClCompile Include="src\EngineSrc\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\HitboxRenderer.cpp">
+    <ClCompile Include="src\EngineSrc\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Circle.cpp">
+    <ClCompile Include="src\EngineSrc\FileSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hitbox.cpp">
+    <ClCompile Include="src\EngineSrc\Filter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\HitCircle.cpp">
+    <ClCompile Include="src\EngineSrc\Hitbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ParticleGenerator.cpp">
+    <ClCompile Include="src\EngineSrc\HitboxRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
+    <ClCompile Include="src\EngineSrc\HitCircle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Filter.cpp">
+    <ClCompile Include="src\EngineSrc\ParticleGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Audio.cpp">
+    <ClCompile Include="src\EngineSrc\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\FileSystem.cpp">
+    <ClCompile Include="src\EngineSrc\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineSrc\SpriteRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineSrc\SpriteSheetReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineSrc\TextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineSrc\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vendor\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -821,25 +821,10 @@
     <ClInclude Include="src\Vendor\glm\vector_relational.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Vendor\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SpriteRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Vendor\imgui\imconfig.h">
@@ -866,49 +851,67 @@
     <ClInclude Include="src\Vendor\imgui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SpriteSheetReader.h">
+    <ClInclude Include="src\EngineSrc\AnimationCycle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entity.h">
+    <ClInclude Include="src\EngineSrc\Audio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CollisionHandler.h">
+    <ClInclude Include="src\EngineSrc\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TextRenderer.h">
+    <ClInclude Include="src\EngineSrc\Circle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Component.h">
+    <ClInclude Include="src\EngineSrc\CollisionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\AnimationCycle.h">
+    <ClInclude Include="src\EngineSrc\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\HitboxRenderer.h">
+    <ClInclude Include="src\EngineSrc\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Circle.h">
+    <ClInclude Include="src\EngineSrc\FileSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hitbox.h">
+    <ClInclude Include="src\EngineSrc\Filter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\HitCircle.h">
+    <ClInclude Include="src\EngineSrc\Hitbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleGenerator.h">
+    <ClInclude Include="src\EngineSrc\HitboxRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
+    <ClInclude Include="src\EngineSrc\HitCircle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Filter.h">
+    <ClInclude Include="src\EngineSrc\ParticleGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Audio.h">
+    <ClInclude Include="src\EngineSrc\ResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\FileSystem.h">
+    <ClInclude Include="src\EngineSrc\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EngineSrc\SpriteRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EngineSrc\SpriteSheetReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EngineSrc\TextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EngineSrc\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vendor\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EngineSrc\EngineHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1311,13 +1314,13 @@
     </None>
     <None Include="src\Shaders\testVertex.glsl" />
     <None Include="src\Shaders\testFragment.glsl" />
-    <None Include="src\Shaders\SpriteVertex.glsl" />
-    <None Include="src\Shaders\SpriteFragment.glsl" />
-    <None Include="src\Shaders\TextVertex.glsl" />
-    <None Include="src\Shaders\TextFragment.glsl" />
-    <None Include="src\Shaders\HBOutlineVertex.glsl" />
-    <None Include="src\Shaders\HBOutlineFragment.glsl" />
-    <None Include="src\Shaders\FilterVertex.glsl" />
-    <None Include="src\Shaders\FilterFragment.glsl" />
+    <None Include="src\EngineSrc\Shaders\FilterFragment.glsl" />
+    <None Include="src\EngineSrc\Shaders\FilterVertex.glsl" />
+    <None Include="src\EngineSrc\Shaders\HBOutlineFragment.glsl" />
+    <None Include="src\EngineSrc\Shaders\HBOutlineVertex.glsl" />
+    <None Include="src\EngineSrc\Shaders\SpriteFragment.glsl" />
+    <None Include="src\EngineSrc\Shaders\SpriteVertex.glsl" />
+    <None Include="src\EngineSrc\Shaders\TextFragment.glsl" />
+    <None Include="src\EngineSrc\Shaders\TextVertex.glsl" />
   </ItemGroup>
 </Project>

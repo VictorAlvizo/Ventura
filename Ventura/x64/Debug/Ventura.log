@@ -1,3 +1,6 @@
 ﻿  Game.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(33): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
+  main.cpp
+C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(75,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+C:\Users\Victor\Desktop\Ventura\Ventura\src\EngineSrc\ResourceManager.h(33): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
   Ventura.vcxproj -> C:\Users\Victor\Desktop\Ventura\x64\Debug\Ventura.exe

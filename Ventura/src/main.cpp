@@ -7,7 +7,7 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods);
 void MousePosCallback(GLFWwindow * window, double xPos, double yPos);
 
-//TODO: Find a way allow to developer to edit window size without having to touch main.cpp
+//Note: Change window size here
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
@@ -82,7 +82,7 @@ int main() {
         ventura.ProcessInput(deltaTime);
         ventura.Update(deltaTime);
 
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f); //Change background color here (R, G, B, A)
         glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui_ImplGlfw_NewFrame();
