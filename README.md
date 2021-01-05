@@ -1,2 +1,2 @@
 # Ventura
-Ventura is a 2D game engine developed by Victor Alvizo, it serves to fulfill the basic purpose of making games to create. Ventura gives the the basics tool necessary to complete a game quicky and easily. 
+Ventura is a simple 2D game engine with of aim of helping people learn how to code while making games. Ventura holds the basic tools to make a 2D game as simply as possible to enter the world of programming / game development.
