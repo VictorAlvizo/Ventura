@@ -7,16 +7,14 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods);
 void MousePosCallback(GLFWwindow * window, double xPos, double yPos);
 
-//Note: Change window size here
-const unsigned int SCREEN_WIDTH = 800;
-const unsigned int SCREEN_HEIGHT = 600;
-
-Game ventura(SCREEN_WIDTH, SCREEN_HEIGHT, 50.0f);
+//Note: If planning to not use full screen, declare initial size here
+float windowWidth = 800, windowHeight = 600;
+Game * ventura;
 
 void FramebufferSizeCallback(GLFWwindow * window, int width, int height) {
     glViewport(0, 0, width, height);
-    ventura.m_Width = width;
-    ventura.m_Height = height;
+    ventura->m_Width = width;
+    ventura->m_Height = height;
 }
 
 int main() {
@@ -34,18 +32,26 @@ int main() {
         std::cout << "Error: Failed to initialize GLFW" << std::endl;
     }
 
-    /*int moniterCount;
-    GLFWmonitor** moniters = glfwGetMonitors(&moniterCount);
-    const GLFWvidmode* currentMode = glfwGetVideoMode(moniters[1]);
+    /* Uncomment if you want to use fullscreen
+    int moniterCount;
+    GLFWmonitor ** moniters = glfwGetMonitors(&moniterCount);
+    //Note: Replace the 0 with whatever moniter you want the window to pop out on, moniterCount
+    //Provides the # of moniters avalible. could make a simple C++ script beforehand to
+    //provide the user control of the display
+    const GLFWvidmode * currentMode = glfwGetVideoMode(moniters[0]);
 
-    GLFWmonitor* moniter = glfwGetPrimaryMonitor();
-    window = glfwCreateWindow(1920, 1080, "Cool", moniters[1], nullptr);
+    windowWidth = currentMode->width;
+    windowHeight = currentMode->height;
+    window = glfwCreateWindow(windowWidth, windowHeight, "Ventura", moniters[0], nullptr); */
 
-    window = glfwCreateWindow(currentMode->width, currentMode->height, "Ventura", nullptr, nullptr); */
+    //Note: Use this line if not using full screen mode, comment this out if using full screen
+    window = glfwCreateWindow(windowWidth, windowHeight, "Ventura", nullptr, nullptr);
 
-    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ventura", nullptr, nullptr);
+    //3rd parameter is the initial gravity value
+    ventura = new Game(windowWidth, windowHeight, 50.0f);
 
     GLFWimage images[1];
+    //Note: Insert your own favicon image here by replacing "ProductImages..." with your own image path
     images[0].pixels = stbi_load("ProductImages/VenturaLogo.png", &images[0].width, &images[0].height, 0, 4);
     glfwSetWindowIcon(window, 1, images);
     stbi_image_free(images[0].pixels);
@@ -68,11 +74,11 @@ int main() {
     glfwSetCursorPosCallback(window, MousePosCallback);
 
     glfwSetMouseButtonCallback(window, MouseButtonCallback);
-    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glViewport(0, 0, windowWidth, windowHeight);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    ventura.Init();
+    ventura->Init();
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
@@ -93,8 +99,8 @@ int main() {
 
         ImGui_ImplOpenGL3_NewFrame();
 
-        ventura.ProcessInput(deltaTime);
-        ventura.Update(deltaTime);
+        ventura->ProcessInput(deltaTime);
+        ventura->Update(deltaTime);
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -102,7 +108,7 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ventura.Render();
+        ventura->Render();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -115,6 +121,9 @@ int main() {
     ImGui::DestroyContext();
 
     glfwTerminate();
+    delete ventura;
+    ventura = nullptr;
+
     return 0;
 }
 
@@ -126,20 +135,20 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 
     if (key >= 0 && key <= 1024) {
         if (action == GLFW_PRESS) {
-            ventura.m_Keys[key] = true;
-            ventura.m_KeyAllowment[key] = 1;
+            ventura->m_Keys[key] = true;
+            ventura->m_KeyAllowment[key] = 1;
         }
         else if (action == GLFW_RELEASE) {
-            ventura.m_Keys[key] = false;
-            ventura.m_KeyAllowment[key] = 0;
+            ventura->m_Keys[key] = false;
+            ventura->m_KeyAllowment[key] = 0;
         }
     }
 }
 
 void MousePosCallback(GLFWwindow * window, double xPos, double yPos) {
-    ventura.m_MousePos = glm::vec2(xPos, yPos);
+    ventura->m_MousePos = glm::vec2(xPos, yPos);
 }
 
 void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods) {
-    ventura.m_MouseButtons[button] = (action == GLFW_PRESS) ? true : false;
+    ventura->m_MouseButtons[button] = (action == GLFW_PRESS) ? true : false;
 }
