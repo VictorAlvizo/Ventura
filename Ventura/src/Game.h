@@ -1,5 +1,5 @@
 #pragma once
-#include "EngineSrc/EngineHeader.h"
+#include "EngineHeader.h"
 
 class Game {
 public:
@@ -23,6 +23,7 @@ public:
 
 private:
 	void CheckCollisions();
+
 	void EngineInit();
 	void EngineUpdate();
 

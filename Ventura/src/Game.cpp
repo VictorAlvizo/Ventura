@@ -1,5 +1,7 @@
 #include "Game.h"
 
+float volume = 0.1f;
+
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
@@ -24,6 +26,7 @@ void Game::ProcessInput(float deltaTime) {
 
 void Game::Update(float deltaTime) {
 	EngineUpdate();
+
 	CheckCollisions();
 }
 
@@ -42,10 +45,10 @@ void Game::EngineInit() {
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
 
 	//Load Essential Shaders
-	ResourceManager::LoadShader("src/EngineSrc/Shaders/SpriteVertex.glsl", "src/EngineSrc/Shaders/SpriteFragment.glsl", "sprite");
-	ResourceManager::LoadShader("src/EngineSrc/Shaders/TextVertex.glsl", "src/EngineSrc/Shaders/TextFragment.glsl", "text");
-	ResourceManager::LoadShader("src/EngineSrc/Shaders/HBOutlineVertex.glsl", "src/EngineSrc/Shaders/HBOutlineFragment.glsl", "hboutline");
-	ResourceManager::LoadShader("src/EngineSrc/Shaders/FilterVertex.glsl", "src/EngineSrc/Shaders/FilterFragment.glsl", "filter");
+	ResourceManager::LoadShader("src/Shaders/SpriteVertex.glsl", "src/Shaders/SpriteFragment.glsl", "sprite");
+	ResourceManager::LoadShader("src/Shaders/TextVertex.glsl", "src/Shaders/TextFragment.glsl", "text");
+	ResourceManager::LoadShader("src/Shaders/HBOutlineVertex.glsl", "src/Shaders/HBOutlineFragment.glsl", "hboutline");
+	ResourceManager::LoadShader("src/Shaders/FilterVertex.glsl", "src/Shaders/FilterFragment.glsl", "filter");
 
 	//Load Essential Textures
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
