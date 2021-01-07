@@ -10,3 +10,4 @@
 #include "Camera.h"
 #include "Filter.h"
 #include "FileSystem.h"
+#include "Slider.h"

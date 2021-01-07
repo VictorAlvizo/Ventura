@@ -1,11 +1,12 @@
 #include "Game.h"
 
-float volume = 0.1f;
+float slideValue = 100.0f;
 
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
 	m_SpriteRenderer = nullptr;
+	m_Slider = nullptr;
 }
 
 Game::~Game() {
@@ -13,11 +14,17 @@ Game::~Game() {
 	m_SpriteRenderer = nullptr;
 
 	m_Camera = nullptr;
+
+	delete m_Slider;
+	m_Slider = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
-	//Initialize game here
+	
+	ResourceManager::LoadTexture("Textures/SliderTest.png", "Slide");
+
+	m_Slider = new Slider(ResourceManager::Get<Texture>("Slide"), glm::vec2(100.0f), glm::vec2(300.0f, 100.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -27,13 +34,22 @@ void Game::ProcessInput(float deltaTime) {
 void Game::Update(float deltaTime) {
 	EngineUpdate();
 
+	m_Slider->SetPercentage(slideValue);
+
+	if (m_Slider->getPercentage() == 0.0f) {
+		std::cout << "Out of health!" << std::endl;
+	}
+
 	CheckCollisions();
 }
 
 void Game::Render() {
 	ImGui::Begin("ImGui");
-	//ImGui Code
+	ImGui::SliderFloat("Slide Value", &slideValue, 0.0f, 100.0f);
 	ImGui::End();
+
+	m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("Slide"), glm::vec2(100.0f), glm::vec2(300.0f, 100.0f));
+	m_Slider->Draw(*m_SpriteRenderer, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Game::CheckCollisions() {

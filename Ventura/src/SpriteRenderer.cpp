@@ -17,7 +17,7 @@ SpriteRenderer::~SpriteRenderer() {
 	glDeleteVertexArrays(1, &m_VAO);
 }
 
-void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, float rotate, glm::vec4 color, std::vector<float> texUV) {
+void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, float rotate, glm::vec4 color, std::vector<float> texUV, std::vector<float> posUV) {
 	m_Shader->Bind();
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(pos, 0.0f));
@@ -36,11 +36,15 @@ void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size,
 	texture.Bind(0);
 	glBindVertexArray(m_VAO);
 
+	glBindBuffer(GL_ARRAY_BUFFER, m_PosVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(posUV), &posUV[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	glBindBuffer(GL_ARRAY_BUFFER, m_TexVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(texUV), &texUV[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 	m_Shader->UnBind();
@@ -66,17 +70,17 @@ void SpriteRenderer::init() {
 		0, 3, 1
 	};
 
-	unsigned int posVBO, ibo;
+	unsigned int ibo;
 
 	glGenVertexArrays(1, &m_VAO);
-	glGenBuffers(1, &posVBO);
+	glGenBuffers(1, &m_PosVBO);
 	glGenBuffers(1, &m_TexVBO);
 	glGenBuffers(1, &ibo);
 
 	glBindVertexArray(m_VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, posVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(posVertices), posVertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, m_PosVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(posVertices), posVertices, GL_DYNAMIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);

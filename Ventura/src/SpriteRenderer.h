@@ -16,12 +16,17 @@ public:
 			1.0f, 0.0f,
 			0.0f, 0.0f,
 			1.0f, 1.0f
+		}, std::vector<float> posUV = {
+			0.0f, 1.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f,
+			1.0f, 1.0f
 		});
 
 protected:
 	virtual void init();
 
-	unsigned int m_VAO, m_TexVBO;
+	unsigned int m_VAO, m_TexVBO, m_PosVBO;
 
 	std::shared_ptr<Shader> m_Shader;
 };
