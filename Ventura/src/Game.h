@@ -30,6 +30,6 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 
-	Slider * m_Slider;
+	Button * m_Button;
 };
 

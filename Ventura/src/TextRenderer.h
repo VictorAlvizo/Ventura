@@ -16,7 +16,7 @@ struct Character {
 class TextRenderer {
 public:
 	//Width and height must = the width and height of the game window
-	TextRenderer(const unsigned int width, const unsigned int height, bool followCamera);
+	TextRenderer(const unsigned int width, const unsigned int height, bool followCamera = false);
 
 	bool LoadFont(const std::string& fontPath, const unsigned int fontSize);
 	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f));

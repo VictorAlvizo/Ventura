@@ -30,7 +30,7 @@ Entity::Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size,
 	if (!childClass) {
 		//Set hitbox varibles
 		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, m_Mass, this);
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Velocity, m_Rotation, m_Mass, this);
 	}
 }
 
@@ -49,7 +49,7 @@ Entity::Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, 
 
 	if (!childClass) {
 		glm::vec2 hitboxSize = (hbSize != glm::vec2(0.0f)) ? hbSize : m_Size;
-		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Rotation, m_Mass, this);
+		m_Hitbox = new Hitbox(glm::vec2(hbPos + pos), hitboxSize, m_Velocity, m_Rotation, m_Mass, this);
 	}
 }
 
@@ -68,7 +68,7 @@ Entity::Entity(const Entity& copy) {
 	m_Size = copy.m_Size;
 	m_SpriteSheet = (copy.m_SpriteSheet) ? new SpriteSheetReader(copy.m_Texture, copy.m_SpriteSheet->getSpriteSize()) : nullptr;
 	m_Camera = nullptr;
-	m_Hitbox = new Hitbox(copy.getHitbox()->getPos(), copy.getHitbox()->getSize(), copy.getHitbox()->m_Rotation, copy.getHitbox()->getMass(), this);
+	m_Hitbox = new Hitbox(copy.getHitbox()->getPos(), copy.getHitbox()->getSize(), copy.getHitbox()->m_Velocity, copy.getHitbox()->m_Rotation, copy.getHitbox()->getMass(), this);
 	m_HitboxOffset = copy.m_HitboxOffset;
 	m_Texture = copy.m_Texture;
 }
@@ -87,7 +87,7 @@ void Entity::operator=(const Entity& copy) {
 	m_Size = copy.m_Size;
 	m_SpriteSheet = (copy.m_SpriteSheet) ? new SpriteSheetReader(copy.m_Texture, copy.m_SpriteSheet->getSpriteSize()) : nullptr;
 	m_Camera = nullptr;
-	m_Hitbox = new Hitbox(copy.getHitbox()->getPos(), copy.getHitbox()->getSize(), copy.getHitbox()->m_Rotation, copy.getHitbox()->getMass(), this);
+	m_Hitbox = new Hitbox(copy.getHitbox()->getPos(), copy.getHitbox()->getSize(), copy.getHitbox()->m_Velocity, copy.getHitbox()->m_Rotation, copy.getHitbox()->getMass(), this);
 	m_HitboxOffset = copy.m_HitboxOffset;
 	m_Texture = copy.m_Texture;
 }

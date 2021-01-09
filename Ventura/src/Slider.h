@@ -5,7 +5,7 @@
 
 class Slider {
 public:
-	//TODO: Add offsets
+	//if want to use the default send the texture named "slider"
 	Slider(std::shared_ptr<Texture> slideTexture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, float initPercentage = 100.0f);
 
 	void Draw(SpriteRenderer& spriteRenderer, glm::vec3 color = glm::vec3(1.0f), bool flip = false);

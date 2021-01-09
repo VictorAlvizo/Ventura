@@ -10,8 +10,8 @@ Hitbox::Hitbox()
 	m_Entity = nullptr;
 }
 
-Hitbox::Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, float rotation, float mass, Entity * parentEntity)
-	:m_Pos(hitboxPos), m_Size(hitboxSize), m_Rotation(rotation), m_Entity(parentEntity), m_Mass(mass), m_Velocity(0.0f)
+Hitbox::Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, glm::vec2 velocity, float rotation, float mass, Entity * parentEntity)
+	:m_Pos(hitboxPos), m_Size(hitboxSize), m_Velocity(velocity), m_Rotation(rotation), m_Entity(parentEntity), m_Mass(mass)
 {
 	m_Renderer = new HitboxRenderer(ResourceManager::Get<Shader>("hboutline"));
 	m_ShowHitbox = true;

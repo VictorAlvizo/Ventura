@@ -233,7 +233,7 @@ bool CollisionHandler::isInvisible(Camera& camera, Hitbox& hitbox) {
 }
 
 CollisionHandler::CollisionDirction CollisionHandler::colDir(glm::vec2 centerVector) {
-    //TODO: For elongated shapes this may not work, have to change to a more accurate way of finding it
+    //TODO: For elongated shapes this may not work, dot product not perfect to determine best placement
 
     glm::vec2 directions[4] = {
         glm::vec2(1.0f, 0.0f), //Right

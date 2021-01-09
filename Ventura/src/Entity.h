@@ -100,7 +100,7 @@ public:
 
 		entity.m_FromFile = true;
 		entity.m_Texture = ResourceManager::GetTextureFromFileName(texturePath);
-		entity.m_Hitbox = new Hitbox(hitboxPos, hitboxSize, hitboxRotation, hitboxMass, &entity);
+		entity.m_Hitbox = new Hitbox(hitboxPos, hitboxSize, entity.m_Velocity, hitboxRotation, hitboxMass, &entity);
 		entity.m_SpriteSheet = (spriteSize != glm::vec2(0.0f)) ? new SpriteSheetReader(entity.m_Texture, spriteSize) : nullptr;
 
 		return input;

@@ -1,12 +1,11 @@
 #include "Game.h"
 
-float slideValue = 100.0f;
-
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
 	m_SpriteRenderer = nullptr;
-	m_Slider = nullptr;
+
+	m_Button = nullptr;
 }
 
 Game::~Game() {
@@ -15,45 +14,50 @@ Game::~Game() {
 
 	m_Camera = nullptr;
 
-	delete m_Slider;
-	m_Slider = nullptr;
+	delete m_Button;
+	m_Button = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
-	
-	ResourceManager::LoadTexture("Textures/SliderTest.png", "Slide");
 
-	m_Slider = new Slider(ResourceManager::Get<Texture>("Slide"), glm::vec2(100.0f), glm::vec2(300.0f, 100.0f));
+	ResourceManager::LoadTexture("Textures/ButtonHover.png", "buttonHover");
+	ResourceManager::LoadTexture("Textures/ButtonClick.png", "buttonClick");
+
+	m_Button = new Button(m_Width, m_Height, *ResourceManager::Get<Texture>("button"), *ResourceManager::Get<Texture>("buttonHover"), *ResourceManager::Get<Texture>("buttonClick"), glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), "Normal");
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//Manage input
+	//Best place to check mouse events would be in the ProcessInput loop
+	//These functions HAVE to be called so Status can change, well atleast isClicked() because that calls isHovering()
+	if (m_Button->isClicked(m_MousePos, m_MouseButtons[GLFW_MOUSE_BUTTON_1])) {
+		m_Button->m_ButtonText = "Clicked!";
+	}
+	else if(m_Button->isHovering(m_MousePos)){
+		m_Button->m_ButtonText = "Hovering!";
+	}
+	else {
+		m_Button->m_ButtonText = "Normal!";
+	}
+
 }
 
 void Game::Update(float deltaTime) {
 	EngineUpdate();
-
-	m_Slider->SetPercentage(slideValue);
-
-	if (m_Slider->getPercentage() == 0.0f) {
-		std::cout << "Out of health!" << std::endl;
-	}
 
 	CheckCollisions();
 }
 
 void Game::Render() {
 	ImGui::Begin("ImGui");
-	ImGui::SliderFloat("Slide Value", &slideValue, 0.0f, 100.0f);
+	//ImGui Code
 	ImGui::End();
 
-	m_SpriteRenderer->DrawSprite(*ResourceManager::Get<Texture>("Slide"), glm::vec2(100.0f), glm::vec2(300.0f, 100.0f));
-	m_Slider->Draw(*m_SpriteRenderer, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_Button->Draw(*m_SpriteRenderer, true, glm::vec4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 void Game::CheckCollisions() {
-	//Manage Collision
+	//holder
 }
 
 void Game::EngineInit() {
@@ -68,6 +72,8 @@ void Game::EngineInit() {
 
 	//Load Essential Textures
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
+	ResourceManager::LoadTexture("Textures/SliderTexture.png", "slider");
+	ResourceManager::LoadTexture("Textures/ButtonTexture.png", "button");
 
 	//Set the default view and projection uniforms in the shaders
 	ResourceManager::Get<Shader>("sprite")->Bind();
