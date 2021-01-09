@@ -61,14 +61,12 @@ void Button::SetPos(glm::vec2 newPos) {
 void Button::SetRotation(float newRotation) {
 	m_Rotation = newRotation;
 	m_Hitbox->m_Rotation = m_Rotation;
-
-	//TODO: Add rotation here for text once I have that feature avalible
+	m_Text->m_Rotation = m_Rotation;;
 }
 
 void Button::ChangeFont(unsigned int fontSize, std::string fontPath) {
 	m_Text->LoadFont(fontPath, fontSize);
 }
-
 
 bool Button::isHovering(glm::vec2 mousePos) {
 	if (CollisionHandler::CollidePoint(mousePos, *m_Hitbox)) {

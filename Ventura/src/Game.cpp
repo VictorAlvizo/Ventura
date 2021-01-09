@@ -1,5 +1,7 @@
 #include "Game.h"
 
+float buttonRotation = 0.0f;
+
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
@@ -39,21 +41,22 @@ void Game::ProcessInput(float deltaTime) {
 	else {
 		m_Button->m_ButtonText = "Normal!";
 	}
-
 }
 
 void Game::Update(float deltaTime) {
 	EngineUpdate();
+
+	m_Button->SetRotation(buttonRotation);
 
 	CheckCollisions();
 }
 
 void Game::Render() {
 	ImGui::Begin("ImGui");
-	//ImGui Code
+	ImGui::SliderFloat("Rotation", &buttonRotation, 0.0f, 360.0f);
 	ImGui::End();
 
-	m_Button->Draw(*m_SpriteRenderer, true, glm::vec4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	m_Button->Draw(*m_SpriteRenderer, false, glm::vec4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 void Game::CheckCollisions() {

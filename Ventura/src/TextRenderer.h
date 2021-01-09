@@ -21,6 +21,8 @@ public:
 	bool LoadFont(const std::string& fontPath, const unsigned int fontSize);
 	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f));
 
+	float m_Rotation;
+
 private:
 	std::unordered_map<char, Character> m_Characters;
 

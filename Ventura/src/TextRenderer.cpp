@@ -24,6 +24,8 @@ TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, 
 	glBindVertexArray(0);
 
 	m_Shader.UnBind();
+
+	m_Rotation = 0.0f;
 }
 
 bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int fontSize) {
@@ -78,8 +80,6 @@ bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int font
 }
 
 void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color) {
-	//TODO: Make text be able to rotate, model matrix just for rotation? glm::mat4(1.0f) + glm::rotation?
-
 	m_Shader.Bind();
 	m_Shader.SetVec3("u_TextColor", color);
 
@@ -116,14 +116,13 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 		x += (ch.m_Advance >> 6) * scale;
 	}
 
+	//For text rotation
+	//TODO: Small bug where the pivot point for the rotation is not correct
 	glm::mat4 model = glm::mat4(1.0f);
 
-	/* TODO: Testing code for text rotation
-	glm::vec2 size(1.0f);
-	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-	model = glm::rotate(model, glm::radians(360.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f)); 
-	*/
+	model = glm::translate(model, glm::vec3(x, y, 0.0f));
+	model = glm::rotate(model, glm::radians(m_Rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(-x, -y, 0.0f));
 
 	m_Shader.SetMat4("u_Model", model);
 

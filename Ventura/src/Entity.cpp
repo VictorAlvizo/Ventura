@@ -105,20 +105,20 @@ Entity::~Entity() {
 	}
 }
 
-void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, glm::vec3 hbColor) {
-	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, glm::vec4(color, 1.0f));
+void Entity::Draw(SpriteRenderer& spriteRenderer, glm::vec4 color, glm::vec3 hbColor) {
+	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, color);
 
 	if (m_Hitbox->m_ShowHitbox) {
 		m_Hitbox->Draw(hbColor);
 	}
 }
 
-void Entity::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec3 color, glm::vec3 hbColor) {
+void Entity::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec4 color, glm::vec3 hbColor) {
 	if (!m_SpriteSheet) {
 		std::cout << "Error: Entity does not have a dedicated sprite sheet" << std::endl;
 	}
 	else {
-		spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, glm::vec4(color, 1.0f), 
+		spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, color, 
 			m_SpriteSheet->getTexUV(spritePos.x, spritePos.y, m_Flipped));
 
 		if (m_Hitbox->m_ShowHitbox) {
