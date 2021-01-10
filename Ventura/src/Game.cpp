@@ -1,13 +1,11 @@
 #include "Game.h"
 
-float buttonRotation = 0.0f;
+bool shouldBurst = true;
 
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
 	m_SpriteRenderer = nullptr;
-
-	m_Button = nullptr;
 }
 
 Game::~Game() {
@@ -15,48 +13,43 @@ Game::~Game() {
 	m_SpriteRenderer = nullptr;
 
 	m_Camera = nullptr;
-
-	delete m_Button;
-	m_Button = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
 
-	ResourceManager::LoadTexture("Textures/ButtonHover.png", "buttonHover");
-	ResourceManager::LoadTexture("Textures/ButtonClick.png", "buttonClick");
+	m_Particles = new ParticleGenerator(*ResourceManager::Get<Texture>("hitboxCircle"), glm::vec2(300.0f), glm::vec2(0.0f, 100.0f), glm::vec4(10.0f), glm::vec2(30.0f));
+	m_Particles->AppendVelocityList({ glm::vec2(0.0f, -100.0f), glm::vec2(100.0f, 0.0f), glm::vec2(-100.0f, 0.0f) });
+	m_Particles->AppendColors({ glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f) });
 
-	m_Button = new Button(m_Width, m_Height, *ResourceManager::Get<Texture>("button"), *ResourceManager::Get<Texture>("buttonHover"), *ResourceManager::Get<Texture>("buttonClick"), glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), "Normal");
+	//Spawn new particles for half a second every 2 seconds
+	m_Particles->BurstMode(true, 0.5f);
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//Best place to check mouse events would be in the ProcessInput loop
-	//These functions HAVE to be called so Status can change, well atleast isClicked() because that calls isHovering()
-	if (m_Button->isClicked(m_MousePos, m_MouseButtons[GLFW_MOUSE_BUTTON_1])) {
-		m_Button->m_ButtonText = "Clicked!";
-	}
-	else if(m_Button->isHovering(m_MousePos)){
-		m_Button->m_ButtonText = "Hovering!";
-	}
-	else {
-		m_Button->m_ButtonText = "Normal!";
+	//Toggle the option for particle bursting, needs to ensure it only proccesses 1 key or else
+	//it can glitch during toggling
+	if (m_Keys[GLFW_KEY_SPACE] && m_KeyAllowment[GLFW_KEY_SPACE] == 1) {
+		m_KeyAllowment[GLFW_KEY_SPACE] = 0;
+
+		shouldBurst = !shouldBurst;
+		m_Particles->BurstMode(shouldBurst, 0.5f);
 	}
 }
 
 void Game::Update(float deltaTime) {
 	EngineUpdate();
-
-	m_Button->SetRotation(buttonRotation);
-
 	CheckCollisions();
+
+	m_Particles->Update(deltaTime, 2, true, true);
 }
 
 void Game::Render() {
 	ImGui::Begin("ImGui");
-	ImGui::SliderFloat("Rotation", &buttonRotation, 0.0f, 360.0f);
+	//ImGui Code
 	ImGui::End();
 
-	m_Button->Draw(*m_SpriteRenderer, false, glm::vec4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	m_Particles->Draw(*m_SpriteRenderer);
 }
 
 void Game::CheckCollisions() {

@@ -15,22 +15,25 @@ struct Particle {
 
 class ParticleGenerator {
 public:
-	ParticleGenerator(Texture& texture, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color = glm::vec3(1.0f), bool rotate = false, int maxParticles = 500, float life = 1.0f);
+	ParticleGenerator(Texture& texture, glm::vec2 initialPos, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color = glm::vec3(1.0f), bool rotate = false, int maxParticles = 500, float life = 1.0f);
 
 	void Draw(SpriteRenderer& spriteRenderer);
 	void Update(float deltaTime, int reviveAmount = 2, bool diminishColor = true, bool spawnMore = true);
 
+	void BurstMode(bool activate, float duration = 2.0f, float coolDown = 2.0f);
+
 	void AppendVelocityList(std::vector<glm::vec2> velocityList);
-	void RemoveVelocity(glm::vec2 velocity);
+	bool RemoveVelocity(glm::vec2 velocity);
 	//Clears all the velocites except for the inital one
 	void ClearVelocityList();
 
 	void AppendColors(std::vector<glm::vec3> colors);
-	void RemoveColor(glm::vec3 color);
+	bool RemoveColor(glm::vec3 color);
 	//Clears all the colors except for the inital one
 	void ClearColors();
 
 	inline bool rotatingEnabled() const { return m_ShouldRotate; }
+	inline bool isBurstActive() const { return m_BurstEnabled; }
 
 	glm::vec2 m_SpawnPos;
 		
@@ -48,7 +51,12 @@ private:
 	std::vector<glm::vec2> m_VelocityList;
 
 	int m_MaxAmount;
-	float m_MaxLife;
 	int m_CurrentIndex;
+	float m_MaxLife;
 	bool m_ShouldRotate;
+
+	//Varibles regarding burst mode
+	bool m_BurstEnabled, m_CooldownActive;
+	float m_MaxDuration, m_Duration;
+	float m_MaxCoolDown, m_CoolDown;
 };

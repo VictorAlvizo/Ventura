@@ -30,6 +30,6 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 
-	Button * m_Button;
+	ParticleGenerator * m_Particles;
 };
 
