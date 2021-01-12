@@ -38,7 +38,7 @@ void Circle::Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec
 	}
 	else {
 		spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, m_Flipped, m_Rotation, color,
-			m_SpriteSheet->getTexUV(spritePos.x, spritePos.y, m_Flipped));
+			m_SpriteSheet->getTexUV(spritePos, m_Flipped));
 
 		if (m_Hitbox->m_ShowHitbox) {
 			dynamic_cast<HitCircle *>(m_Hitbox)->Draw(spriteRenderer, hbColor);

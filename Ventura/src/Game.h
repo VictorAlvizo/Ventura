@@ -29,7 +29,5 @@ private:
 
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
-
-	ParticleGenerator * m_Particles;
 };
 

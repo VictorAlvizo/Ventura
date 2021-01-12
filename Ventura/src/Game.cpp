@@ -18,30 +18,16 @@ Game::~Game() {
 void Game::Init() {
 	EngineInit();
 
-	m_Particles = new ParticleGenerator(*ResourceManager::Get<Texture>("hitboxCircle"), glm::vec2(300.0f), glm::vec2(0.0f, 100.0f), glm::vec4(10.0f), glm::vec2(30.0f));
-	m_Particles->AppendVelocityList({ glm::vec2(0.0f, -100.0f), glm::vec2(100.0f, 0.0f), glm::vec2(-100.0f, 0.0f) });
-	m_Particles->AppendColors({ glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f) });
-
-	//Spawn new particles for half a second every 2 seconds
-	m_Particles->BurstMode(true, 0.5f);
+	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//Toggle the option for particle bursting, needs to ensure it only proccesses 1 key or else
-	//it can glitch during toggling
-	if (m_Keys[GLFW_KEY_SPACE] && m_KeyAllowment[GLFW_KEY_SPACE] == 1) {
-		m_KeyAllowment[GLFW_KEY_SPACE] = 0;
-
-		shouldBurst = !shouldBurst;
-		m_Particles->BurstMode(shouldBurst, 0.5f);
-	}
+	//holder
 }
 
 void Game::Update(float deltaTime) {
 	EngineUpdate();
 	CheckCollisions();
-
-	m_Particles->Update(deltaTime, 2, true, true);
 }
 
 void Game::Render() {
@@ -49,7 +35,7 @@ void Game::Render() {
 	//ImGui Code
 	ImGui::End();
 
-	m_Particles->Draw(*m_SpriteRenderer);
+	//holder
 }
 
 void Game::CheckCollisions() {

@@ -9,7 +9,7 @@ public:
 	SpriteSheetReader(std::shared_ptr<Texture> texture, glm::vec2 spriteSize);
 	~SpriteSheetReader();
 
-	std::vector<float> getTexUV(int x, int y, bool isFlipped);
+	std::vector<float> getTexUV(glm::ivec2 spritePos, bool isFlipped);
 
 	inline glm::vec2 getSpriteSize() const { return m_SpriteSize; }
 

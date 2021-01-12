@@ -27,16 +27,16 @@ SpriteSheetReader::~SpriteSheetReader() {
 	//holder
 }
 
-std::vector<float> SpriteSheetReader::getTexUV(int x, int y, bool isFlipped) {
+std::vector<float> SpriteSheetReader::getTexUV(glm::ivec2 spritePos, bool isFlipped) {
 	int xMax = m_Width / m_SpriteSize.x;
 	int yMax = m_Height / m_SpriteSize.y;
 
-	if (x > xMax - 1 || y > yMax - 1) {
+	if (spritePos.x > xMax - 1 || spritePos.y > yMax - 1) {
 		std::cout << "Error: Beyond valid sprite coordinates" << std::endl;
 		return m_TexUVs[0];
 	}
 	else {
 		//* by xMax to skip a row, if the texture is flipped, need to inverse my x coordinate
-		return (!isFlipped) ? m_TexUVs[(y * xMax) + x] : m_TexUVs[(y * xMax) + (xMax - 1) - x];
+		return (!isFlipped) ? m_TexUVs[(spritePos.y * xMax) + spritePos.x] : m_TexUVs[(spritePos.y * xMax) + (xMax - 1) - spritePos.x];
 	}
 }
