@@ -1,7 +1,5 @@
 #include "Game.h"
 
-bool shouldBurst = true;
-
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {

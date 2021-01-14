@@ -1,7 +1,7 @@
 #include "Button.h"
 
-Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont)
-	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont)
+Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
+	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset)
 {
 	for (int i = 0; i < 3; i++) {
 		m_ButtonTextures[i] = buttonTexture;
@@ -10,13 +10,14 @@ Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& but
 	m_Text = new TextRenderer(windowWidth, windowHeight);
 	m_Text->LoadFont(customFont, m_FontSize);
 
-	m_Hitbox = new Hitbox(m_Pos, m_Size, glm::vec2(0.0f), m_Rotation);
+	glm::vec2 hitSize = (hitboxSize != glm::vec2(0.0f)) ? hitboxSize : m_Size;
+	m_Hitbox = new Hitbox(m_Pos + m_HitboxOffset, hitSize, glm::vec2(0.0f), m_Rotation);
 
 	m_CurrentStatus = Status::NORMAL;
 }
 
-Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& buttonTexture, Texture& hoverTexture, Texture& clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont)
-	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont)
+Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& buttonTexture, Texture& hoverTexture, Texture& clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
+	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset)
 {
 	m_ButtonTextures[0] = buttonTexture;
 	m_ButtonTextures[1] = hoverTexture;
@@ -25,7 +26,8 @@ Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& but
 	m_Text = new TextRenderer(windowWidth, windowHeight);
 	m_Text->LoadFont(customFont, m_FontSize);
 
-	m_Hitbox = new Hitbox(m_Pos, m_Size, glm::vec2(0.0f), m_Rotation);
+	glm::vec2 hitSize = (hitboxSize != glm::vec2(0.0f)) ? hitboxSize : m_Size;
+	m_Hitbox = new Hitbox(m_Pos + m_HitboxOffset, hitSize, glm::vec2(0.0f), m_Rotation);
 
 	m_CurrentStatus = Status::NORMAL;
 }
@@ -55,7 +57,7 @@ void Button::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, glm::vec4 but
 
 void Button::SetPos(glm::vec2 newPos) {
 	m_Pos = newPos;
-	m_Hitbox->Move(m_Pos);
+	m_Hitbox->Move(m_Pos + m_HitboxOffset);
 }
 
 void Button::SetRotation(float newRotation) {
@@ -65,7 +67,8 @@ void Button::SetRotation(float newRotation) {
 }
 
 void Button::ChangeFont(unsigned int fontSize, std::string fontPath) {
-	m_Text->LoadFont(fontPath, fontSize);
+	m_TextPath = (fontPath == "") ? m_TextPath : fontPath;
+	m_Text->LoadFont(m_TextPath, fontSize);
 }
 
 bool Button::isHovering(glm::vec2 mousePos) {
