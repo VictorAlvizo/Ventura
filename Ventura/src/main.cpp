@@ -114,6 +114,10 @@ int main() {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
+
+        if (ventura->m_CloseWindow) {
+            glfwSetWindowShouldClose(window, true);
+        }
     }
 
     ImGui_ImplOpenGL3_Shutdown();

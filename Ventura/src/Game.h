@@ -21,6 +21,8 @@ public:
 	unsigned int m_Width, m_Height;
 	float m_Gravity;
 
+	bool m_CloseWindow = false;
+
 private:
 	void CheckCollisions();
 
