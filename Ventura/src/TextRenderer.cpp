@@ -1,6 +1,6 @@
 #include "TextRenderer.h"
 
-TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, bool followCamera) {
+TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, std::string fontPath, unsigned int fontSize, bool followCamera) {
 	m_Shader = *ResourceManager::Get<Shader>("text");
 	m_Shader.Bind();
 
@@ -26,6 +26,7 @@ TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, 
 	m_Shader.UnBind();
 
 	m_Rotation = 0.0f;
+	LoadFont(fontPath, fontSize);
 }
 
 bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int fontSize) {
