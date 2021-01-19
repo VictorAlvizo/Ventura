@@ -1,6 +1,6 @@
 #include "ParticleGenerator.h"
 
-ParticleGenerator::ParticleGenerator(Texture& texture, glm::vec2 initialPos, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color, bool rotate, int maxParticles, float life) 
+ParticleGenerator::ParticleGenerator(std::shared_ptr<Texture> texture, glm::vec2 initialPos, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color, bool rotate, int maxParticles, float life) 
 	:m_Texture(texture), m_SpawnPos(initialPos), m_PosRange(posRange), m_SizeRange(sizeRange), m_ShouldRotate(rotate), m_MaxAmount(maxParticles), m_MaxLife(life)
 {
 	std::srand(time(NULL));
@@ -25,7 +25,7 @@ void ParticleGenerator::Draw(SpriteRenderer& spriteRenderer) {
 
 	for (Particle& particle : m_Particles) {
 		if (particle.m_Life > 0.0f) {
-			spriteRenderer.DrawSprite(m_Texture, particle.m_Pos, particle.m_Size, false, particle.m_Rotation, particle.m_Color);
+			spriteRenderer.DrawSprite(*m_Texture, particle.m_Pos, particle.m_Size, false, particle.m_Rotation, particle.m_Color);
 		}
 	}
 

@@ -15,7 +15,7 @@ struct Particle {
 
 class ParticleGenerator {
 public:
-	ParticleGenerator(Texture& texture, glm::vec2 initialPos, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color = glm::vec3(1.0f), bool rotate = false, int maxParticles = 500, float life = 1.0f);
+	ParticleGenerator(std::shared_ptr<Texture> texture, glm::vec2 initialPos, glm::vec2 velocity, glm::ivec4 posRange, glm::ivec2 sizeRange, glm::vec3 color = glm::vec3(1.0f), bool rotate = false, int maxParticles = 500, float life = 1.0f);
 
 	void Draw(SpriteRenderer& spriteRenderer);
 	void Update(float deltaTime, int reviveAmount = 2, bool diminishColor = true, bool spawnMore = true);
@@ -42,7 +42,7 @@ private:
 
 	std::vector<Particle> m_Particles;
 
-	Texture m_Texture;
+	std::shared_ptr<Texture> m_Texture;
 
 	glm::ivec4 m_PosRange; //First vec2 is for the range in the x and the next vec2 is for the range in the y
 	glm::ivec2 m_SizeRange;

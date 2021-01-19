@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
+Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
 	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset)
 {
 	for (int i = 0; i < 3; i++) {
@@ -16,7 +16,7 @@ Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& but
 	m_CurrentStatus = Status::NORMAL;
 }
 
-Button::Button(unsigned int windowWidth, unsigned int windowHeight, Texture& buttonTexture, Texture& hoverTexture, Texture& clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
+Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, std::shared_ptr<Texture> hoverTexture, std::shared_ptr<Texture> clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
 	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset)
 {
 	m_ButtonTextures[0] = buttonTexture;
@@ -47,7 +47,7 @@ void Button::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, glm::vec4 but
 		textOffsets.y = (m_Size.y / 2.0f) - (m_FontSize / 2);
 	}
 
-	spriteRenderer.DrawSprite(m_ButtonTextures[static_cast<int>(m_CurrentStatus)], m_Pos, m_Size, false, m_Rotation, buttonColor);
+	spriteRenderer.DrawSprite(*m_ButtonTextures[static_cast<int>(m_CurrentStatus)], m_Pos, m_Size, false, m_Rotation, buttonColor);
 	m_Text->Text(m_ButtonText, m_Pos.x + textOffsets.x, m_Pos.y + textOffsets.y, 1, textColor);
 
 	if (drawHitbox) {
