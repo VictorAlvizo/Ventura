@@ -11,3 +11,4 @@
 #include "Filter.h"
 #include "FileSystem.h"
 #include "Slider.h"
+#include "Scene.h"

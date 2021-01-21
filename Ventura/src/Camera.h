@@ -6,7 +6,7 @@
 class Camera {
 public:
 	Camera();
-	Camera(glm::vec2 pos, glm::vec2 windowSize,Entity * entity = nullptr);
+	Camera(glm::vec2 pos, glm::vec2 windowSize, Entity * entity = nullptr);
 	~Camera();
 
 	void Move(glm::vec2 pos);

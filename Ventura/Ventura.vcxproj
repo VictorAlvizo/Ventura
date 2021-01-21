@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Slider.cpp" />
     <ClCompile Include="src\FileSystem.cpp" />
     <ClCompile Include="src\Audio.cpp" />
@@ -183,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Button.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Slider.h" />
     <ClInclude Include="src\EngineHeader.h" />
     <ClInclude Include="src\FileSystem.h" />

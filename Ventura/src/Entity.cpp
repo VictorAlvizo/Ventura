@@ -74,8 +74,6 @@ Entity::Entity(const Entity& copy) {
 }
 
 void Entity::operator=(const Entity& copy) {
-	std::cout << "Assignment Operator" << std::endl;
-
 	m_Copied = true;
 	m_Destroyed = copy.m_Destroyed;
 	m_Flipped = copy.m_Flipped;
