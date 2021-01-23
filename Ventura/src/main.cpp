@@ -132,11 +132,6 @@ int main() {
 }
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode) {
-    //Note: Change key or remove block if you want. This code exits out the window when esc is pressed
-    if (key == GLFW_KEY_ESCAPE) {
-        glfwSetWindowShouldClose(window, true);
-    }
-
     if (key >= 0 && key <= 1024) {
         if (action == GLFW_PRESS) {
             ventura->m_Keys[key] = true;

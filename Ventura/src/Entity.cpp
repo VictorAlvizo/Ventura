@@ -165,7 +165,7 @@ void Entity::Translate(float deltaTime) {
 }
 
 void Entity::GravityMovement(float gravity, float deltaTime) {
-	m_Pos.y += gravity * deltaTime; //Physics is frame-rate dependent, want to change that
+	m_Pos.y += gravity * deltaTime; //TODO: Physics is frame-rate dependent, want to change that
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
 }
 

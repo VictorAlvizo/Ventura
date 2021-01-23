@@ -15,6 +15,7 @@ public:
 	virtual void ProcessInput(float deltaTime) = 0;
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render() = 0;
+	virtual void CheckCollisions();
 
 protected:
 	Game * m_GameClass;

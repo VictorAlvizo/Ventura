@@ -9,3 +9,7 @@ Scene::Scene(Game * m_GameClass)
 Scene::~Scene() {
 	m_GameClass = nullptr;
 }
+
+void Scene::CheckCollisions() {
+	//holder
+}

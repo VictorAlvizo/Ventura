@@ -16,7 +16,7 @@ struct Cycle {
 	}
 
 	std::vector<glm::ivec2> m_Range;
-	int m_AnimationSpeed;
+	int m_AnimationSpeed; //Int as the chrono time method only takes in an int
 	bool m_Loop;
 	bool m_CycleComplete;
 
@@ -38,14 +38,16 @@ public:
 	void CustomCycle(const std::string cycleName, std::vector<glm::ivec2> spritePoses, int speed = 100, bool loop = true);
 
 	void Animate(const std::string cycleName);
+	void TerminateAnimation();
 
 	inline glm::ivec2 getSpritePos() const { return m_CurrentIndex; }
 	inline std::string getCurrentAnimation() const { return m_CurrentAnimation; }
-
-	bool m_TerminateAnimation;
+	inline bool isTerminated() const { return m_TerminateAnimation; }
 
 private:
 	void AnimationThread();
+
+	bool m_TerminateAnimation;
 
 	std::unordered_map<std::string, Cycle> m_Cycles;
 
@@ -53,6 +55,7 @@ private:
 	glm::ivec2 m_CurrentIndex;
 	Cycle m_CurrentCycle;
 
+	std::thread * m_AnimationThread;
 	std::mutex m_AnimationMutex;
 };
 

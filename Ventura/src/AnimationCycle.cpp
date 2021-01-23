@@ -16,7 +16,14 @@ AnimationCycle::AnimationCycle(const AnimationCycle& copy) {
 }
 
 AnimationCycle::~AnimationCycle() {
-	m_TerminateAnimation = true;
+	//Check incase TerminateAnimation() has already been called to avoid joining or detaching twice
+	if (!m_TerminateAnimation) {
+		m_TerminateAnimation = true;
+		m_AnimationThread->join(); //Join here as the class will be destroyed, so it dosen't use varibles from a defunct class
+		delete m_AnimationThread;
+		m_AnimationThread = nullptr;
+	}
+
 	m_CurrentAnimation = "";
 }
 
@@ -48,7 +55,7 @@ void AnimationCycle::Animate(std::string cycleName) {
 	if (m_Cycles.find(cycleName) == m_Cycles.end()) {
 		std::cout << "Error: Animation cycle " << cycleName << " not found" << std::endl;
 	}
-	else if (m_CurrentAnimation != cycleName) { //To avoid starting an animation that is currently running again
+	else if (m_CurrentAnimation != cycleName || m_TerminateAnimation) { //To avoid starting an animation that is currently running, again
 		std::lock_guard<std::mutex> lock(m_AnimationMutex);
 
 		//Skip setting a new one if a one cycle animation is currently ongoing
@@ -65,9 +72,18 @@ void AnimationCycle::Animate(std::string cycleName) {
 		//Thread will die once m_TerminateAnimation is true, allows for a max of 1 thread per AnimationCycle class
 		if (m_TerminateAnimation) {
 			m_TerminateAnimation = false; 
-			std::thread animationThread(&AnimationCycle::AnimationThread, this);
-			animationThread.detach();
+			m_AnimationThread = new std::thread(&AnimationCycle::AnimationThread, this);
 		}
+	}
+}
+
+void AnimationCycle::TerminateAnimation() {
+	if (!m_TerminateAnimation) {
+		//Delete pointer and detach the thread as the class will still remain alive
+		m_AnimationThread->detach();
+		m_TerminateAnimation = true;
+		delete m_AnimationThread;
+		m_AnimationThread = nullptr;
 	}
 }
 
@@ -78,9 +94,7 @@ void AnimationCycle::AnimationThread() {
 	while (!m_TerminateAnimation) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(m_CurrentCycle.m_AnimationSpeed));
 
-		/*TODO: There is a bug here. Once the class has been destroyed this thread does not know that
-		and tries to access the classes' varibles. Causing the error. Need to find a way to notify the
-		thread the class is about to be destroyed and to destroy itself before that. */
+		//Dpouble check just to make sure, incase while the thread was asleep TerminateAnimation() was called
 		if (m_TerminateAnimation) {
 			break;
 		}
