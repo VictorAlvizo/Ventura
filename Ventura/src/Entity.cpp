@@ -151,7 +151,7 @@ void Entity::Move(glm::vec2 newPos) {
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
 
 	if (m_Camera) {
-		m_Camera->Move(glm::vec2(m_Pos.x - (m_Size.x), m_Pos.y - (m_Size.y / 2.0f)));
+		m_Camera->Move(m_Pos - (m_Camera->getWindowSize() / 2.0f - m_Size / 2.0f));
 	}
 }
 
@@ -160,7 +160,7 @@ void Entity::Translate(float deltaTime) {
 	m_Hitbox->Move(m_Pos + m_HitboxOffset);
 
 	if (m_Camera) {
-		m_Camera->Move(glm::vec2(m_Pos.x - (m_Size.x), m_Pos.y - (m_Size.y / 2.0f)));
+		m_Camera->Move(m_Pos - (m_Camera->getWindowSize() / 2.0f - m_Size / 2.0f));
 	}
 }
 
