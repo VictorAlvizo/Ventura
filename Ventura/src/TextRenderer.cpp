@@ -87,6 +87,16 @@ bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int font
 void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color) {
 	m_Shader->Bind();
 	m_Shader->SetVec3("u_TextColor", color);
+	
+	//For text rotation
+	//TODO: Small bug where the pivot point for the rotation is not correct
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, glm::vec3(x, y, 0.0f));
+	model = glm::rotate(model, glm::radians(m_Rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(-x, -y, 0.0f));
+
+	m_Shader->SetMat4("u_Model", model);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(m_VAO);
@@ -120,16 +130,6 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 
 		x += (ch.m_Advance >> 6) * scale;
 	}
-
-	//For text rotation
-	//TODO: Small bug where the pivot point for the rotation is not correct
-	glm::mat4 model = glm::mat4(1.0f);
-
-	model = glm::translate(model, glm::vec3(x, y, 0.0f));
-	model = glm::rotate(model, glm::radians(m_Rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::translate(model, glm::vec3(-x, -y, 0.0f));
-
-	m_Shader->SetMat4("u_Model", model);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
