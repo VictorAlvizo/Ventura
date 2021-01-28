@@ -40,7 +40,7 @@ void Slider::SetPercentage(float newPercentage) {
 		m_Percent = newPercentage;
 	}
 	else {
-		std::cout << "Error: Percentage inputted is larger than 100 or lower than 0" << std::endl;
+		std::cout << "Error: Percentage entered is larger than 100 or lower than 0" << std::endl;
 	}
 }
 
