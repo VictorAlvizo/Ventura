@@ -246,7 +246,7 @@ float* Filter::getKernel(const std::string& name) {
 		return m_Kernels[name];
 	}
 	else {
-		std::cout << "Error: " << "Kernel " << name << " was not found" << std::endl;
+		std::cout << "Error: Kernel " << name << " was not found" << std::endl;
 		return nullptr;
 	}
 }

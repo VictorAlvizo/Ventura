@@ -7,10 +7,10 @@
 class Texture {
 public:
 	Texture();
-	Texture(const std::string& path);
+	Texture(const std::string& path, unsigned int wrapModeS = GL_REPEAT, unsigned int wrapModeT = GL_REPEAT, unsigned int minFilter = GL_LINEAR, unsigned int magFilter = GL_LINEAR);
 	~Texture();
 
-	//Primarily for  framebuffers
+	//Primarily for the framebuffer
 	void EmptyTexture(unsigned int width, unsigned int height);
 
 	void Bind(int textureUnit = 0);
