@@ -146,8 +146,9 @@ void ParticleGenerator::ClearColors() {
 }
 
 void ParticleGenerator::SpawnParticle(Particle& particle) {
-	float xPos = m_PosRange.x + rand() % (m_PosRange.y + 1 - m_PosRange.x);
-	float yPos = m_PosRange.z + rand() % (m_PosRange.w + 1 - m_PosRange.z);
+	//Want to adjust whether it's adding or subtracing based if the min value is negative or positive
+	float xPos = (m_PosRange.x >= 0.0f) ? m_PosRange.x + rand() % (m_PosRange.y + 1 - m_PosRange.x) : m_PosRange.x + rand() % (m_PosRange.y + 1 + m_PosRange.x);
+	float yPos = (m_PosRange.z >= 0.0f) ? m_PosRange.z + rand() % (m_PosRange.w + 1 - m_PosRange.z) : m_PosRange.z + rand() % (m_PosRange.w + 1 + m_PosRange.z);
 
 	particle.m_Pos = m_SpawnPos + glm::vec2(xPos, yPos);
 
