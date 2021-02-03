@@ -3,7 +3,7 @@
 Audio::Audio(bool deathAllowed) 
 	:m_DeathEnabled(deathAllowed)
 {
-	//holder
+	m_CurrentSound = nullptr;
 }
 
 Audio::~Audio() {
@@ -13,6 +13,7 @@ Audio::~Audio() {
 	part won't be called in those situations and only until the component sets it to true
 	then it may call the deconstructer */
 	if (m_DeathEnabled) {
+		m_CurrentSound->drop();
 		m_SoundEngine->drop();
 	}
 }
@@ -35,7 +36,7 @@ void Audio::PlaySound(const std::string& soundName) {
 
 		Sound& currentSound = m_Sounds[soundName];
 		currentSound.m_Sound->setDefaultVolume(currentSound.m_Volume);
-		m_SoundEngine->play2D(currentSound.m_Sound, currentSound.m_Loop, false, true);
+		m_CurrentSound = m_SoundEngine->play2D(currentSound.m_Sound, currentSound.m_Loop, false, true);
 	}
 	else {
 		std::cout << "Error: Sound " << soundName << " was not found" << std::endl;
@@ -53,6 +54,26 @@ void Audio::Mute(const std::string& soundName) {
 		else {
 			std::cout << "Error: Sound " << soundName << " was not found" << std::endl;
 		}
+	}
+}
+
+void Audio::Volume(const std::string& soundName, float volume) {
+	if (m_Sounds.find(soundName) != m_Sounds.end()) {
+		if (!(volume < 0.0f || volume > 1.0f)) {
+			if (isPlaying(soundName)) {
+				m_Sounds[soundName].m_Volume = volume;
+				m_CurrentSound->setVolume(volume);
+			}
+			else {
+				std::cout << "Error: Sound " << soundName << " is currently not playing" << std::endl;
+			}
+		}
+		else {
+			std::cout << "Error: volume must be within the range of 0.0 and 1.0" << std::endl;
+		}
+	}
+	else {
+		std::cout << "Error: Sound " << soundName << " was not found" << std::endl;
 	}
 }
 
@@ -75,4 +96,21 @@ bool Audio::isPlaying(const std::string& soundName) {
 		std::cout << "Error: Sound " << soundName << " was not found" << std::endl;
 		return false;
 	}
+}
+
+std::string Audio::currentSoundPlaying() {
+	//If this is null that means that no sounds have been played yet
+	if (!m_CurrentSound) {
+		return "";
+	}
+
+	irrklang::ISoundSource * currentSource = m_CurrentSound->getSoundSource();
+
+	for (auto sound : m_Sounds) {
+		if (currentSource == sound.second.m_Sound) {
+			return sound.first;
+		}
+	}
+
+	return "";
 }
