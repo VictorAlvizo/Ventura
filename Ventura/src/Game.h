@@ -31,6 +31,4 @@ private:
 
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
-
-	Audio * m_Audio;
 };

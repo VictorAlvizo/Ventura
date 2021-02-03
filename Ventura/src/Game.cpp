@@ -1,8 +1,5 @@
 #include "Game.h"
 
-float volumeLevel = 0.5f;
-
-
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
@@ -19,31 +16,24 @@ Game::~Game() {
 void Game::Init() {
 	EngineInit();
 
-	m_Audio = new Audio();
-	m_Audio->AddSound("music", "Audio/GameMusic.mp3", true, volumeLevel);
-	m_Audio->AddSound("song", "Audio/MenuMusic.mp3", true, volumeLevel);
-	m_Audio->PlaySound("music");
+	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {
-	if (m_Keys[GLFW_KEY_SPACE] && m_KeyAllowment[GLFW_KEY_SPACE] == 1) {
-		m_KeyAllowment[GLFW_KEY_SPACE] = 0;
-		m_Audio->Mute("music");
-		m_Audio->PlaySound("song");
-	}
+	//holder
 }
 
 void Game::Update(float deltaTime) {
 	EngineUpdate();
 
-	m_Audio->Volume(m_Audio->currentSoundPlaying(), volumeLevel);
+	//holder
 
 	CheckCollisions();
 }
 
 void Game::Render() {
 	ImGui::Begin("ImGui");
-	ImGui::SliderFloat("Volume", &volumeLevel, 0.0f, 1.0f);
+	//ImGui Code
 	ImGui::End();
 
 	//holder

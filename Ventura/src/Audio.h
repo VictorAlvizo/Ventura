@@ -7,6 +7,7 @@ struct Sound {
 	irrklang::ISoundSource * m_Sound;
 	float m_Volume;
 	bool m_Loop;
+	unsigned int m_AudioLength;
 	std::string m_IrrklangName; //Name given to the sound source by Irrklang
 };
 
@@ -20,13 +21,24 @@ public:
 	void PlaySound(const std::string& soundName);
 	//If soundName is left empty, all audio from this class will be stopped
 	void Mute(const std::string& soundName = "");
+	void PauseSound(bool pause);
 
 	//This can only be modified if the sound is currently playing
 	void Volume(const std::string& soundName, float volume);
+	//Position in miliseconds (1000 miliseconds = 1 second)
+	void SetSoundPos(unsigned int newPos);
 
 	Sound& getSound(const std::string& soundName);
 
 	bool isPlaying(const std::string& soundName);
+	//Returns whether the current audio is playing. If there has yet to be any audio played it will return false
+	bool isFinished();
+	bool isPaused();
+	//Returns the current play position in miliseconds (1000 miliseconds = 1 second). If there is no audio playing returns 0
+	unsigned int getPlayPos();
+	//Returns the audio length in miliseconds, 0 if there were any errors getting the data. (1000 miliseconds = 1 second)
+	unsigned int getAudioLength(const std::string& soundName);
+
 	std::string currentSoundPlaying();
 
 private:
@@ -39,4 +51,3 @@ private:
 
 	friend class Component;
 };
-
