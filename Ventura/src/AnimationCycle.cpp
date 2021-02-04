@@ -20,9 +20,10 @@ AnimationCycle::~AnimationCycle() {
 	if (!m_TerminateAnimation) {
 		m_TerminateAnimation = true;
 		m_AnimationThread->join(); //Join here as the class will be destroyed, so it dosen't use varibles from a defunct class
-		delete m_AnimationThread;
-		m_AnimationThread = nullptr;
 	}
+
+	delete m_AnimationThread;
+	m_AnimationThread = nullptr;
 
 	m_CurrentAnimation = "";
 }

@@ -181,6 +181,7 @@
     <ClCompile Include="src\Vendor\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Vendor\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\TextRenderer.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Button.h" />
@@ -458,6 +459,7 @@
     <ClInclude Include="src\Vendor\imgui\imstb_truetype.h" />
     <ClInclude Include="src\Vendor\stb_image.h" />
     <ClInclude Include="src\TextRenderer.h" />
+    <ClInclude Include="src\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaders\FilterFragment.glsl" />

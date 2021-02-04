@@ -11,16 +11,36 @@ Game::~Game() {
 	m_SpriteRenderer = nullptr;
 
 	m_Camera = nullptr;
+
+	delete timer;
+	timer = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
 
-	//holder
+	timer = new Timer(1000);
+	auto lamda = [](int value) {std::cout << "Value: " << value << std::endl; };
+
+	timer->StartTimer(lamda);
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//holder
+	if (m_Keys[GLFW_KEY_S]) {
+		std::cout << "Putting a stop to this thread!" << std::endl;
+		timer->StopTimer();
+	}
+
+	if (m_Keys[GLFW_KEY_C]) {
+		std::cout << "Going to let this thread continue" << std::endl;
+		auto lamda = [](int value) {std::cout << "Value [NEW ONE]: " << value << std::endl; };
+		timer->StartTimer(lamda);
+	}
+
+	if (m_Keys[GLFW_KEY_K]) {
+		std::cout << "Time to speed things UP!" << std::endl;
+		timer->ChangeWaitPeriod(30);
+	}
 }
 
 void Game::Update(float deltaTime) {
