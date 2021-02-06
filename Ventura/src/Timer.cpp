@@ -24,7 +24,7 @@ Timer::~Timer() {
 	m_TimerThread = nullptr;
 }
 
-void Timer::StartTimer(const std::function<void(int)>& func) {
+void Timer::StartTimer(const std::function<void()>& func) {
 	//Current running thread must be stopped before another one can go
 	if (!m_ContinueThread) {
 		m_ContinueThread = true;
@@ -44,7 +44,6 @@ void Timer::StopTimer() {
 void Timer::ChangeWaitPeriod(int newPeriod) {
 	std::lock_guard<std::mutex> lock(m_TimerMutex);
 	if (newPeriod >= 0) {
-		std::cout << "here" << std::endl;
 		m_WaitPeriod = newPeriod;
 	}
 	else {
@@ -52,7 +51,7 @@ void Timer::ChangeWaitPeriod(int newPeriod) {
 	}
 }
 
-void Timer::TimerThread(const std::function<void(int)>& func) {
+void Timer::TimerThread(const std::function<void()>& func) {
 	while (m_ContinueThread) {
 
 		{ //Don't want to lock the thread out, encapsulate it
@@ -64,6 +63,6 @@ void Timer::TimerThread(const std::function<void(int)>& func) {
 			break;
 		}
 
-		func(5);
+		func();
 	}
 }

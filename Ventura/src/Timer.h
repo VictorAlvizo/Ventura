@@ -11,13 +11,13 @@ public:
 	Timer(int waitPeriod);
 	~Timer();
 
-	void StartTimer(const std::function<void(int)>& func); //TODO: Template this?
+	void StartTimer(const std::function<void()>& func);
+
 	void StopTimer();
 	void ChangeWaitPeriod(int newPeriod);
 
 private:
-	//TODO: Don't allow copying?
-	void TimerThread(const std::function<void(int)>& func);
+	void TimerThread(const std::function<void()>& func);
 
 	std::thread * m_TimerThread;
 	std::mutex m_TimerMutex;
