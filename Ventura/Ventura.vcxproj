@@ -460,6 +460,7 @@
     <ClInclude Include="src\Vendor\stb_image.h" />
     <ClInclude Include="src\TextRenderer.h" />
     <ClInclude Include="src\Timer.h" />
+    <ClInclude Include="src\TimerSpecialized.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaders\FilterFragment.glsl" />

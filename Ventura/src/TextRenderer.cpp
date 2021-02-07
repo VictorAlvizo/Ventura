@@ -1,13 +1,14 @@
 #include "TextRenderer.h"
 
-TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, std::string fontPath, unsigned int fontSize, bool followCamera) {
+TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, std::string fontPath, unsigned int fontSize, bool followCamera)
+	:m_FollowCam(followCamera)
+{
 	m_Shader = ResourceManager::Get<Shader>("text");
 	m_Shader->Bind();
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
 	m_Shader->SetMat4("u_Projection", projection);
 	m_Shader->SetInt("u_Text", 0);
-	m_Shader->SetBool("u_FollowCam", followCamera);
 	m_Shader->UnBind();
 
 	glGenVertexArrays(1, &m_VAO);
@@ -87,7 +88,7 @@ bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int font
 void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color) {
 	m_Shader->Bind();
 	m_Shader->SetVec3("u_TextColor", color);
-	
+
 	//For text rotation
 	//TODO: Small bug where the pivot point for the rotation is not correct
 	glm::mat4 model = glm::mat4(1.0f);
@@ -97,6 +98,7 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 	model = glm::translate(model, glm::vec3(-x, -y, 0.0f));
 
 	m_Shader->SetMat4("u_Model", model);
+	m_Shader->SetBool("u_FollowCam", m_FollowCam);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(m_VAO);
@@ -130,6 +132,7 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 
 		x += (ch.m_Advance >> 6) * scale;
 	}
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

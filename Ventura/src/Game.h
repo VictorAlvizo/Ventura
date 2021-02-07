@@ -32,5 +32,5 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 
-	Timer * timer;
+	TimerSpecialized<int> * timer;
 };

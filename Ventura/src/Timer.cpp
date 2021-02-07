@@ -1,7 +1,7 @@
 #include "Timer.h"
 
 Timer::Timer()
-	:m_WaitPeriod(0)
+	:m_WaitPeriod(1000)
 {
 	m_TimerThread = nullptr;
 	m_ContinueThread = false;
@@ -53,7 +53,6 @@ void Timer::ChangeWaitPeriod(int newPeriod) {
 
 void Timer::TimerThread(const std::function<void()>& func) {
 	while (m_ContinueThread) {
-
 		{ //Don't want to lock the thread out, encapsulate it
 			std::lock_guard<std::mutex> lock(m_TimerMutex);
 			std::this_thread::sleep_for(std::chrono::milliseconds(m_WaitPeriod));

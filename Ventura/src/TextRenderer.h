@@ -22,6 +22,7 @@ public:
 	bool LoadFont(const std::string& fontPath, const unsigned int fontSize);
 	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f));
 
+	bool m_FollowCam;
 	float m_Rotation;
 
 private:
@@ -30,4 +31,3 @@ private:
 	std::shared_ptr<Shader> m_Shader;
 	unsigned int m_VAO, m_VBO;
 };
-

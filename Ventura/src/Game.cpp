@@ -1,5 +1,7 @@
 #include "Game.h"
 
+int testingVarible = 0;
+
 Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity) 
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
@@ -19,8 +21,24 @@ Game::~Game() {
 void Game::Init() {
 	EngineInit();
 
-	timer = new Timer(1000);
-	auto lamda = []() { std::cout << "Timer" << std::endl;  };
+	timer = new TimerSpecialized<int>(1000);
+
+	//& Captures outside varibles by reference, so when I modify testingVarible it changes it
+	//= would make of copy of that varible but modifying it inside the lamda would not change it
+	//Look up Lamda capture bracketse for more information
+
+	//Every 1 second this lamda (function) is called, once testingVarible reaches 5, stop the timer
+	auto lamda = [&]() {
+		testingVarible++;
+
+		if (testingVarible >= 5) {
+			std::cout << "Reached 5, Stopping the timer!" << std::endl;
+			timer->StopTimer();
+		}
+
+		std::cout << "Testing Varible: " << testingVarible << std::endl;
+		return testingVarible;
+	};
 
 	timer->StartTimer(lamda);
 }
