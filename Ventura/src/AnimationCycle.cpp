@@ -20,10 +20,9 @@ AnimationCycle::~AnimationCycle() {
 	if (!m_TerminateAnimation) {
 		m_TerminateAnimation = true;
 		m_AnimationThread->join(); //Join here as the class will be destroyed, so it dosen't use varibles from a defunct class
+		delete m_AnimationThread;
+		m_AnimationThread = nullptr;
 	}
-
-	delete m_AnimationThread;
-	m_AnimationThread = nullptr;
 
 	m_CurrentAnimation = "";
 }
@@ -112,9 +111,9 @@ void AnimationCycle::AnimationThread() {
 
 			//Animation is not set to loop, don't change the index anymore
 			if (index + 1 == m_CurrentCycle.m_Range.size() && !m_CurrentCycle.m_Loop) {
-				if (!m_CurrentCycle.m_CycleComplete) {
 					m_CurrentCycle.m_CycleComplete = true;
-				}
+				m_CurrentCycle.m_CycleComplete = true;
+				TerminateAnimation();
 			}
 			else {
 				index = (index + 1 == m_CurrentCycle.m_Range.size()) ? 0 : index + 1;
