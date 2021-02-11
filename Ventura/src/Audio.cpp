@@ -13,7 +13,10 @@ Audio::~Audio() {
 	part won't be called in those situations and only until the component sets it to true
 	then it may call the deconstructer */
 	if (m_DeathEnabled) {
-		m_CurrentSound->drop();
+		if (m_CurrentSound) {
+			m_CurrentSound->drop();
+		}
+
 		m_SoundEngine->drop();
 	}
 }

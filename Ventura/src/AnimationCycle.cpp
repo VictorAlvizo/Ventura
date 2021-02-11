@@ -111,7 +111,6 @@ void AnimationCycle::AnimationThread() {
 
 			//Animation is not set to loop, don't change the index anymore
 			if (index + 1 == m_CurrentCycle.m_Range.size() && !m_CurrentCycle.m_Loop) {
-					m_CurrentCycle.m_CycleComplete = true;
 				m_CurrentCycle.m_CycleComplete = true;
 				TerminateAnimation();
 			}
