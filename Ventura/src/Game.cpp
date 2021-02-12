@@ -9,8 +9,6 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity)
 Game::~Game() {
 	delete m_SpriteRenderer;
 	m_SpriteRenderer = nullptr;
-
-	m_Camera = nullptr;
 }
 
 void Game::Init() {
@@ -58,20 +56,33 @@ void Game::EngineInit() {
 	ResourceManager::LoadTexture("Textures/SliderTexture.png", "slider");
 	ResourceManager::LoadTexture("Textures/ButtonTexture.png", "button");
 
+	glGenBuffers(1, &m_UBOVisionBlock);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UBOVisionBlock);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	unsigned int spriteUBOVision = glGetUniformBlockIndex(ResourceManager::Get<Shader>("sprite")->getProgram(), "Vision");
+	unsigned int textUBOVision = glGetUniformBlockIndex(ResourceManager::Get<Shader>("text")->getProgram(), "Vision");
+	unsigned int hbOutlineUBOVision = glGetUniformBlockIndex(ResourceManager::Get<Shader>("hboutline")->getProgram(), "Vision");
+
+	glUniformBlockBinding(ResourceManager::Get<Shader>("sprite")->getProgram(), spriteUBOVision, 0);
+	glUniformBlockBinding(ResourceManager::Get<Shader>("text")->getProgram(), textUBOVision, 0);
+	glUniformBlockBinding(ResourceManager::Get<Shader>("hboutline")->getProgram(), hbOutlineUBOVision, 0);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_UBOVisionBlock);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UBOVisionBlock);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(m_Camera->UpdateView()));
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	
 	//Set the default view and projection uniforms in the shaders
 	ResourceManager::Get<Shader>("sprite")->Bind();
 	ResourceManager::Get<Shader>("sprite")->SetMat4("u_Projection", projection);
-	ResourceManager::Get<Shader>("sprite")->SetMat4("u_View", m_Camera->UpdateView());
 	ResourceManager::Get<Shader>("sprite")->UnBind();
 
 	ResourceManager::Get<Shader>("hboutline")->Bind();
 	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_Projection", projection);
-	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_View", m_Camera->UpdateView());
 	ResourceManager::Get<Shader>("hboutline")->UnBind();
-
-	ResourceManager::Get<Shader>("text")->Bind();
-	ResourceManager::Get<Shader>("text")->SetMat4("u_View", m_Camera->UpdateView());
-	ResourceManager::Get<Shader>("text")->UnBind();
 
 	m_SpriteRenderer = new SpriteRenderer(ResourceManager::Get<Shader>("sprite"));
 }
@@ -80,15 +91,7 @@ void Game::EngineUpdate() {
 	//Update view matrix
 	glm::mat4 cameraView = m_Camera->UpdateView();
 
-	ResourceManager::Get<Shader>("sprite")->Bind();
-	ResourceManager::Get<Shader>("sprite")->SetMat4("u_View", cameraView);
-	ResourceManager::Get<Shader>("sprite")->UnBind();
-
-	ResourceManager::Get<Shader>("hboutline")->Bind();
-	ResourceManager::Get<Shader>("hboutline")->SetMat4("u_View", cameraView);
-	ResourceManager::Get<Shader>("hboutline")->UnBind();
-
-	ResourceManager::Get<Shader>("text")->Bind();
-	ResourceManager::Get<Shader>("text")->SetMat4("u_View", cameraView);
-	ResourceManager::Get<Shader>("text")->UnBind();
+	glBindBuffer(GL_UNIFORM_BUFFER, m_UBOVisionBlock);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(cameraView));
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

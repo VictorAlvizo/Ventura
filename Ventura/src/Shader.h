@@ -23,7 +23,7 @@ public:
 	void SetInt(const std::string& name, int value);
 	void SetFloat(const std::string& name, float value);
 	void SetFloatArr(const std::string& name, int arrSize, float vals[]);
-	void SetFloat2(const std::string& name, int rowSize, float ** vals); //TODO: Set custom
+	void SetFloat2(const std::string& name, int rowSize, float ** vals);
 	void SetVec2(const std::string& name, glm::vec2 vec2);
 	void SetVec3(const std::string& name, glm::vec3 vec3);
 	void SetVec4(const std::string& name, glm::vec4 vec4);
@@ -32,6 +32,7 @@ public:
 	inline std::string getVertexPath() const { return m_VertexPath; }
 	inline std::string getFragmentPath() const { return m_FragmentPath; }
 	inline std::string getGeometryPath() const { return m_GeometryPath; }
+	inline unsigned int getProgram() const { return m_ProgramID; }
 
 private:
 	std::string readShader(const std::string& shaderPath);

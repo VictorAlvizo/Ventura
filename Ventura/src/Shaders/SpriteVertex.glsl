@@ -4,7 +4,10 @@ layout(location = 1) in vec2 vs_TexCoords;
 
 uniform mat4 u_Projection;
 uniform mat4 u_Model;
-uniform mat4 u_View;
+
+layout(std140) uniform Vision {
+	mat4 u_View;
+};
 
 uniform bool u_Flipped;
 

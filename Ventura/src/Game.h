@@ -31,4 +31,6 @@ private:
 
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
+
+	unsigned int m_UBOVisionBlock;
 };
