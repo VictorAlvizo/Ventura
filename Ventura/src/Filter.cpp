@@ -3,14 +3,14 @@
 Filter::Filter(unsigned int width, unsigned int height) 
 	:m_InitalWidth(width), m_InitalHeight(height)
 {
-	m_Shader = *ResourceManager::Get<Shader>("filter");
+	m_Shader = ResourceManager::Get<Shader>("filter");
 
 	glGenFramebuffers(1, &m_FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 
-	m_Texture = Texture();
-	m_Texture.EmptyTexture(m_InitalWidth, m_InitalHeight);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture.m_TextureID, 0);
+	m_Texture = std::make_shared<Texture>();
+	m_Texture->EmptyTexture(m_InitalWidth, m_InitalHeight);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture->m_TextureID, 0);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		std::cout << "Error: Failed to initlize the Framebuffer! Error Meesage:" << std::endl << ErrorCode(glCheckFramebufferStatus(GL_FRAMEBUFFER)) << std::endl;
@@ -64,27 +64,27 @@ void Filter::FilterRender(float time, glm::vec3 colorOverlay, FilterMode mode, D
 	};
 
 	//Set up default uniforms
-	m_Shader.Bind();
-	m_Shader.SetFloat("u_Time", time);
-	m_Shader.SetFloat("u_Strength", strength);
-	m_Shader.SetFloat2("u_Offsets", 9, (float **)offsetArr);
-	m_Shader.SetVec3("u_ColorOverlay", colorOverlay);
-	m_Shader.SetInt("u_DistortionType", static_cast<int>(disEffect));
+	m_Shader->Bind();
+	m_Shader->SetFloat("u_Time", time);
+	m_Shader->SetFloat("u_Strength", strength);
+	m_Shader->SetFloat2("u_Offsets", 9, (float **)offsetArr);
+	m_Shader->SetVec3("u_ColorOverlay", colorOverlay);
+	m_Shader->SetInt("u_DistortionType", static_cast<int>(disEffect));
 
 	if (mode != FilterMode::NONE) {
-		m_Shader.SetBool("u_KernelEnabled", true);
-		m_Shader.SetFloatArr("u_Kernel", 9, getKernel(mode));
+		m_Shader->SetBool("u_KernelEnabled", true);
+		m_Shader->SetFloatArr("u_Kernel", 9, getKernel(mode));
 	}
 	else {
-		m_Shader.SetBool("u_KernelEnabled", false);
+		m_Shader->SetBool("u_KernelEnabled", false);
 	}
 
 	glBindVertexArray(m_VAO);
 
-	m_Texture.Bind();
+	m_Texture->Bind();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
-	m_Shader.UnBind();
+	m_Shader->UnBind();
 }
 
 void Filter::FilterRender(float time, std::string filterName, glm::vec3 colorOverlay, Distortion disEffect, float strength, float offsetDiv) {
@@ -103,22 +103,22 @@ void Filter::FilterRender(float time, std::string filterName, glm::vec3 colorOve
 	};
 
 	//Set up default uniforms
-	m_Shader.Bind();
-	m_Shader.SetFloat("u_Time", time);
-	m_Shader.SetFloat("u_Strength", strength);
-	m_Shader.SetFloat2("u_Offsets", 9, (float**)offsetArr);
-	m_Shader.SetVec3("u_ColorOverlay", colorOverlay);
-	m_Shader.SetInt("u_DistortionType", static_cast<int>(disEffect));
+	m_Shader->Bind();
+	m_Shader->SetFloat("u_Time", time);
+	m_Shader->SetFloat("u_Strength", strength);
+	m_Shader->SetFloat2("u_Offsets", 9, (float**)offsetArr);
+	m_Shader->SetVec3("u_ColorOverlay", colorOverlay);
+	m_Shader->SetInt("u_DistortionType", static_cast<int>(disEffect));
 
-	m_Shader.SetBool("u_KernelEnabled", true);
-	m_Shader.SetFloatArr("u_Kernel", 9, getKernel(filterName));
+	m_Shader->SetBool("u_KernelEnabled", true);
+	m_Shader->SetFloatArr("u_Kernel", 9, getKernel(filterName));
 
 	glBindVertexArray(m_VAO);
 
-	m_Texture.Bind();
+	m_Texture->Bind();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
-	m_Shader.UnBind();
+	m_Shader->UnBind();
 }
 
 void Filter::EndFilter(unsigned int updatedWidth, unsigned int updatedHeight) {

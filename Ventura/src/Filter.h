@@ -38,6 +38,6 @@ private:
 
 	unsigned int m_InitalWidth, m_InitalHeight;
 
-	Shader m_Shader;
-	Texture m_Texture;
+	std::shared_ptr<Shader> m_Shader;
+	std::shared_ptr<Texture> m_Texture;
 };
