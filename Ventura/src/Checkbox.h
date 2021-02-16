@@ -7,11 +7,11 @@ class Checkbox
 {
 public:
 	Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool initalCheck, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 textOffset = glm::vec2(125.0f, 40.0f), std::string text = "Checkbox", unsigned int fontSize = 24, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
-	//holder Custom Constrcuter for custom images
+	Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool initalCheck, std::shared_ptr<Texture> uncheckedTexture, std::shared_ptr<Texture> checkedTexture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 textOffset = glm::vec2(125.0f, 40.0f), std::string text = "Checkbox", unsigned int fontSize = 24, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
 	~Checkbox();
 
 	//Will invert from the current checked state if clicked
-	void checkClicked(bool buttonClicked, glm::vec2 mousePos);
+	void checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos);
 
 	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool flipped = false, glm::vec4 checkboxColor = glm::vec4(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 textColor = glm::vec3(1.0f));
 	void Move(glm::vec2 newPos);
@@ -20,6 +20,8 @@ public:
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
 
 	inline bool isChecked() const { return m_Checked; }
+
+	std::string m_HeaderText;
 
 private:
 	bool m_Checked;
@@ -31,7 +33,6 @@ private:
 	glm::vec2 m_HitboxOffset;
 
 	TextRenderer * m_Text;
-	std::string m_HeaderText;
 	std::string m_FontPath;
 	glm::vec2 m_TextOffset;
 

@@ -26,7 +26,7 @@ void Game::Init() {
 }
 
 void Game::ProcessInput(float deltaTime) {
-	m_CheckBox->checkClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MousePos);
+	m_CheckBox->checkClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MouseAllowment[GLFW_MOUSE_BUTTON_1], m_MousePos);
 }
 
 void Game::Update(float deltaTime) {
@@ -42,7 +42,7 @@ void Game::Render() {
 	//ImGui Code
 	ImGui::End();
 	
-	m_CheckBox->Draw(*m_SpriteRenderer, true, false);
+	m_CheckBox->Draw(*m_SpriteRenderer, true, false, glm::vec4(1.0f), glm::vec3(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
 void Game::CheckCollisions() {

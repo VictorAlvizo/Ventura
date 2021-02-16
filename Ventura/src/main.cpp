@@ -149,5 +149,12 @@ void MousePosCallback(GLFWwindow * window, double xPos, double yPos) {
 }
 
 void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods) {
-    ventura->m_MouseButtons[button] = (action == GLFW_PRESS) ? true : false;
+    if (action == GLFW_PRESS) {
+        ventura->m_MouseButtons[button] = true;
+        ventura->m_MouseAllowment[button] = 1;
+    }
+    else if (action == GLFW_RELEASE) {
+        ventura->m_MouseButtons[button] = false;
+        ventura->m_MouseAllowment[button] = 0;
+    }
 }

@@ -13,6 +13,16 @@ Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool ini
 	m_Hitbox = new Hitbox(m_Pos + hitboxOffset, hitSize, glm::vec2(0.0f), m_Rotation);
 }
 
+Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool initalCheck, std::shared_ptr<Texture> uncheckedTexture, std::shared_ptr<Texture> checkedTexture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 textOffset, std::string text, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize) 
+	:m_Checked(initalCheck), m_UncheckedTexture(uncheckedTexture), m_CheckedTexture(checkedTexture), m_Rotation(rotation), m_Pos(pos), m_Size(size), m_HeaderText(text), m_TextOffset(textOffset), m_FontPath(customFont), m_HitboxOffset(hitboxOffset)
+{
+	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize, false);
+	m_Text->m_Rotation = m_Rotation;
+
+	glm::vec2 hitSize = (hitboxSize == glm::vec2(0.0f)) ? m_Size : hitboxSize;
+	m_Hitbox = new Hitbox(m_Pos + hitboxOffset, hitSize, glm::vec2(0.0f), m_Rotation);
+}
+
 Checkbox::~Checkbox() {
 	delete m_Text;
 	m_Text = nullptr;
@@ -21,11 +31,13 @@ Checkbox::~Checkbox() {
 	m_Hitbox = nullptr;
 }
 
-void Checkbox::checkClicked(bool buttonClicked, glm::vec2 mousePos) {
-	if (buttonClicked) {
+void Checkbox::checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos) {
+	if (buttonClicked && buttonAllowment == 1) {
 		if (CollisionHandler::CollidePoint(mousePos, *m_Hitbox)) {
 			m_Checked = !m_Checked;
 		}
+
+		buttonAllowment = 0;
 	}
 }
 
