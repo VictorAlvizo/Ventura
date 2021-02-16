@@ -13,3 +13,4 @@
 #include "Slider.h"
 #include "Scene.h"
 #include "TimerSpecialized.h"
+#include "Checkbox.h"

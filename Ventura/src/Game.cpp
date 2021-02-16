@@ -4,26 +4,34 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity)
 	:m_Width(screenWidth), m_Height(screenHeight), m_Gravity(gravity)
 {
 	m_SpriteRenderer = nullptr;
+	m_Camera = nullptr;
+	m_CheckBox = nullptr;
 }
 
 Game::~Game() {
 	delete m_SpriteRenderer;
 	m_SpriteRenderer = nullptr;
+
+	delete m_CheckBox;
+	m_CheckBox = nullptr;
+
+	delete m_Camera;
+	m_Camera = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
 
-	//holder
+	m_CheckBox = new Checkbox(m_Width, m_Height, false, glm::vec2(200.0f), glm::vec2(100.0f), 0.0f, glm::vec2(125.0f, 40.0f));
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//holder
+	m_CheckBox->checkClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MousePos);
 }
 
 void Game::Update(float deltaTime) {
 	EngineUpdate();
-
+	
 	//holder
 
 	CheckCollisions();
@@ -33,8 +41,8 @@ void Game::Render() {
 	ImGui::Begin("ImGui");
 	//ImGui Code
 	ImGui::End();
-
-	//holder
+	
+	m_CheckBox->Draw(*m_SpriteRenderer, true, false);
 }
 
 void Game::CheckCollisions() {
@@ -55,6 +63,8 @@ void Game::EngineInit() {
 	ResourceManager::LoadTexture("Textures/HitboxCircle.png", "hitboxCircle");
 	ResourceManager::LoadTexture("Textures/SliderTexture.png", "slider");
 	ResourceManager::LoadTexture("Textures/ButtonTexture.png", "button");
+	ResourceManager::LoadTexture("Textures/CheckboxTexture.png", "checkbox");
+	ResourceManager::LoadTexture("Textures/CheckTickedTexture.png", "checkboxTicked");
 
 	glGenBuffers(1, &m_UBOVisionBlock);
 	glBindBuffer(GL_UNIFORM_BUFFER, m_UBOVisionBlock);

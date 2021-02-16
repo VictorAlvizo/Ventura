@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Checkbox.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Slider.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Checkbox.h" />
     <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Slider.h" />
