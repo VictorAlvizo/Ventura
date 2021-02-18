@@ -8,7 +8,7 @@ public:
 	//if want to use the default send the texture named "slider"
 	Slider(std::shared_ptr<Texture> slideTexture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, float initPercentage = 100.0f);
 
-	void Draw(SpriteRenderer& spriteRenderer, glm::vec3 color = glm::vec3(1.0f), bool flip = false);
+	void Draw(SpriteRenderer& spriteRenderer, glm::vec3 color = glm::vec3(1.0f), bool flip = false, bool followCamera = true);
 
 	void SetPercentage(float newPercentage);
 	void AddPercentage(float addAmount);
@@ -26,4 +26,3 @@ private:
 	float m_Percent;
 	float m_Width, m_Height;
 };
-

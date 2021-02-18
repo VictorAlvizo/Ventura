@@ -6,7 +6,7 @@ Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool ini
 	m_UncheckedTexture = ResourceManager::Get<Texture>("checkbox");
 	m_CheckedTexture = ResourceManager::Get<Texture>("checkboxTicked");
 
-	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize, false);
+	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize);
 	m_Text->m_Rotation = m_Rotation;
 
 	glm::vec2 hitSize = (hitboxSize == glm::vec2(0.0f)) ? m_Size : hitboxSize;
@@ -16,7 +16,7 @@ Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool ini
 Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool initalCheck, std::shared_ptr<Texture> uncheckedTexture, std::shared_ptr<Texture> checkedTexture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 textOffset, std::string text, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize) 
 	:m_Checked(initalCheck), m_UncheckedTexture(uncheckedTexture), m_CheckedTexture(checkedTexture), m_Rotation(rotation), m_Pos(pos), m_Size(size), m_HeaderText(text), m_TextOffset(textOffset), m_FontPath(customFont), m_HitboxOffset(hitboxOffset)
 {
-	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize, false);
+	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize);
 	m_Text->m_Rotation = m_Rotation;
 
 	glm::vec2 hitSize = (hitboxSize == glm::vec2(0.0f)) ? m_Size : hitboxSize;
@@ -31,9 +31,9 @@ Checkbox::~Checkbox() {
 	m_Hitbox = nullptr;
 }
 
-void Checkbox::checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos) {
+void Checkbox::checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos) {
 	if (buttonClicked && buttonAllowment == 1) {
-		if (CollisionHandler::CollidePoint(mousePos, *m_Hitbox)) {
+		if (CollisionHandler::CollidePoint(mousePos, *m_Hitbox, followingCamera, cameraPos)) {
 			m_Checked = !m_Checked;
 		}
 
@@ -41,15 +41,15 @@ void Checkbox::checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 
 	}
 }
 
-void Checkbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool flipped, glm::vec4 checkboxColor, glm::vec3 hitboxColor, glm::vec3 textColor) {
-	spriteRenderer.DrawSprite((m_Checked) ? *m_CheckedTexture : *m_UncheckedTexture, m_Pos, m_Size, flipped, m_Rotation, checkboxColor);
+void Checkbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool flipped, bool followCamera, glm::vec4 checkboxColor, glm::vec3 hitboxColor, glm::vec3 textColor) {
+	spriteRenderer.DrawSprite((m_Checked) ? *m_CheckedTexture : *m_UncheckedTexture, m_Pos, m_Size, flipped, followCamera, m_Rotation, checkboxColor);
 
 	if (m_HeaderText != "") {
-		m_Text->Text(m_HeaderText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0f, textColor);
+		m_Text->Text(m_HeaderText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0f, textColor, followCamera);
 	}
 
 	if (drawHitbox) {
-		m_Hitbox->Draw(hitboxColor);
+		m_Hitbox->Draw(hitboxColor, followCamera);
 	}
 }
 

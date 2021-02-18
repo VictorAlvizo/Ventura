@@ -17,7 +17,7 @@ SpriteRenderer::~SpriteRenderer() {
 	glDeleteVertexArrays(1, &m_VAO);
 }
 
-void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, float rotate, glm::vec4 color, std::vector<float> texUV, std::vector<float> posUV) {
+void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size, bool flipped, bool followCamera, float rotate, glm::vec4 color, std::vector<float> texUV, std::vector<float> posUV) {
 	m_Shader->Bind();
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(pos, 0.0f));
@@ -32,6 +32,7 @@ void SpriteRenderer::DrawSprite(Texture& texture, glm::vec2 pos, glm::vec2 size,
 	m_Shader->SetMat4("u_Model", model);
 	m_Shader->SetVec4("u_Color", color);
 	m_Shader->SetBool("u_Flipped", flipped);
+	m_Shader->SetBool("u_FollowCamera", followCamera);
 
 	texture.Bind(0);
 	glBindVertexArray(m_VAO);

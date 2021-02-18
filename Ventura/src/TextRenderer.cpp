@@ -1,11 +1,9 @@
 #include "TextRenderer.h"
 
-TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, std::string fontPath, unsigned int fontSize, bool followCamera)
-	:m_FollowCam(followCamera)
+TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, std::string fontPath, unsigned int fontSize)
 {
 	m_Shader = ResourceManager::Get<Shader>("text");
 	m_Shader->Bind();
-
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
 	m_Shader->SetMat4("u_Projection", projection);
 	m_Shader->SetInt("u_Text", 0);
@@ -85,7 +83,7 @@ bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int font
 	return true;
 }
 
-void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color) {
+void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color, bool followCamera) {
 	m_Shader->Bind();
 	m_Shader->SetVec3("u_TextColor", color);
 
@@ -98,7 +96,7 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 	model = glm::translate(model, glm::vec3(-x, -y, 0.0f));
 
 	m_Shader->SetMat4("u_Model", model);
-	m_Shader->SetBool("u_FollowCam", m_FollowCam);
+	m_Shader->SetBool("u_FollowCam", followCamera);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(m_VAO);

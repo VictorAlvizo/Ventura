@@ -25,7 +25,7 @@ void ParticleGenerator::Draw(SpriteRenderer& spriteRenderer) {
 
 	for (Particle& particle : m_Particles) {
 		if (particle.m_Life > 0.0f) {
-			spriteRenderer.DrawSprite(*m_Texture, particle.m_Pos, particle.m_Size, false, particle.m_Rotation, particle.m_Color);
+			spriteRenderer.DrawSprite(*m_Texture, particle.m_Pos, particle.m_Size, false, true, particle.m_Rotation, particle.m_Color);
 		}
 	}
 

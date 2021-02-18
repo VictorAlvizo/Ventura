@@ -23,7 +23,7 @@ Slider::Slider(std::shared_ptr<Texture> slideTexture, glm::vec2 pos, glm::vec2 s
 	};
 }
 
-void Slider::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, bool flip) {
+void Slider::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, bool flip, bool followCamera) {
 	float rightX = m_Percent / 100.0f;
 	std::vector<float> posUVs = {
 		0.0f,   1.0f,
@@ -32,7 +32,7 @@ void Slider::Draw(SpriteRenderer& spriteRenderer, glm::vec3 color, bool flip) {
 		rightX, 1.0f
 	};
 
-	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, flip, m_Rotation, glm::vec4(color, 1.0f), m_DefaultTexUVs, posUVs);
+	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, flip, followCamera, m_Rotation, glm::vec4(color, 1.0f), m_DefaultTexUVs, posUVs);
 }
 
 void Slider::SetPercentage(float newPercentage) {
@@ -40,7 +40,7 @@ void Slider::SetPercentage(float newPercentage) {
 		m_Percent = newPercentage;
 	}
 	else {
-		std::cout << "Error: Percentage entered is larger than 100 or lower than 0" << std::endl;
+		std::cout << "Error: Percentage inputted is larger than 100 or lower than 0" << std::endl;
 	}
 }
 

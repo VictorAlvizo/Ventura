@@ -5,15 +5,11 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity)
 {
 	m_SpriteRenderer = nullptr;
 	m_Camera = nullptr;
-	m_CheckBox = nullptr;
 }
 
 Game::~Game() {
 	delete m_SpriteRenderer;
 	m_SpriteRenderer = nullptr;
-
-	delete m_CheckBox;
-	m_CheckBox = nullptr;
 
 	delete m_Camera;
 	m_Camera = nullptr;
@@ -22,11 +18,11 @@ Game::~Game() {
 void Game::Init() {
 	EngineInit();
 
-	m_CheckBox = new Checkbox(m_Width, m_Height, false, glm::vec2(200.0f), glm::vec2(100.0f), 0.0f, glm::vec2(125.0f, 40.0f));
+	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {
-	m_CheckBox->checkClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MouseAllowment[GLFW_MOUSE_BUTTON_1], m_MousePos);
+	//holder
 }
 
 void Game::Update(float deltaTime) {
@@ -41,8 +37,8 @@ void Game::Render() {
 	ImGui::Begin("ImGui");
 	//ImGui Code
 	ImGui::End();
-	
-	m_CheckBox->Draw(*m_SpriteRenderer, true, false, glm::vec4(1.0f), glm::vec3(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+	//holder
 }
 
 void Game::CheckCollisions() {

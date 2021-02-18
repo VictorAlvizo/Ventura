@@ -25,9 +25,9 @@ Hitbox::~Hitbox() {
 	m_Entity = nullptr; //Can't delete, will cause both classes trying to delete eachother
 }
 
-void Hitbox::Draw(glm::vec3 color) {
+void Hitbox::Draw(glm::vec3 color, bool followCamera) {
 	if (m_ShowHitbox) {
-		m_Renderer->DrawOutline(m_Pos, m_Size, m_Rotation, color);
+		m_Renderer->DrawOutline(m_Pos, m_Size, m_Rotation, followCamera, color);
 	}
 }
 

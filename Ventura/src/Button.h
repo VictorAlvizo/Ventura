@@ -15,7 +15,7 @@ public:
 	Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, std::shared_ptr<Texture> hoverTexture, std::shared_ptr<Texture> clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText = "", float rotation = 0.0f, unsigned int fontSize = 24, glm::vec3 fontColor = glm::vec3(1.0f), std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
 	~Button();
 
-	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, glm::vec4 buttonColor = glm::vec4(1.0f), glm::vec3 textColor = glm::vec3(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2 textOffsets = glm::vec2(0.0f));
+	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool followCamera = true, glm::vec4 buttonColor = glm::vec4(1.0f), glm::vec3 textColor = glm::vec3(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2 textOffsets = glm::vec2(0.0f));
 
 	void SetPos(glm::vec2 newPos);
 	void SetRotation(float newRotation);
@@ -23,9 +23,9 @@ public:
 	//If you want to keep the same font only put in the fontsize parameter and that's it
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
 
-	bool isHovering(glm::vec2 mousePos);
+	bool isHovering(glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos);
 	//Pass the mouse button you wanted detcted (m_MouseButtons[index])
-	bool isClicked(glm::vec2 mousePos, bool mouseButton);
+	bool isClicked(glm::vec2 mousePos, bool mouseButton, bool followingCamera, glm::vec2 cameraPos);
 
 	inline Status currentStatus() const { return m_CurrentStatus; }
 	inline glm::vec2 getPos() const { return m_Pos; }

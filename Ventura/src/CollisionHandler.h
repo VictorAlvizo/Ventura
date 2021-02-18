@@ -13,9 +13,9 @@ public:
 	//Collision between a circle and a rectangle. Downside is that if the rectangle is rotated not as accurate
 	static bool CollideCircleAABB(HitCircle * cir, Hitbox& hitbox, bool staticResolution = true);
 	//Check if a point lies inside the object (mainly a rectangle)
-	static bool CollidePoint(glm::vec2 point, Hitbox& hitbox);
+	static bool CollidePoint(glm::vec2 point, Hitbox& hitbox, bool cameraFollowed, glm::vec2 cameraPos);
 	//Check if a point lies inside the object (mainly a circle)
-	static bool CollidePoint(glm::vec2 point, HitCircle * cir);
+	static bool CollidePoint(glm::vec2 point, HitCircle * cir, bool cameraFollowed, glm::vec2 cameraPos);
 	//Chcek if the object is still in the camera's view. Note that if wether you're drawing the object or not dosen't matter 
 	static bool isInvisible(Camera& camera, Hitbox& hitbox);
 

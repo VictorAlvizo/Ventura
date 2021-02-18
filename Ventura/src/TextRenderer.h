@@ -16,13 +16,12 @@ struct Character {
 class TextRenderer {
 public:
 	//Width and height must = the width and height of the game window
-	TextRenderer(const unsigned int width, const unsigned int height, std::string fontPath = "Fonts/arial.ttf", unsigned int fontSize = 24, bool followCamera = false);
+	TextRenderer(const unsigned int width, const unsigned int height, std::string fontPath = "Fonts/arial.ttf", unsigned int fontSize = 24);
 	~TextRenderer();
 
 	bool LoadFont(const std::string& fontPath, const unsigned int fontSize);
-	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f));
+	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f), bool followCamera = false);
 
-	bool m_FollowCam;
 	float m_Rotation;
 
 private:

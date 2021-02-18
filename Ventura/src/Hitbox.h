@@ -7,10 +7,10 @@ class Entity;
 class Hitbox {
 public:
 	Hitbox();
-	Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, glm::vec2 velocity = glm::vec2(0.0f), float rotation = 0.0f, float mass = 1.0f, Entity* parentEntity = nullptr);
+	Hitbox(glm::vec2 hitboxPos, glm::vec2 hitboxSize, glm::vec2 velocity = glm::vec2(0.0f), float rotation = 0.0f, float mass = 1.0f, Entity * parentEntity = nullptr);
 	~Hitbox();
 
-	void Draw(glm::vec3 color = glm::vec3(0.0f, 1.0f, 0.0f));
+	void Draw(glm::vec3 color = glm::vec3(0.0f, 1.0f, 0.0f), bool followCamera = true);
 	void Move(glm::vec2 newPos);
 	void Translate(float deltaTime);
 	void GravityMovement(float gravity, float deltaTime);

@@ -186,7 +186,7 @@ bool CollisionHandler::CollideCircleAABB(HitCircle * cir, Hitbox& hitbox, bool s
     return false;
 }
 
-bool CollisionHandler::CollidePoint(glm::vec2 point, Hitbox& hitbox) {
+bool CollisionHandler::CollidePoint(glm::vec2 point, Hitbox& hitbox, bool cameraFollowed, glm::vec2 cameraPos) {
     if (!hitbox.m_ActiveHitbox) {
         return false;
     }
@@ -206,7 +206,7 @@ bool CollisionHandler::CollidePoint(glm::vec2 point, Hitbox& hitbox) {
         eMax = -INFINITY;
 
         //Don't have to reset everytime, as it's just one value
-        pointProduct = glm::dot(point, axis);
+        pointProduct = glm::dot(cameraFollowed ? point + cameraPos : point, axis);
 
         for (unsigned int i = 0; i < corners.size(); i++) {
             float product = glm::dot(corners[i], axis);
@@ -222,9 +222,9 @@ bool CollisionHandler::CollidePoint(glm::vec2 point, Hitbox& hitbox) {
     return true;
 }
 
-bool CollisionHandler::CollidePoint(glm::vec2 point, HitCircle * cir) {
+bool CollisionHandler::CollidePoint(glm::vec2 point, HitCircle * cir, bool cameraFollowed, glm::vec2 cameraPos) {
     glm::vec2 circleCenter = cir->getPos() + cir->getRadius();
-    return glm::length(circleCenter - point) <= cir->getRadius() && cir->m_ActiveHitbox;
+    return glm::length(circleCenter - (cameraFollowed ? point + cameraPos : point)) <= cir->getRadius() && cir->m_ActiveHitbox;
 }
 
 bool CollisionHandler::isInvisible(Camera& camera, Hitbox& hitbox) {
