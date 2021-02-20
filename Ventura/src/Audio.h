@@ -21,6 +21,7 @@ public:
 	void PlaySound(const std::string& soundName);
 	//If soundName is left empty, all audio from this class will be stopped
 	void Mute(const std::string& soundName = "");
+	void Unmute();
 	void PauseSound(bool pause);
 
 	//This can only be modified if the sound is currently playing
@@ -40,9 +41,11 @@ public:
 	unsigned int getAudioLength(const std::string& soundName);
 
 	std::string currentSoundPlaying();
+	inline bool soundsMuted() const { return m_MuteActive; }
 
 private:
 	bool m_DeathEnabled; //Usage explained inside the deconstructer
+	bool m_MuteActive;
 
 	irrklang::ISoundEngine * m_SoundEngine = irrklang::createIrrKlangDevice();
 	irrklang::ISound * m_CurrentSound;

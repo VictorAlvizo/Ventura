@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "Hitbox.h"
 #include "CollisionHandler.h"
 #include "TextRenderer.h"
@@ -18,6 +19,9 @@ public:
 
 	void SetRotation(float newRotation);
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
+
+	void SetCheckDelegate(const std::function<void()>& func);
+	void SetUncheckDelegate(const std::function<void()>& func);
 
 	inline bool isChecked() const { return m_Checked; }
 
@@ -39,4 +43,9 @@ private:
 	glm::vec2 m_Pos, m_Size;
 
 	float m_Rotation;
+
+	std::function<void()> m_CheckDelegate;
+	std::function<void()> m_UncheckDelegate;
+	bool m_CheckDelegateAdded;
+	bool m_UncheckDelegateAdded;
 };

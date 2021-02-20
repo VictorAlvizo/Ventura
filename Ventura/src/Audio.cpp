@@ -1,7 +1,7 @@
 #include "Audio.h"
 
 Audio::Audio(bool deathAllowed) 
-	:m_DeathEnabled(deathAllowed)
+	:m_DeathEnabled(deathAllowed), m_MuteActive(false)
 {
 	m_CurrentSound = nullptr;
 }
@@ -33,23 +33,26 @@ void Audio::AddSound(const std::string& referenceName, const std::string& soundF
 }
 
 void Audio::PlaySound(const std::string& soundName) {
-	if (m_Sounds.find(soundName) != m_Sounds.end()) {
-		if (isPlaying(soundName)) {
-			m_SoundEngine->removeSoundSource(m_Sounds[soundName].m_Sound);
-		}
+	if (!m_MuteActive) {
+		if (m_Sounds.find(soundName) != m_Sounds.end()) {
+			if (isPlaying(soundName)) {
+				m_SoundEngine->removeSoundSource(m_Sounds[soundName].m_Sound);
+			}
 
-		Sound& currentSound = m_Sounds[soundName];
-		currentSound.m_Sound->setDefaultVolume(currentSound.m_Volume);
-		m_CurrentSound = m_SoundEngine->play2D(currentSound.m_Sound, currentSound.m_Loop, false, true);
-	}
-	else {
-		std::cout << "Error: Sound " << soundName << " was not found" << std::endl;
+			Sound& currentSound = m_Sounds[soundName];
+			currentSound.m_Sound->setDefaultVolume(currentSound.m_Volume);
+			m_CurrentSound = m_SoundEngine->play2D(currentSound.m_Sound, currentSound.m_Loop, false, true);
+		}
+		else {
+			std::cout << "Error: Sound " << soundName << " was not found" << std::endl;
+		}
 	}
 }
 
 void Audio::Mute(const std::string& soundName) {
 	if (soundName == "") {
 		m_SoundEngine->stopAllSounds();
+		m_MuteActive = true;
 	}
 	else {
 		if (m_Sounds.find(soundName) != m_Sounds.end()) {
@@ -61,8 +64,14 @@ void Audio::Mute(const std::string& soundName) {
 	}
 }
 
+void Audio::Unmute() {
+	m_MuteActive = false;
+}
+
 void Audio::PauseSound(bool pause) {
-	m_CurrentSound->setIsPaused(pause);
+	if (m_CurrentSound) {
+		m_CurrentSound->setIsPaused(pause);
+	}
 }
 
 void Audio::Volume(const std::string& soundName, float volume) {
