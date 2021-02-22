@@ -82,7 +82,7 @@ void Audio::Volume(const std::string& soundName, float volume) {
 				m_CurrentSound->setVolume(volume);
 			}
 			else {
-				std::cout << "Error: Sound " << soundName << " is currently not playing" << std::endl;
+				m_Sounds[soundName].m_Volume = volume;
 			}
 		}
 		else {
@@ -160,6 +160,15 @@ unsigned int Audio::getAudioLength(const std::string& soundName) {
 
 	std::cout << "Error: Sound " << soundName << " was not found, returning 0" << std::endl;
 	return 0;
+}
+
+float Audio::getVolume(const std::string& soundName) {
+	if (m_Sounds.find(soundName) != m_Sounds.end()) {
+		return m_Sounds[soundName].m_Volume;
+	}
+	else {
+		std::cout << "Error: Sound " << soundName << " was not found, returning 0" << std::endl;
+	}
 }
 
 std::string Audio::currentSoundPlaying() {

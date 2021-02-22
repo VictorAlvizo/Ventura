@@ -12,7 +12,7 @@ public:
 	~Checkbox();
 
 	//Will invert from the current checked state if clicked
-	void checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos);
+	void CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos);
 
 	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool flipped = false, bool followCamera = true, glm::vec4 checkboxColor = glm::vec4(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 textColor = glm::vec3(1.0f));
 	void Move(glm::vec2 newPos);

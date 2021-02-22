@@ -1,7 +1,7 @@
 #include "Button.h"
 
 Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
-	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset)
+	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false)
 {
 	for (int i = 0; i < 3; i++) {
 		m_ButtonTextures[i] = buttonTexture;
@@ -17,7 +17,7 @@ Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_
 }
 
 Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, std::shared_ptr<Texture> hoverTexture, std::shared_ptr<Texture> clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, glm::vec3 fontColor, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
-	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset)
+	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false)
 {
 	m_ButtonTextures[0] = buttonTexture;
 	m_ButtonTextures[1] = hoverTexture;
@@ -66,6 +66,11 @@ void Button::SetRotation(float newRotation) {
 	m_Text->m_Rotation = m_Rotation;;
 }
 
+void Button::SetDelegate(const std::function<void()>& func) {
+	m_Delegate = func;
+	m_DelegateAdded = true;
+}
+
 void Button::ChangeFont(unsigned int fontSize, std::string fontPath) {
 	m_TextPath = (fontPath == "") ? m_TextPath : fontPath;
 	m_Text->LoadFont(m_TextPath, fontSize);
@@ -81,9 +86,15 @@ bool Button::isHovering(glm::vec2 mousePos, bool followingCamera, glm::vec2 came
 	return false;
 }
 
-bool Button::isClicked(glm::vec2 mousePos, bool mouseButton, bool followingCamera, glm::vec2 cameraPos) {
-	if (isHovering(mousePos, followingCamera, cameraPos) && mouseButton) {
+bool Button::isClicked(glm::vec2 mousePos, bool mouseButton, int& mouseAllowment, bool followingCamera, glm::vec2 cameraPos) {
+	if (isHovering(mousePos, followingCamera, cameraPos) && mouseButton && mouseAllowment == 1) {
 		m_CurrentStatus = Status::CLICKED;
+		mouseAllowment = 0;
+
+		if (m_DelegateAdded) {
+			m_Delegate();
+		}
+
 		return true;
 	}
 

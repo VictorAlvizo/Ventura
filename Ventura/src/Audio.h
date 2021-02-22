@@ -24,7 +24,6 @@ public:
 	void Unmute();
 	void PauseSound(bool pause);
 
-	//This can only be modified if the sound is currently playing
 	void Volume(const std::string& soundName, float volume);
 	//Position in miliseconds (1000 miliseconds = 1 second)
 	void SetSoundPos(unsigned int newPos);
@@ -39,6 +38,9 @@ public:
 	unsigned int getPlayPos();
 	//Returns the audio length in miliseconds, 0 if there were any errors getting the data. (1000 miliseconds = 1 second)
 	unsigned int getAudioLength(const std::string& soundName);
+
+	//Returns the volume (range of 0.0 - 1.0f) of the specified sound
+	float getVolume(const std::string& soundName);
 
 	std::string currentSoundPlaying();
 	inline bool soundsMuted() const { return m_MuteActive; }

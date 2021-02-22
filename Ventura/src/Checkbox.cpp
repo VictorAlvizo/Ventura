@@ -31,7 +31,7 @@ Checkbox::~Checkbox() {
 	m_Hitbox = nullptr;
 }
 
-void Checkbox::checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos) {
+void Checkbox::CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos) {
 	if (buttonClicked && buttonAllowment == 1) {
 		if (CollisionHandler::CollidePoint(mousePos, *m_Hitbox, followingCamera, cameraPos)) {
 			m_Checked = !m_Checked;
@@ -43,9 +43,9 @@ void Checkbox::checkClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 
 			else if (!m_Checked && m_UncheckDelegateAdded) {
 				m_UncheckDelegate();
 			}
-		}
 
-		buttonAllowment = 0;
+			buttonAllowment = 0;
+		}
 	}
 }
 

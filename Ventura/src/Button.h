@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "Texture.h"
 #include "TextRenderer.h"
 #include "Hitbox.h"
@@ -19,13 +20,14 @@ public:
 
 	void SetPos(glm::vec2 newPos);
 	void SetRotation(float newRotation);
+	void SetDelegate(const std::function<void()>& func);
 
 	//If you want to keep the same font only put in the fontsize parameter and that's it
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
 
 	bool isHovering(glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos);
 	//Pass the mouse button you wanted detcted (m_MouseButtons[index])
-	bool isClicked(glm::vec2 mousePos, bool mouseButton, bool followingCamera, glm::vec2 cameraPos);
+	bool isClicked(glm::vec2 mousePos, bool mouseButton, int& mouseAllowement, bool followingCamera, glm::vec2 cameraPos);
 
 	inline Status currentStatus() const { return m_CurrentStatus; }
 	inline glm::vec2 getPos() const { return m_Pos; }
@@ -46,5 +48,7 @@ private:
 
 	std::string m_TextPath;
 	unsigned int m_FontSize;
-};
 
+	std::function<void()> m_Delegate;
+	bool m_DelegateAdded;
+};
