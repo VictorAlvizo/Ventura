@@ -12,8 +12,8 @@ enum class Status {
 class Button {
 public:
 	//If you want to use the default texture put in "button" for the texture argument
-	Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText = "", float rotation = 0.0f, unsigned int fontSize = 24, glm::vec3 fontColor = glm::vec3(0.0f, 1.0f, 0.0f), std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
-	Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, std::shared_ptr<Texture> hoverTexture, std::shared_ptr<Texture> clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText = "", float rotation = 0.0f, unsigned int fontSize = 24, glm::vec3 fontColor = glm::vec3(1.0f), std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
+	Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText = "", float rotation = 0.0f, unsigned int fontSize = 24, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
+	Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, std::shared_ptr<Texture> hoverTexture, std::shared_ptr<Texture> clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText = "", float rotation = 0.0f, unsigned int fontSize = 24, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
 	~Button();
 
 	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool followCamera = true, glm::vec4 buttonColor = glm::vec4(1.0f), glm::vec3 textColor = glm::vec3(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2 textOffsets = glm::vec2(0.0f));
