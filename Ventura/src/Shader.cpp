@@ -84,6 +84,14 @@ void Shader::SetInt(const std::string& name, int value) {
 	glUniform1i(GetUniLocation(name), value);
 }
 
+void Shader::SetIntArr(const std::string& name, int arrSize, int vals[]) {
+	glUniform1iv(GetUniLocation(name), arrSize, vals);
+}
+
+void Shader::SetInt2(const std::string& name, int rowSize, int * vals) {
+	glUniform2iv(GetUniLocation(name), rowSize, vals);
+}
+
 void Shader::SetFloat(const std::string& name, float value) {
 	glUniform1f(GetUniLocation(name), value);
 }
@@ -92,8 +100,8 @@ void Shader::SetFloatArr(const std::string& name, int arrSize, float vals[]) {
 	glUniform1fv(GetUniLocation(name), arrSize, vals);
 }
 
-void Shader::SetFloat2(const std::string& name, int rowSize, float ** vals) {
-	glUniform2fv(GetUniLocation(name), rowSize, (float *)vals);
+void Shader::SetFloat2(const std::string& name, int rowSize, float * vals) {
+	glUniform2fv(GetUniLocation(name), rowSize, vals);
 }
 
 void Shader::SetVec2(const std::string& name, glm::vec2 vec2) {

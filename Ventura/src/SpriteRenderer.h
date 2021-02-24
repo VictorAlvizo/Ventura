@@ -6,6 +6,7 @@
 class SpriteRenderer {
 public:
 	SpriteRenderer();
+	//Only need to set childClass as true when wanting to override the Init() method
 	SpriteRenderer(std::shared_ptr<Shader> shader, bool childClass = false);
 	~SpriteRenderer();
 

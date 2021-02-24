@@ -67,7 +67,7 @@ void Filter::FilterRender(float time, glm::vec3 colorOverlay, FilterMode mode, D
 	m_Shader->Bind();
 	m_Shader->SetFloat("u_Time", time);
 	m_Shader->SetFloat("u_Strength", strength);
-	m_Shader->SetFloat2("u_Offsets", 9, (float **)offsetArr);
+	m_Shader->SetFloat2("u_Offsets", 9, reinterpret_cast<float *>(offsetArr));
 	m_Shader->SetVec3("u_ColorOverlay", colorOverlay);
 	m_Shader->SetInt("u_DistortionType", static_cast<int>(disEffect));
 
@@ -106,7 +106,7 @@ void Filter::FilterRender(float time, std::string filterName, glm::vec3 colorOve
 	m_Shader->Bind();
 	m_Shader->SetFloat("u_Time", time);
 	m_Shader->SetFloat("u_Strength", strength);
-	m_Shader->SetFloat2("u_Offsets", 9, (float**)offsetArr);
+	m_Shader->SetFloat2("u_Offsets", 9, reinterpret_cast<float *>(offsetArr));
 	m_Shader->SetVec3("u_ColorOverlay", colorOverlay);
 	m_Shader->SetInt("u_DistortionType", static_cast<int>(disEffect));
 
