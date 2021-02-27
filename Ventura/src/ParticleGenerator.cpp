@@ -105,7 +105,7 @@ bool ParticleGenerator::RemoveVelocity(glm::vec2 velocity) {
 	}
 
 	if (!found) {
-		std::cout << "Error: Velocity " << "(" << velocity.x << "," << velocity.y << ")" << " was not found" << std::endl;
+		std::cout << "Error: Velocity (" << velocity.x << "," << velocity.y << ") was not found" << std::endl;
 	}
 
 	return found;
@@ -135,7 +135,7 @@ bool ParticleGenerator::RemoveColor(glm::vec3 color) {
 	}
 
 	if (!found) {
-		std::cout << "Error: Color " << "(" << color.x << "," << color.y << "," << color.z << ")" << " was not found" << std::endl;
+		std::cout << "Error: Color (" << color.x << "," << color.y << "," << color.z << ") was not found" << std::endl;
 	}
 
 	return found;
