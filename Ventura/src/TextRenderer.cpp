@@ -83,9 +83,13 @@ bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int font
 	return true;
 }
 
-void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color, bool followCamera) {
+void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color, bool followCamera, float opacity) {
+	if (opacity > 1.0f || opacity < 0.0f) {
+		opacity = 1.0f;
+	}
+	
 	m_Shader->Bind();
-	m_Shader->SetVec3("u_TextColor", color);
+	m_Shader->SetVec4("u_TextColor", glm::vec4(color, opacity));
 
 	//For text rotation
 	//TODO: Small bug where the pivot point for the rotation is not correct
