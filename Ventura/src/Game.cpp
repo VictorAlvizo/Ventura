@@ -5,6 +5,8 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity)
 {
 	m_SpriteRenderer = nullptr;
 	m_Camera = nullptr;
+	
+	m_TestTextbox = nullptr;
 }
 
 Game::~Game() {
@@ -13,16 +15,19 @@ Game::~Game() {
 
 	delete m_Camera;
 	m_Camera = nullptr;
+
+	delete m_TestTextbox;
+	m_TestTextbox = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
 
-	//holder
+	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), 0.0f, "Test", glm::vec2(10.0f, 40.0f), 35);
 }
 
 void Game::ProcessInput(float deltaTime) {
-	//holder
+	m_TestTextbox->CheckClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MouseAllowment[GLFW_MOUSE_BUTTON_1], m_MousePos, true, glm::vec2(0.0f));
 }
 
 void Game::Update(float deltaTime) {
@@ -38,7 +43,7 @@ void Game::Render() {
 	//ImGui Code
 	ImGui::End();
 
-	//holder
+	m_TestTextbox->Draw(*m_SpriteRenderer, false, true);
 }
 
 void Game::CheckCollisions() {
@@ -61,6 +66,7 @@ void Game::EngineInit() {
 	ResourceManager::LoadTexture("Textures/ButtonTexture.png", "button");
 	ResourceManager::LoadTexture("Textures/CheckboxTexture.png", "checkbox");
 	ResourceManager::LoadTexture("Textures/CheckTickedTexture.png", "checkboxTicked");
+	ResourceManager::LoadTexture("Textures/TextboxTexture.png", "textbox");
 
 	glGenBuffers(1, &m_UBOVisionBlock);
 	glBindBuffer(GL_UNIFORM_BUFFER, m_UBOVisionBlock);

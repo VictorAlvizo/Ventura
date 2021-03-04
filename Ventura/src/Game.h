@@ -35,5 +35,7 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 
+	Textbox * m_TestTextbox;
+
 	unsigned int m_UBOVisionBlock;
 };

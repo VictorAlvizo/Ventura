@@ -7,8 +7,8 @@ Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_
 		m_ButtonTextures[i] = buttonTexture;
 	}
 
-	m_Text = new TextRenderer(windowWidth, windowHeight);
-	m_Text->LoadFont(customFont, m_FontSize);
+	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize);
+	m_Text->m_Rotation = this->m_Rotation;
 
 	glm::vec2 hitSize = (hitboxSize != glm::vec2(0.0f)) ? hitboxSize : m_Size;
 	m_Hitbox = new Hitbox(m_Pos + m_HitboxOffset, hitSize, glm::vec2(0.0f), m_Rotation);

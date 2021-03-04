@@ -183,6 +183,7 @@
     <ClCompile Include="src\Vendor\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\TextRenderer.cpp" />
     <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\Textbox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Checkbox.h" />
@@ -463,6 +464,7 @@
     <ClInclude Include="src\TextRenderer.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\TimerSpecialized.h" />
+    <ClInclude Include="src\Textbox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaders\FilterFragment.glsl" />
