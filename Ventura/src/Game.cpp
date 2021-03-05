@@ -23,7 +23,7 @@ Game::~Game() {
 void Game::Init() {
 	EngineInit();
 
-	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), 0.0f, "Test", glm::vec2(10.0f, 40.0f), 35);
+	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), 0.0f, "Test");
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -67,6 +67,7 @@ void Game::EngineInit() {
 	ResourceManager::LoadTexture("Textures/CheckboxTexture.png", "checkbox");
 	ResourceManager::LoadTexture("Textures/CheckTickedTexture.png", "checkboxTicked");
 	ResourceManager::LoadTexture("Textures/TextboxTexture.png", "textbox");
+	ResourceManager::LoadTexture("Textures/InserationCursor.jpg", "textcursor");
 
 	glGenBuffers(1, &m_UBOVisionBlock);
 	glBindBuffer(GL_UNIFORM_BUFFER, m_UBOVisionBlock);
