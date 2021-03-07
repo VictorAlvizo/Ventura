@@ -40,7 +40,8 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followC
 	m_TextRenderer->Text(m_Text, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f);
 
 	if (m_ShowBlink && m_Active) {
-		spriteRenderer.DrawSprite(*m_TextCursor, glm::vec2(m_Pos.x + m_TextOffset.x + (m_Size.x * 70.0f) / 300.0f, m_Pos.y + (m_Size.y * 15.0f) / 100.0f), glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, true, 0.0f, glm::vec4(glm::vec3(0.0f), 1.0f));
+		//TODO: Have to find a way to place the cursor into the right x position
+		spriteRenderer.DrawSprite(*m_TextCursor, glm::vec2(m_Pos.x + m_TextOffset.x, m_Pos.y + (m_Size.y * 15.0f) / 100.0f), glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, true, 0.0f, glm::vec4(glm::vec3(0.0f), 1.0f));
 	}
 
 	if (drawHitbox) {
@@ -65,5 +66,23 @@ void Textbox::CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 m
 			m_Active = !m_Active;
 			buttonAllowment = 0;
 		}
+	}
+}
+
+void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool shouldHold) {
+	//TODO: Check if shift or caps is on to uppercase the letters. Shift in general for checking
+	//if it's an ! or a 1 for example
+	if (m_Active) {
+		//Normal keys
+		for (int i = 32; i < 97; i++) {
+			if (keys[i] && keyAllowment[i] == 1) {
+				m_Text += static_cast<char>(i);
+				if (!shouldHold) {
+					keyAllowment[i] = 0;
+				}
+			}
+		}
+
+		//TODO: More specialized keys
 	}
 }

@@ -24,9 +24,15 @@ public:
 
 	float m_Rotation;
 
+	inline std::string getCurrentFont() const { return m_CurrentFont; }
+	inline unsigned int getFontSize() const { return m_FontSize; }
+
 private:
 	std::unordered_map<char, Character> m_Characters;
 
 	std::shared_ptr<Shader> m_Shader;
 	unsigned int m_VAO, m_VBO;
+
+	std::string m_CurrentFont;
+	unsigned int m_FontSize;
 };

@@ -23,11 +23,12 @@ Game::~Game() {
 void Game::Init() {
 	EngineInit();
 
-	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), 0.0f, "Test");
+	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), 0.0f, "");
 }
 
 void Game::ProcessInput(float deltaTime) {
 	m_TestTextbox->CheckClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MouseAllowment[GLFW_MOUSE_BUTTON_1], m_MousePos, true, glm::vec2(0.0f));
+	m_TestTextbox->DetectKeys(m_Keys, m_KeyAllowment);
 }
 
 void Game::Update(float deltaTime) {

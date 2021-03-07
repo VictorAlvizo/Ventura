@@ -33,6 +33,8 @@ TextRenderer::~TextRenderer() {
 }
 
 bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int fontSize) {
+	m_CurrentFont = fontPath;
+	m_FontSize = fontSize;
 	m_Characters.clear();
 
 	FT_Library ft;
@@ -134,7 +136,6 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 
 		x += (ch.m_Advance >> 6) * scale;
 	}
-
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

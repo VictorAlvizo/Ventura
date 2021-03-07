@@ -16,6 +16,7 @@ public:
 	void SetRotation(float rotation);
 
 	void CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos);
+	void DetectKeys(const bool * keys, int * keyAllowment, bool shouldHold = false);
 
 private:
 	std::shared_ptr<Texture> m_Texture;

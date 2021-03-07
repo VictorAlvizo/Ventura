@@ -13,10 +13,10 @@ public:
 	void Render();
 
 	//Mouse and keyboard information
-	char m_Keys[1024];
+	bool m_Keys[1024];
 	int m_KeyAllowment[1024]; //Counter for when you don't want ghost presses/key holds detected
 
-	bool m_MouseButtons[8];
+	bool m_MouseButtons[8]; 
 	int m_MouseAllowment[8];
 
 	glm::vec2 m_MousePos;
