@@ -25,6 +25,7 @@ TextRenderer::TextRenderer(const unsigned int width, const unsigned int height, 
 	m_Shader->UnBind();
 
 	m_Rotation = 0.0f;
+	m_InserationOffset = 0.0f;
 	LoadFont(fontPath, fontSize);
 }
 
@@ -90,6 +91,7 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 		opacity = 1.0f;
 	}
 	
+	m_InserationOffset = 0.0f;
 	m_Shader->Bind();
 	m_Shader->SetVec4("u_TextColor", glm::vec4(color, opacity));
 
@@ -116,6 +118,8 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 
 		float w = ch.m_Size.x * scale;
 		float h = ch.m_Size.y * scale;
+
+		m_InserationOffset = w + ch.m_Bearing.x + x;
 
 		float vertices[6][4] = {
 			{xPos, yPos + h, 0.0f, 1.0f},

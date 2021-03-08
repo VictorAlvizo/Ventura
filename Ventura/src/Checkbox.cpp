@@ -1,7 +1,7 @@
 #include "Checkbox.h"
 
 Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool initalCheck, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 textOffset, std::string text, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize) 
-	:m_Checked(initalCheck), m_Rotation(rotation), m_Pos(pos), m_Size(size), m_HeaderText(text), m_TextOffset(textOffset), m_FontPath(customFont), m_HitboxOffset(hitboxOffset), m_CheckDelegateAdded(false), m_UncheckDelegateAdded(false)
+	:m_Checked(initalCheck), m_Rotation(rotation), m_Pos(pos), m_Size(size), m_HeaderText(text), m_TextOffset(textOffset), m_HitboxOffset(hitboxOffset), m_CheckDelegateAdded(false), m_UncheckDelegateAdded(false)
 {
 	m_UncheckedTexture = ResourceManager::Get<Texture>("checkbox");
 	m_CheckedTexture = ResourceManager::Get<Texture>("checkboxTicked");
@@ -14,7 +14,7 @@ Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool ini
 }
 
 Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool initalCheck, std::shared_ptr<Texture> uncheckedTexture, std::shared_ptr<Texture> checkedTexture, glm::vec2 pos, glm::vec2 size, float rotation, glm::vec2 textOffset, std::string text, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize) 
-	:m_Checked(initalCheck), m_UncheckedTexture(uncheckedTexture), m_CheckedTexture(checkedTexture), m_Rotation(rotation), m_Pos(pos), m_Size(size), m_HeaderText(text), m_TextOffset(textOffset), m_FontPath(customFont), m_HitboxOffset(hitboxOffset), m_CheckDelegateAdded(false), m_UncheckDelegateAdded(false)
+	:m_Checked(initalCheck), m_UncheckedTexture(uncheckedTexture), m_CheckedTexture(checkedTexture), m_Rotation(rotation), m_Pos(pos), m_Size(size), m_HeaderText(text), m_TextOffset(textOffset), m_HitboxOffset(hitboxOffset), m_CheckDelegateAdded(false), m_UncheckDelegateAdded(false)
 {
 	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize);
 	m_Text->m_Rotation = m_Rotation;
@@ -73,8 +73,7 @@ void Checkbox::SetRotation(float newRotation) {
 }
 
 void Checkbox::ChangeFont(unsigned int fontSize, std::string fontPath) {
-	fontPath = (m_FontPath == "") ? fontPath : m_FontPath;
-	m_Text->LoadFont(fontPath, fontSize);
+	m_Text->LoadFont((fontPath == "") ? m_Text->getCurrentFont() : fontPath, fontSize);
 }
 
 void Checkbox::SetCheckDelegate(const std::function<void()>& func) {

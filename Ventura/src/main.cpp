@@ -136,6 +136,17 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
         if (action == GLFW_PRESS) {
             ventura->m_Keys[key] = true;
             ventura->m_KeyAllowment[key] = 1;
+
+            //To ensure that keyallowment for caps stays 0, as otherwise it would set itself to 1
+            if (key == GLFW_KEY_CAPS_LOCK && ventura->m_KeyAllowment[GLFW_KEY_CAPS_LOCK] == 0) {
+                ventura->m_KeyAllowment[key] = 0;
+            }
+
+            //Note: Assumes that caps lock is off when the user launches the application
+            if (key == GLFW_KEY_CAPS_LOCK && ventura->m_KeyAllowment[GLFW_KEY_CAPS_LOCK] == 1) {
+                ventura->m_CapsActive = !ventura->m_CapsActive;
+                ventura->m_KeyAllowment[GLFW_KEY_CAPS_LOCK] = 0;
+            }
         }
         else if (action == GLFW_RELEASE) {
             ventura->m_Keys[key] = false;

@@ -37,7 +37,6 @@ private:
 	glm::vec2 m_HitboxOffset;
 
 	TextRenderer * m_Text;
-	std::string m_FontPath;
 	glm::vec2 m_TextOffset;
 
 	glm::vec2 m_Pos, m_Size;
