@@ -23,7 +23,7 @@ Game::~Game() {
 void Game::Init() {
 	EngineInit();
 
-	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), "");
+	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), "", "Type anything.", glm::vec2(0.0f), 0, "Fonts/LGC.ttf");
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -44,7 +44,7 @@ void Game::Render() {
 	//ImGui Code
 	ImGui::End();
 
-	m_TestTextbox->Draw(*m_SpriteRenderer, false, true);
+	m_TestTextbox->Draw(*m_SpriteRenderer, false, true, 10.0f, glm::vec4(0.973f, 0.439f, 0.376f, 1.0f), glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f), 0.7f, glm::vec3(1.0f));
 }
 
 void Game::CheckCollisions() {

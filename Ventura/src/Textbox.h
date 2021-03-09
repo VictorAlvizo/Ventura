@@ -8,11 +8,11 @@
 
 class Textbox {
 public:
-	Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
-	Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, std::shared_ptr<Texture> textCursorTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
+	Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", std::string placeHolderText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
+	Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, std::shared_ptr<Texture> textCursorTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", std::string placeHolderText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
 	~Textbox();
 
-	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool followCamera = false, float outlineWidth = 10, glm::vec4 textboxColor = glm::vec4(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 textColor = glm::vec3(0.0f), glm::vec3 outlineColor = glm::vec3(0.0f, 0.0f, 1.0f));
+	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool followCamera = false, float outlineWidth = 10, glm::vec4 textboxColor = glm::vec4(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 textColor = glm::vec3(0.0f), glm::vec3 outlineColor = glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3 cursorColor = glm::vec3(0.0f), float phOpacity = 0.7f, glm::vec3 phColor = glm::vec3(0.71f, 0.553f, 0.714f));
 	void Move(glm::vec2 newPos);
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
 
@@ -32,9 +32,12 @@ private:
 
 	TextRenderer * m_TextRenderer;
 	glm::vec2 m_TextOffset;
-	std::string m_Text;
+	std::string m_Text; //Full text
+	std::string m_ShowText; //Text that is being drawn
+	std::string m_PlaceholderText;
 	Timer * m_CursorTimer;
 	bool m_ShowBlink;
+	unsigned int m_HideIndex;
 
 	Hitbox * m_Hitbox;
 	glm::vec2 m_HitboxOffset;

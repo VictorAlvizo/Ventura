@@ -1,7 +1,7 @@
 #include "Textbox.h"
 
-Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, glm::vec2 size, std::string defaultText, glm::vec2 textOffset, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize) 
-	:m_Pos(pos), m_Size(size), m_HitboxOffset(hitboxOffset), m_Text(defaultText), m_Active(false), m_ShowBlink(false), m_ActiveDelegateAdded(false), m_UnActiveDelegateAdded(false)
+Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, glm::vec2 size, std::string defaultText, std::string placeHolderText, glm::vec2 textOffset, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize) 
+	:m_Pos(pos), m_Size(size), m_HitboxOffset(hitboxOffset), m_Text(defaultText), m_PlaceholderText(placeHolderText), m_ShowText(defaultText), m_Active(false), m_ShowBlink(false), m_ActiveDelegateAdded(false), m_UnActiveDelegateAdded(false), m_HideIndex(0)
 {
 	m_Texture = ResourceManager::Get<Texture>("textbox");
 	m_TextCursor = ResourceManager::Get<Texture>("textcursor");
@@ -18,8 +18,8 @@ Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, g
 	m_CursorTimer->StartTimer([=]() {m_ShowBlink = !m_ShowBlink; });
 }
 
-Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, std::shared_ptr<Texture> textCursorTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText, glm::vec2 textOffset, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
-	:m_Texture(textboxTexture), m_TextCursor(textCursorTexture), m_Pos(pos), m_Size(size), m_HitboxOffset(hitboxOffset), m_Text(defaultText), m_Active(false), m_ShowBlink(false), m_ActiveDelegateAdded(false), m_UnActiveDelegateAdded(false)
+Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, std::shared_ptr<Texture> textCursorTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText, std::string placeHolderText, glm::vec2 textOffset, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
+	:m_Texture(textboxTexture), m_TextCursor(textCursorTexture), m_Pos(pos), m_Size(size), m_HitboxOffset(hitboxOffset), m_Text(defaultText), m_PlaceholderText(placeHolderText), m_Active(false), m_ShowBlink(false), m_ActiveDelegateAdded(false), m_UnActiveDelegateAdded(false), m_HideIndex(0)
 {
 	m_TextOffset = (textOffset == glm::vec2(0.0f)) ? glm::vec2((m_Size.x * 10.0f) / 300.0f, (m_Size.y * 40.0f) / 100.0f) : textOffset;
 	float fontSiz = (fontSize == 0) ? (m_Size.y * 35) / 100.0f : fontSize;
@@ -44,17 +44,28 @@ Textbox::~Textbox() {
 	m_CursorTimer = nullptr;
 }
 
-void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followCamera, float outlineWidth, glm::vec4 textboxColor, glm::vec3 hitboxColor, glm::vec3 textColor, glm::vec3 outlineColor) {
+void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followCamera, float outlineWidth, glm::vec4 textboxColor, glm::vec3 hitboxColor, glm::vec3 textColor, glm::vec3 outlineColor, glm::vec3 cursorColor, float phOpacity, glm::vec3 phColor) {
 	if (m_Active) {
 		//8 and 15 are used for the proportion equation
 		spriteRenderer.DrawSprite(*m_Texture, m_Pos - (8.0f * outlineWidth) / 15.0f, m_Size + outlineWidth, false, followCamera, 0.0f, glm::vec4(outlineColor, 1.0f));
 	}
 
 	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, false, followCamera, 0.0f , textboxColor);
-	m_TextRenderer->Text(m_Text, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f);
+	m_TextRenderer->Text(m_ShowText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f);
+
+	if (m_PlaceholderText != "" && m_Text == "") {
+		m_TextRenderer->Text(m_PlaceholderText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, phColor, followCamera, phOpacity);
+	}
+
+	if (m_Pos.x + m_Size.x > m_TextRenderer->getInserationOffset()) {
+		m_ShowText = m_Text.substr(m_HideIndex, m_Text.length());
+	}
+	else {
+		m_ShowText = m_Text.substr(++m_HideIndex, m_Text.length());
+	}
 
 	if (m_ShowBlink && m_Active) {
-		spriteRenderer.DrawSprite(*m_TextCursor, (m_Text != "") ? glm::vec2(m_TextRenderer->getInserationOffset(), m_Pos.y + (m_Size.y * 15.0f) / 100.0f) : m_Pos + m_TextOffset.x, glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, true, 0.0f, glm::vec4(glm::vec3(0.0f), 1.0f));
+		spriteRenderer.DrawSprite(*m_TextCursor, (m_Text != "") ? glm::vec2(m_TextRenderer->getInserationOffset(), m_Pos.y + (m_Size.y * 15.0f) / 100.0f) : m_Pos + m_TextOffset.x, glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, true, 0.0f, glm::vec4(cursorColor, 1.0f));
 	}
 
 	if (drawHitbox) {
@@ -88,12 +99,11 @@ void Textbox::CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 m
 }
 
 void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, bool shouldHold) {
-	std::cout << "Caps Lock: " << capsLock << std::endl;
-
 	if (m_Active) {
 		//Backspace, deleting keys
 		if (keys[259] && keyAllowment[259] == 1 && m_Text != "") {
 			m_Text.pop_back();
+			m_HideIndex = (m_HideIndex != 0) ? --m_HideIndex : m_HideIndex;
 
 			if (!shouldHold) {
 				keyAllowment[259] = 0;
