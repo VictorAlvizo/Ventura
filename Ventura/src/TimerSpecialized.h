@@ -24,6 +24,7 @@ public:
 	}
 
 	inline T getData() const { return m_ReturnData; }
+	inline bool isTimerRunning() const { return m_ContinueThread; }
 
 private:
 

@@ -16,6 +16,8 @@ public:
 	void StopTimer();
 	void ChangeWaitPeriod(int newPeriod);
 
+	inline bool isTimerRunning() const { return m_ContinueThread; }
+
 protected:
 	virtual void TimerThread(const std::function<void()>& func);
 

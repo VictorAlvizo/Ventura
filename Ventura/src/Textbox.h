@@ -9,7 +9,7 @@
 class Textbox {
 public:
 	Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", std::string placeHolderText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
-	Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, std::shared_ptr<Texture> textCursorTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", std::string placeHolderText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
+	Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", std::string placeHolderText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
 	~Textbox();
 
 	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool followCamera = false, float outlineWidth = 10, glm::vec4 textboxColor = glm::vec4(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 textColor = glm::vec3(0.0f), glm::vec3 outlineColor = glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3 cursorColor = glm::vec3(0.0f), float phOpacity = 0.7f, glm::vec3 phColor = glm::vec3(0.71f, 0.553f, 0.714f));
@@ -17,10 +17,13 @@ public:
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
 
 	void CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos);
-	void DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, bool shouldHold = false);
+	void DetectKeys(const bool * keys, int * keyAllowment, bool capsLock);
 
 	void SetActiveDelegate(const std::function<void()>& func);
 	void SetUnActiveDelegate(const std::function<void()>& func);
+
+	inline std::string getText() const { m_Text; }
+	inline bool isActive() const { return m_Active; }
 
 private:
 	char ProcessKey(int keyIndex, bool shiftLeft, bool capsLock, bool shiftRight);
@@ -38,6 +41,10 @@ private:
 	Timer * m_CursorTimer;
 	bool m_ShowBlink;
 	unsigned int m_HideIndex;
+
+	int m_CurrentKey;
+	Timer * m_HoldTimer;
+	bool m_HoldEnabled; //User has been holding the key for a specified time, spam the key
 
 	Hitbox * m_Hitbox;
 	glm::vec2 m_HitboxOffset;
