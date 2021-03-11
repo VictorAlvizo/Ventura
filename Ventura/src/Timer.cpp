@@ -20,6 +20,7 @@ Timer::~Timer() {
 		m_TimerThread->join();
 	}
 
+	std::lock_guard<std::mutex> lock(m_TimerMutex); //Just to ensure the thread is not deleted while mutex is busy
 	delete m_TimerThread;
 	m_TimerThread = nullptr;
 }
@@ -34,8 +35,8 @@ void Timer::StartTimer(const std::function<void()>& func) {
 
 void Timer::StopTimer() {
 	if (m_ContinueThread) {
-		m_TimerThread->detach();
 		m_ContinueThread = false;
+		m_TimerThread->detach();
 		delete m_TimerThread;
 		m_TimerThread = nullptr;
 	}

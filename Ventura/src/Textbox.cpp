@@ -110,16 +110,33 @@ void Textbox::CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 m
 void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock) {
 	if (m_Active) {
 		//Backspace, deleting keys
-		if (keys[259] && keyAllowment[259] == 1 && m_Text != "") {
+		if (keys[259] && keyAllowment[259] == 1 && !m_Text.empty() || (m_HoldEnabled && m_CurrentKey == 259 && !m_Text.empty())) {
 			m_Text.pop_back();
 			m_HideIndex = (m_HideIndex != 0) ? --m_HideIndex : m_HideIndex;
 			keyAllowment[259] = 0;
+			m_CurrentKey = 259;
+			m_HoldTimer->StartTimer([&]() { m_HoldEnabled = true; });
+		}
+
+		if (!keys[m_CurrentKey]) {
+			if (m_HoldTimer->isTimerRunning()) {
+				m_HoldTimer->StopTimer();
+				m_HoldEnabled = false;
+				m_CurrentKey = 0;
+			}
 		}
 
 		for (int i = 32; i < 97; i++) {
-			if (keys[i] && keyAllowment[i] == 1) {
-				m_Text += ProcessKey(i, keys[340], keys[344], capsLock);
-				keyAllowment[i] = 0;
+			if (keys[i]) {
+				if (i != m_CurrentKey) {
+					m_CurrentKey = i;
+					m_HoldTimer->StartTimer([&]() { m_HoldEnabled = true; });
+				}
+
+				if (keyAllowment[i] == 1 || (m_HoldEnabled && i == m_CurrentKey)) {
+					m_Text += ProcessKey(i, keys[340], keys[344], capsLock);
+					keyAllowment[i] = 0;
+				}
 			}
 		}
 	}

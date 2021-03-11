@@ -20,11 +20,13 @@ AnimationCycle::~AnimationCycle() {
 	if (!m_TerminateAnimation) {
 		m_TerminateAnimation = true;
 		m_AnimationThread->join(); //Join here as the class will be destroyed, so it dosen't use varibles from a defunct class
-		delete m_AnimationThread;
-		m_AnimationThread = nullptr;
 	}
 
 	m_CurrentAnimation = "";
+	
+	std::lock_guard<std::mutex> lock(m_AnimationMutex);
+	delete m_AnimationThread;
+	m_AnimationThread = nullptr;
 }
 
 void AnimationCycle::LinearX(const std::string cycleName, int xStart, int xEnd, int y, int speed, bool loop) {
@@ -80,8 +82,8 @@ void AnimationCycle::Animate(std::string cycleName) {
 void AnimationCycle::TerminateAnimation() {
 	if (!m_TerminateAnimation) {
 		//Delete pointer and detach the thread as the class will still remain alive
-		m_AnimationThread->detach();
 		m_TerminateAnimation = true;
+		m_AnimationThread->detach();
 		delete m_AnimationThread;
 		m_AnimationThread = nullptr;
 	}
@@ -94,7 +96,7 @@ void AnimationCycle::AnimationThread() {
 	while (!m_TerminateAnimation) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(m_CurrentCycle.m_AnimationSpeed));
 
-		//Dpouble check just to make sure, incase while the thread was asleep TerminateAnimation() was called
+		//Double check just to make sure, incase while the thread was asleep TerminateAnimation() was called
 		if (m_TerminateAnimation) {
 			break;
 		}
