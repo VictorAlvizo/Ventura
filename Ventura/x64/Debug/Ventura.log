@@ -1,5 +1,5 @@
 ﻿  Textbox.cpp
 C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(12,69): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(31,69): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(32,69): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(43): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
   Ventura.vcxproj -> C:\Users\Victor\Desktop\Ventura\x64\Debug\Ventura.exe

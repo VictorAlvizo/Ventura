@@ -20,7 +20,7 @@ public:
 	~TextRenderer();
 
 	bool LoadFont(const std::string& fontPath, const unsigned int fontSize);
-	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f), bool followCamera = false, float opacity = 1.0f);
+	void Text(const std::string& text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f), bool followCamera = false, float opacity = 1.0f, int inserationOffsetLimit = 0);
 
 	float m_Rotation;
 

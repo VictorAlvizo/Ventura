@@ -28,7 +28,7 @@ void Game::Init() {
 
 void Game::ProcessInput(float deltaTime) {
 	m_TestTextbox->CheckClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MouseAllowment[GLFW_MOUSE_BUTTON_1], m_MousePos, true, glm::vec2(0.0f));
-	m_TestTextbox->DetectKeys(m_Keys, m_KeyAllowment, m_CapsActive);
+	m_TestTextbox->DetectKeys(m_Keys, m_KeyAllowment, m_CapsActive, deltaTime);
 }
 
 void Game::Update(float deltaTime) {

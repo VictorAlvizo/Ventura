@@ -86,7 +86,7 @@ bool TextRenderer::LoadFont(const std::string& fontPath, const unsigned int font
 	return true;
 }
 
-void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color, bool followCamera, float opacity) {
+void TextRenderer::Text(const std::string& text, float x, float y, float scale, glm::vec3 color, bool followCamera, float opacity, int inserationOffsetLimit) {
 	if (opacity > 1.0f || opacity < 0.0f) {
 		opacity = 1.0f;
 	}
@@ -109,6 +109,8 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(m_VAO);
 
+	int insertionCount = 0;
+
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++) {
 		Character ch = m_Characters[*c];
@@ -119,7 +121,10 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 		float w = ch.m_Size.x * scale;
 		float h = ch.m_Size.y * scale;
 
-		m_InserationOffset = w + ch.m_Bearing.x + x;
+		if (inserationOffsetLimit > insertionCount) {
+			m_InserationOffset = w + ch.m_Bearing.x + x;
+			insertionCount++;
+		}
 
 		float vertices[6][4] = {
 			{xPos, yPos + h, 0.0f, 1.0f},

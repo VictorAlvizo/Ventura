@@ -17,7 +17,8 @@ Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, g
 	m_CursorTimer = new Timer(450);
 	m_CursorTimer->StartTimer([=]() {m_ShowBlink = !m_ShowBlink; });
 
-	m_HoldTimer = new Timer(1000);
+	m_HoldTime = 1.0f;
+	m_CurrentKeyPos = 0;
 }
 
 Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText, std::string placeHolderText, glm::vec2 textOffset, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
@@ -36,7 +37,8 @@ Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<
 	m_CursorTimer = new Timer(450);
 	m_CursorTimer->StartTimer([=]() {m_ShowBlink = !m_ShowBlink; });
 
-	m_HoldTimer = new Timer(1000);
+	m_HoldTime = 1.0f;
+	m_CurrentKeyPos = 0;
 }
 
 Textbox::~Textbox() {
@@ -48,9 +50,6 @@ Textbox::~Textbox() {
 
 	delete m_CursorTimer;
 	m_CursorTimer = nullptr;
-
-	delete m_HoldTimer;
-	m_HoldTimer = nullptr;
 }
 
 void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followCamera, float outlineWidth, glm::vec4 textboxColor, glm::vec3 hitboxColor, glm::vec3 textColor, glm::vec3 outlineColor, glm::vec3 cursorColor, float phOpacity, glm::vec3 phColor) {
@@ -60,7 +59,7 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followC
 	}
 
 	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, false, followCamera, 0.0f , textboxColor);
-	m_TextRenderer->Text(m_ShowText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f);
+	m_TextRenderer->Text(m_ShowText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, m_CurrentKeyPos);
 
 	if (m_PlaceholderText != "" && m_Text == "") {
 		m_TextRenderer->Text(m_PlaceholderText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, phColor, followCamera, phOpacity);
@@ -73,8 +72,8 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followC
 		m_ShowText = m_Text.substr(++m_HideIndex, m_Text.length());
 	}
 
-	if (m_ShowBlink && m_Active) {
-		spriteRenderer.DrawSprite(*m_TextCursor, (m_Text != "") ? glm::vec2(m_TextRenderer->getInserationOffset(), m_Pos.y + (m_Size.y * 15.0f) / 100.0f) : m_Pos + m_TextOffset.x, glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, true, 0.0f, glm::vec4(cursorColor, 1.0f));
+	if (m_ShowBlink && m_Active || (m_CurrentKey == 262 && m_HoldEnabled) || (m_CurrentKey == 263 && m_HoldEnabled)) {
+		spriteRenderer.DrawSprite(*m_TextCursor, (m_CurrentKeyPos != 0) ? glm::vec2(m_TextRenderer->getInserationOffset(), m_Pos.y + (m_Size.y * 15.0f) / 100.0f) : m_Pos + m_TextOffset.x, glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, true, 0.0f, glm::vec4(cursorColor, 1.0f));
 	}
 
 	if (drawHitbox) {
@@ -107,22 +106,40 @@ void Textbox::CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 m
 	}
 }
 
-void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock) {
+void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, float deltaTime) {
 	if (m_Active) {
 		//Backspace, deleting keys
-		if (keys[259] && keyAllowment[259] == 1 && !m_Text.empty() || (m_HoldEnabled && m_CurrentKey == 259 && !m_Text.empty())) {
-			m_Text.pop_back();
+		if (keys[259] && keyAllowment[259] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 259 && m_CurrentKeyPos != 0)) {
+			m_CurrentKeyPos--;
+			m_Text.erase(m_CurrentKeyPos, 1);
 			m_HideIndex = (m_HideIndex != 0) ? --m_HideIndex : m_HideIndex;
 			keyAllowment[259] = 0;
 			m_CurrentKey = 259;
-			m_HoldTimer->StartTimer([&]() { m_HoldEnabled = true; });
+		}
+
+		//TODO: Fix the insertion cursor pos when the text width is bigger than the textbox width
+		if (keys[262] && keyAllowment[262] == 1 && m_CurrentKeyPos != m_Text.length() || (m_HoldEnabled && m_CurrentKey == 262 && m_CurrentKeyPos != m_Text.length())) { //Right arrow keys
+			m_CurrentKeyPos++;
+			keyAllowment[262] = 0;
+			m_CurrentKey = 262;
+			
+		}
+		else if (keys[263] && keyAllowment[263] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 263 && m_CurrentKeyPos != 0)) {
+			m_CurrentKeyPos--;
+			keyAllowment[263] = 0;
+			m_CurrentKey = 263;
 		}
 
 		if (!keys[m_CurrentKey]) {
-			if (m_HoldTimer->isTimerRunning()) {
-				m_HoldTimer->StopTimer();
-				m_HoldEnabled = false;
-				m_CurrentKey = 0;
+			m_HoldTime = 1.0f;
+			m_HoldEnabled = false;
+			m_CurrentKey = 0;
+		}
+		else if (keys[m_CurrentKey]) {
+			m_HoldTime -= deltaTime;
+
+			if (m_HoldTime <= 0.0f) {
+				m_HoldEnabled = true;
 			}
 		}
 
@@ -130,11 +147,14 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock) {
 			if (keys[i]) {
 				if (i != m_CurrentKey) {
 					m_CurrentKey = i;
-					m_HoldTimer->StartTimer([&]() { m_HoldEnabled = true; });
+					m_HoldEnabled = false;
+					m_HoldTime = 1.5f;
 				}
 
 				if (keyAllowment[i] == 1 || (m_HoldEnabled && i == m_CurrentKey)) {
-					m_Text += ProcessKey(i, keys[340], keys[344], capsLock);
+					std::string charString(1, ProcessKey(i, keys[340], keys[344], capsLock));
+					m_Text.insert(m_CurrentKeyPos, charString);
+					m_CurrentKeyPos++;
 					keyAllowment[i] = 0;
 				}
 			}

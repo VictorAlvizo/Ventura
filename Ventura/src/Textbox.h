@@ -17,7 +17,7 @@ public:
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
 
 	void CheckClicked(bool buttonClicked, int& buttonAllowment, glm::vec2 mousePos, bool followingCamera, glm::vec2 cameraPos);
-	void DetectKeys(const bool * keys, int * keyAllowment, bool capsLock);
+	void DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, float deltaTime);
 
 	void SetActiveDelegate(const std::function<void()>& func);
 	void SetUnActiveDelegate(const std::function<void()>& func);
@@ -42,9 +42,11 @@ private:
 	bool m_ShowBlink;
 	unsigned int m_HideIndex;
 
+	float m_HoldTime;
 	int m_CurrentKey;
-	Timer * m_HoldTimer;
 	bool m_HoldEnabled; //User has been holding the key for a specified time, spam the key
+
+	int m_CurrentKeyPos; //Where the user is typing
 
 	Hitbox * m_Hitbox;
 	glm::vec2 m_HitboxOffset;
