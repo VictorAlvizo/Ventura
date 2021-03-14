@@ -12,7 +12,7 @@ public:
 	Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText = "", std::string placeHolderText = "", glm::vec2 textOffset = glm::vec2(0.0f), unsigned int fontSize = 0, std::string customFont = "Fonts/arial.ttf", glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
 	~Textbox();
 
-	void Draw(SpriteRenderer& spriteRenderer, bool drawHitbox = false, bool followCamera = false, float outlineWidth = 10, glm::vec4 textboxColor = glm::vec4(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 textColor = glm::vec3(0.0f), glm::vec3 outlineColor = glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3 cursorColor = glm::vec3(0.0f), float phOpacity = 0.7f, glm::vec3 phColor = glm::vec3(0.71f, 0.553f, 0.714f));
+	void Draw(SpriteRenderer& spriteRenderer, bool passwordMode = false, bool drawHitbox = false, bool followCamera = false, float outlineWidth = 10, glm::vec4 textboxColor = glm::vec4(1.0f), glm::vec3 hitboxColor = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 textColor = glm::vec3(0.0f), glm::vec3 outlineColor = glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3 cursorColor = glm::vec3(0.0f), float phOpacity = 0.7f, glm::vec3 phColor = glm::vec3(0.71f, 0.553f, 0.714f));
 	void Move(glm::vec2 newPos);
 	void ChangeFont(unsigned int fontSize, std::string fontPath = "");
 
@@ -22,7 +22,7 @@ public:
 	void SetActiveDelegate(const std::function<void()>& func);
 	void SetUnActiveDelegate(const std::function<void()>& func);
 
-	inline std::string getText() const { m_Text; }
+	inline std::string getText() const { return m_Text; }
 	inline bool isActive() const { return m_Active; }
 
 private:

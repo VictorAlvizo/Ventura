@@ -56,14 +56,22 @@ Textbox::~Textbox() {
 	m_CursorTimer = nullptr;
 }
 
-void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followCamera, float outlineWidth, glm::vec4 textboxColor, glm::vec3 hitboxColor, glm::vec3 textColor, glm::vec3 outlineColor, glm::vec3 cursorColor, float phOpacity, glm::vec3 phColor) {
+void Textbox::Draw(SpriteRenderer& spriteRenderer, bool passwordMode, bool drawHitbox, bool followCamera, float outlineWidth, glm::vec4 textboxColor, glm::vec3 hitboxColor, glm::vec3 textColor, glm::vec3 outlineColor, glm::vec3 cursorColor, float phOpacity, glm::vec3 phColor) {
 	if (m_Active) {
 		//8 and 15 are used for the proportion equation
 		spriteRenderer.DrawSprite(*m_Texture, m_Pos - (8.0f * outlineWidth) / 15.0f, m_Size + outlineWidth, false, followCamera, 0.0f, glm::vec4(outlineColor, 1.0f));
 	}
 
 	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, false, followCamera, 0.0f , textboxColor);
-	m_TextRenderer->Text(m_ShowText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, m_CurrentKeyPos);
+
+	if (!passwordMode) {
+		m_TextRenderer->Text(m_ShowText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, m_CurrentKeyPos);
+	}
+	else {
+		std::string passwordText;
+		passwordText.append(m_ShowText.length(), '*');
+		m_TextRenderer->Text(passwordText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, m_CurrentKeyPos);
+	}
 
 	if (m_PlaceholderText != "" && m_Text == "") {
 		m_TextRenderer->Text(m_PlaceholderText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, phColor, followCamera, phOpacity);
@@ -92,7 +100,7 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followC
 	}
 	else {
 		//Characters have gone over the SHOWN text width, increase hide index to make it fit
-		m_ShowText = m_Text.substr(++m_HideIndex, (m_Text.length() - m_HideIndex) - (m_Text.length() - m_CurrentKeyPos));
+ 		m_ShowText = m_Text.substr(++m_HideIndex, (m_Text.length() - m_HideIndex) - (m_Text.length() - m_CurrentKeyPos));
 		m_BlockEntire = false;
 	}
 
@@ -146,8 +154,12 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 			m_CurrentKey = 259;
 		}
 
-		//TODO: Fix the insertion cursor pos when the text width is bigger than the textbox width
 		if (keys[262] && keyAllowment[262] == 1 && m_CurrentKeyPos != m_Text.length() || (m_HoldEnabled && m_CurrentKey == 262 && m_CurrentKeyPos != m_Text.length())) { //Right arrow keys
+			if (m_BlockEntire && m_BackBlockAmount == m_CurrentKeyPos) {
+				m_HideIndex++;
+				m_BlockEntire = false;
+			}
+
 			m_CurrentKeyPos++;
 			keyAllowment[262] = 0;
 			m_CurrentKey = 262;
@@ -190,6 +202,10 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 					m_Text.insert(m_CurrentKeyPos, charString);
 					m_CurrentKeyPos++;
 					keyAllowment[i] = 0;
+
+					if (m_BlockEntire) {
+						m_BlockEntire = false;
+					}
 				}
 			}
 		}

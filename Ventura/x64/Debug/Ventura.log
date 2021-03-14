@@ -1,6 +1,3 @@
-﻿  Textbox.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(12,69): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(34,69): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(86,43): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(43): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
+﻿  Game.cpp
+C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(33): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
   Ventura.vcxproj -> C:\Users\Victor\Desktop\Ventura\x64\Debug\Ventura.exe
