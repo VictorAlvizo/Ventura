@@ -19,6 +19,8 @@ Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, g
 
 	m_HoldTime = 1.0f;
 	m_CurrentKeyPos = 0;
+
+	m_BlockEntire = false;
 }
 
 Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText, std::string placeHolderText, glm::vec2 textOffset, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
@@ -39,6 +41,8 @@ Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<
 
 	m_HoldTime = 1.0f;
 	m_CurrentKeyPos = 0;
+
+	m_BlockEntire = false;
 }
 
 Textbox::~Textbox() {
@@ -66,10 +70,30 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followC
 	}
 
 	if (m_Pos.x + m_Size.x > m_TextRenderer->getInserationOffset()) {
-		m_ShowText = m_Text.substr(m_HideIndex, m_Text.length());
+		//Logic behind changing the cursor position and not messing the textbox up
+		if (m_HideIndex != 0) {
+			m_ShowText = m_Text.substr(m_HideIndex, (m_Text.length() - m_HideIndex) - (m_Text.length() - m_CurrentKeyPos));
+		}
+		else if (m_BlockEntire && m_Pos.x + m_Size.x < m_TextRenderer->getInserationOffsetMax()) {
+			m_BackBlockAmount--;
+			m_ShowText = m_Text.substr(0, m_Text.length() - (m_Text.length() - m_BackBlockAmount));
+		}
+		else if (m_BlockEntire) {
+			m_ShowText = m_Text.substr(0, m_Text.length() - (m_Text.length() - m_BackBlockAmount));
+		}
+		else if (!m_BlockEntire && m_Pos.x + m_Size.x < m_TextRenderer->getInserationOffsetMax()) {
+			m_BlockEntire = true;
+			m_BackBlockAmount = m_Text.length() - 1;
+			m_ShowText = m_Text.substr(0, m_Text.length() - (m_Text.length() - m_BackBlockAmount));
+		}
+		else {
+			m_ShowText = m_Text.substr(0, m_Text.length());
+		}
 	}
 	else {
-		m_ShowText = m_Text.substr(++m_HideIndex, m_Text.length());
+		//Characters have gone over the SHOWN text width, increase hide index to make it fit
+		m_ShowText = m_Text.substr(++m_HideIndex, (m_Text.length() - m_HideIndex) - (m_Text.length() - m_CurrentKeyPos));
+		m_BlockEntire = false;
 	}
 
 	if (m_ShowBlink && m_Active || (m_CurrentKey == 262 && m_HoldEnabled) || (m_CurrentKey == 263 && m_HoldEnabled)) {
@@ -110,6 +134,11 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 	if (m_Active) {
 		//Backspace, deleting keys
 		if (keys[259] && keyAllowment[259] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 259 && m_CurrentKeyPos != 0)) {
+
+			if (m_Text.length() != m_CurrentKeyPos) {
+				//TODO: Code maybe more in the if statement
+			}
+
 			m_CurrentKeyPos--;
 			m_Text.erase(m_CurrentKeyPos, 1);
 			m_HideIndex = (m_HideIndex != 0) ? --m_HideIndex : m_HideIndex;
@@ -126,6 +155,11 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 		}
 		else if (keys[263] && keyAllowment[263] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 263 && m_CurrentKeyPos != 0)) {
 			m_CurrentKeyPos--;
+
+			if (m_HideIndex != 0) {
+				m_HideIndex--;
+			}
+
 			keyAllowment[263] = 0;
 			m_CurrentKey = 263;
 		}

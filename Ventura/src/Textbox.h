@@ -41,6 +41,8 @@ private:
 	Timer * m_CursorTimer;
 	bool m_ShowBlink;
 	unsigned int m_HideIndex;
+	bool m_BlockEntire;
+	int m_BackBlockAmount;
 
 	float m_HoldTime;
 	int m_CurrentKey;

@@ -126,6 +126,8 @@ void TextRenderer::Text(const std::string& text, float x, float y, float scale, 
 			insertionCount++;
 		}
 
+		m_InserationOffsetMax = w + ch.m_Bearing.x + x;
+
 		float vertices[6][4] = {
 			{xPos, yPos + h, 0.0f, 1.0f},
 			{xPos + w, yPos, 1.0f, 0.0f},

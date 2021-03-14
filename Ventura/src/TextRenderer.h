@@ -27,6 +27,7 @@ public:
 	inline std::string getCurrentFont() const { return m_CurrentFont; }
 	inline unsigned int getFontSize() const { return m_FontSize; }
 	inline float getInserationOffset() const { return m_InserationOffset; }
+	inline float getInserationOffsetMax() const { return m_InserationOffsetMax; }
 
 private:
 	std::unordered_map<char, Character> m_Characters;
@@ -38,4 +39,5 @@ private:
 	unsigned int m_FontSize;
 
 	float m_InserationOffset; //Used for the inseration cursor position offset in Textbox
+	float m_InserationOffsetMax;
 };
