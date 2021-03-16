@@ -96,7 +96,7 @@ public:
 
 	template<typename T>
 	static T Retrive(std::string filePath, std::string dataName) {
-		T emptyReturn;
+		T emptyReturn{};
 
 		if (!FileExist(filePath)) {
 			std::cout << "Error: File " << filePath << " does not exist" << std::endl;
@@ -116,11 +116,10 @@ public:
 				file.close();
 				return returnType;
 			}
-
 		}
 
-		return emptyReturn;
 		file.close();
+		return emptyReturn;
 	}
 
 	template<>
@@ -143,11 +142,10 @@ public:
 				file.close();
 				return returnType;
 			}
-
 		}
 
-		return "";
 		file.close();
+		return "";
 	}
 
 	template<>
@@ -170,11 +168,10 @@ public:
 				file.close();
 				return returnType;
 			}
-
 		}
 
-		return '\0';
 		file.close();
+		return '\0';
 	}
 
 	template<>
@@ -199,11 +196,10 @@ public:
 				file.close();
 				return returnType;
 			}
-
 		}
 
-		return glm::vec2(-1.0f);
 		file.close();
+		return glm::vec2(-1.0f);
 	}
 
 	template<>
@@ -229,11 +225,10 @@ public:
 				file.close();
 				return returnType;
 			}
-
 		}
 
-		return glm::vec3(-1.0f);
 		file.close();
+		return glm::vec3(-1.0f);
 	}
 
 	template<>
@@ -260,11 +255,10 @@ public:
 				file.close();
 				return returnType;
 			}
-
 		}
 
-		return glm::vec4(-1.0f);
 		file.close();
+		return glm::vec4(-1.0f);
 	}
 
 	static bool FileExist(const std::string& filePath);
@@ -272,5 +266,5 @@ public:
 	static bool RenameFile(const std::string& filePath, const std::string& newPath);
 
 private:
-	FileSystem();
+	FileSystem() = delete;
 };

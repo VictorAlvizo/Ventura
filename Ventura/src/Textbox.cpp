@@ -142,11 +142,6 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 	if (m_Active) {
 		//Backspace, deleting keys
 		if (keys[259] && keyAllowment[259] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 259 && m_CurrentKeyPos != 0)) {
-
-			if (m_Text.length() != m_CurrentKeyPos) {
-				//TODO: Code maybe more in the if statement
-			}
-
 			m_CurrentKeyPos--;
 			m_Text.erase(m_CurrentKeyPos, 1);
 			m_HideIndex = (m_HideIndex != 0) ? --m_HideIndex : m_HideIndex;

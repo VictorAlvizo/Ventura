@@ -5,8 +5,6 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity)
 {
 	m_SpriteRenderer = nullptr;
 	m_Camera = nullptr;
-	
-	m_TestTextbox = nullptr;
 }
 
 Game::~Game() {
@@ -15,20 +13,14 @@ Game::~Game() {
 
 	delete m_Camera;
 	m_Camera = nullptr;
-
-	delete m_TestTextbox;
-	m_TestTextbox = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
-
-	m_TestTextbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), "", "Type anything.", glm::vec2(0.0f), 0, "Fonts/LGC.ttf");
 }
 
 void Game::ProcessInput(float deltaTime) {
-	m_TestTextbox->CheckClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MouseAllowment[GLFW_MOUSE_BUTTON_1], m_MousePos, true, glm::vec2(0.0f));
-	m_TestTextbox->DetectKeys(m_Keys, m_KeyAllowment, m_CapsActive, deltaTime);
+	//holder
 }
 
 void Game::Update(float deltaTime) {
@@ -43,8 +35,6 @@ void Game::Render() {
 	ImGui::Begin("ImGui");
 	//ImGui Code
 	ImGui::End();
-
-	m_TestTextbox->Draw(*m_SpriteRenderer, false, false, true, 10.0f, glm::vec4(0.973f, 0.439f, 0.376f, 1.0f), glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f), 0.7f, glm::vec3(1.0f));
 }
 
 void Game::CheckCollisions() {
