@@ -1,4 +1,9 @@
-﻿  FileSystem.cpp
+﻿  Button.cpp
+C:\Users\Victor\Desktop\Ventura\Ventura\src\Button.cpp(10,25): warning C4244: '=': conversion from 'T' to 'unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
   Game.cpp
   main.cpp
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(48,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data

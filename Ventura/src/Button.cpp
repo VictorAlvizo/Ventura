@@ -1,13 +1,15 @@
 #include "Button.h"
 
 Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
-	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false)
+	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_TextPath(customFont), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false)
 {
 	for (int i = 0; i < 3; i++) {
 		m_ButtonTextures[i] = buttonTexture;
 	}
 
-	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize);
+	m_FontSize = (fontSize == 0) ? (55 * m_Size.y) / 100.0f : fontSize;
+
+	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, m_FontSize);
 	m_Text->m_Rotation = this->m_Rotation;
 
 	glm::vec2 hitSize = (hitboxSize != glm::vec2(0.0f)) ? hitboxSize : m_Size;
@@ -43,8 +45,8 @@ Button::~Button() {
 void Button::Draw(SpriteRenderer& spriteRenderer, bool drawHitbox, bool followCamera, glm::vec4 buttonColor, glm::vec3 textColor, glm::vec3 hitboxColor, glm::vec2 textOffsets) {
 	if (textOffsets == glm::vec2(0.0f)) {
 		//Keep in mind, not perfect
-		textOffsets.x = (m_Size.x / 2.0f) - (m_FontSize / 2);
-		textOffsets.y = (m_Size.y / 2.0f) - (m_FontSize / 2);
+		textOffsets.x = (110 * m_Size.x) / 400.0f;
+		textOffsets.y = (30 * m_Size.y) / 100.0f;
 	}
 
 	spriteRenderer.DrawSprite(*m_ButtonTextures[static_cast<int>(m_CurrentStatus)], m_Pos, m_Size, false, followCamera, m_Rotation, buttonColor);
