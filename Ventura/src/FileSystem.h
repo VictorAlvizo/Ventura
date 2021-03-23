@@ -262,6 +262,7 @@ public:
 	}
 
 	static bool FileExist(const std::string& filePath);
+	static bool DataExist(const std::string& filePath, const std::string& dataName);
 	static bool RemoveFile(const std::string& filePath);
 	static bool RenameFile(const std::string& filePath, const std::string& newPath);
 

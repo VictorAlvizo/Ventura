@@ -14,6 +14,30 @@ bool FileSystem::FileExist(const std::string& filePath) {
 	}
 }
 
+bool FileSystem::DataExist(const std::string& filePath, const std::string& dataName) {
+	if (!FileExist(filePath)) {
+		std::cout << "Error: File " << filePath << " does not exist" << std::endl;
+		return false;
+	}
+
+	std::ifstream file(filePath);
+
+	std::string line, currentDataName;
+	while (std::getline(file, line)) {
+		std::stringstream ss(line);
+		ss >> currentDataName;
+		std::cout << "Current Data Name: " << currentDataName << std::endl;
+
+		if (currentDataName == dataName) {
+			file.close();
+			return true;
+		}
+	}
+
+	file.close();
+	return false;
+}
+
 bool FileSystem::RemoveFile(const std::string& filePath) {
 	if (!FileExist(filePath)) {
 		std::cout << "Error: File " << filePath << " does not exist" << std::endl;
