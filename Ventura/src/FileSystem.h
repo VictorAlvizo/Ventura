@@ -15,17 +15,46 @@ public:
 	template<typename T>
 	static void Store(std::string filepath, std::string dataName, T data, bool overwrite) {
 		std::replace(dataName.begin(), dataName.end(), ' ', '_'); //Replace all spaces with _ for easier reading
-		std::ofstream file;
+		std::ofstream file; //Write file
 
-		if (overwrite) {
+		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
+
+			file << dataName << " " << data << "\n";
+			file.close();
 		}
 		else {
-			file.open(filepath, std::ios::app);
-		}
+			std::string replacePath = "";
+			if (filepath.find_last_of("\\") == std::string::npos) {
+				replacePath = "TEMP.txt";
+			}
+			else {
+				replacePath = filepath.substr(0, filepath.find_last_of("\\")) + "\\TEMP.TXT";
+			}
 
-		file << dataName << " " << data << "\n";
-		file.close();
+			std::ifstream inputFile(filepath);
+			file.open(replacePath);
+
+			std::string line, currentDataName;
+			while (std::getline(inputFile, line)) {
+				std::stringstream ss(line);
+
+				ss >> currentDataName;
+				if (currentDataName == dataName) {
+					file << dataName << " " << data << "\n";
+				}
+				else {
+					file << line << "\n";
+				}
+			}
+
+			//Remove the old file and rename the updated file to be of that same path to update the old file
+			file.close();
+			inputFile.close();
+
+			FileSystem::RemoveFile(filepath);
+			FileSystem::RenameFile(replacePath, filepath);
+		}
 	}
 
 	template<>
