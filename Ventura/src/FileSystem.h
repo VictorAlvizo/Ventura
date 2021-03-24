@@ -19,7 +19,6 @@ public:
 
 		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
-
 			file << dataName << " " << data << "\n";
 			file.close();
 		}
@@ -64,15 +63,42 @@ public:
 
 		std::ofstream file;
 
-		if (overwrite) {
+		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
+			file << dataName << " " << data << "\n";
+			file.close();
 		}
 		else {
-			file.open(filepath, std::ios::app);
-		}
+			std::string replacePath = "";
+			if (filepath.find_last_of("\\") == std::string::npos) {
+				replacePath = "TEMP.txt";
+			}
+			else {
+				replacePath = filepath.substr(0, filepath.find_last_of("\\")) + "\\TEMP.TXT";
+			}
 
-		file << dataName << " " << data << "\n";
-		file.close();
+			std::ifstream inputFile(filepath);
+			file.open(replacePath);
+
+			std::string line, currentDataName;
+			while (std::getline(inputFile, line)) {
+				std::stringstream ss(line);
+
+				ss >> currentDataName;
+				if (currentDataName == dataName) {
+					file << dataName << " " << data << "\n";
+				}
+				else {
+					file << line << "\n";
+				}
+			}
+
+			file.close();
+			inputFile.close();
+
+			FileSystem::RemoveFile(filepath);
+			FileSystem::RenameFile(replacePath, filepath);
+		}
 	}
 
 	template<>
@@ -80,15 +106,42 @@ public:
 		std::replace(dataName.begin(), dataName.end(), ' ', '_'); //Replace all spaces with _ for easier reading
 		std::ofstream file;
 
-		if (overwrite) {
+		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
+			file << dataName << " " << data.x << " " << data.y << "\n";
+			file.close();
 		}
 		else {
-			file.open(filepath, std::ios::app);
-		}
+			std::string replacePath = "";
+			if (filepath.find_last_of("\\") == std::string::npos) {
+				replacePath = "TEMP.txt";
+			}
+			else {
+				replacePath = filepath.substr(0, filepath.find_last_of("\\")) + "\\TEMP.TXT";
+			}
 
-		file << dataName << " " << data.x << " " << data.y << "\n";
-		file.close();
+			std::ifstream inputFile(filepath);
+			file.open(replacePath);
+
+			std::string line, currentDataName;
+			while (std::getline(inputFile, line)) {
+				std::stringstream ss(line);
+
+				ss >> currentDataName;
+				if (currentDataName == dataName) {
+					file << dataName << " " << data.x << " " << data.y << "\n";
+				}
+				else {
+					file << line << "\n";
+				}
+			}
+
+			file.close();
+			inputFile.close();
+
+			FileSystem::RemoveFile(filepath);
+			FileSystem::RenameFile(replacePath, filepath);
+		}
 	}
 
 	template<>
@@ -96,15 +149,42 @@ public:
 		std::replace(dataName.begin(), dataName.end(), ' ', '_'); //Replace all spaces with _ for easier reading
 		std::ofstream file;
 
-		if (overwrite) {
+		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
+			file << dataName << " " << data.x << " " << data.y << " " << data.z << "\n";
+			file.close();
 		}
 		else {
-			file.open(filepath, std::ios::app);
-		}
+			std::string replacePath = "";
+			if (filepath.find_last_of("\\") == std::string::npos) {
+				replacePath = "TEMP.txt";
+			}
+			else {
+				replacePath = filepath.substr(0, filepath.find_last_of("\\")) + "\\TEMP.TXT";
+			}
 
-		file << dataName << " " << data.x << " " << data.y  << " " << data.z << "\n";
-		file.close();
+			std::ifstream inputFile(filepath);
+			file.open(replacePath);
+
+			std::string line, currentDataName;
+			while (std::getline(inputFile, line)) {
+				std::stringstream ss(line);
+
+				ss >> currentDataName;
+				if (currentDataName == dataName) {
+					file << dataName << " " << data.x << " " << data.y << " " << data.z << "\n";
+				}
+				else {
+					file << line << "\n";
+				}
+			}
+
+			file.close();
+			inputFile.close();
+
+			FileSystem::RemoveFile(filepath);
+			FileSystem::RenameFile(replacePath, filepath);
+		}
 	}
 
 	template<>
@@ -112,15 +192,42 @@ public:
 		std::replace(dataName.begin(), dataName.end(), ' ', '_'); //Replace all spaces with _ for easier reading
 		std::ofstream file;
 
-		if (overwrite) {
+		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
+			file << dataName << " " << data.x << " " << data.y << " " << data.z << " " << data.w << "\n";
+			file.close();
 		}
 		else {
-			file.open(filepath, std::ios::app);
-		}
+			std::string replacePath = "";
+			if (filepath.find_last_of("\\") == std::string::npos) {
+				replacePath = "TEMP.txt";
+			}
+			else {
+				replacePath = filepath.substr(0, filepath.find_last_of("\\")) + "\\TEMP.TXT";
+			}
 
-		file << dataName << " " << data.x << " " << data.y << " " << data.z << " " << data.w << "\n";
-		file.close();
+			std::ifstream inputFile(filepath);
+			file.open(replacePath);
+
+			std::string line, currentDataName;
+			while (std::getline(inputFile, line)) {
+				std::stringstream ss(line);
+
+				ss >> currentDataName;
+				if (currentDataName == dataName) {
+					file << dataName << " " << data.x << " " << data.y << " " << data.z << " " << data.w << "\n";
+				}
+				else {
+					file << line << "\n";
+				}
+			}
+
+			file.close();
+			inputFile.close();
+
+			FileSystem::RemoveFile(filepath);
+			FileSystem::RenameFile(replacePath, filepath);
+		}
 	}
 
 	template<typename T>
