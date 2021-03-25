@@ -26,7 +26,6 @@ bool FileSystem::DataExist(const std::string& filePath, const std::string& dataN
 	while (std::getline(file, line)) {
 		std::stringstream ss(line);
 		ss >> currentDataName;
-		std::cout << "Current Data Name: " << currentDataName << std::endl;
 
 		if (currentDataName == dataName) {
 			file.close();

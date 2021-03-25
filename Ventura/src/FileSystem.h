@@ -22,6 +22,11 @@ public:
 			file << dataName << " " << data << "\n";
 			file.close();
 		}
+		else if (!DataExist(filepath, dataName)) {
+			file.open(filepath, std::ios::app);
+			file << dataName << " " << data << "\n";
+			file.close();
+		}
 		else {
 			std::string replacePath = "";
 			if (filepath.find_last_of("\\") == std::string::npos) {
@@ -68,6 +73,11 @@ public:
 			file << dataName << " " << data << "\n";
 			file.close();
 		}
+		else if (!DataExist(filepath, dataName)) {
+			file.open(filepath, std::ios::app);
+			file << dataName << " " << data << "\n";
+			file.close();
+		}
 		else {
 			std::string replacePath = "";
 			if (filepath.find_last_of("\\") == std::string::npos) {
@@ -108,6 +118,11 @@ public:
 
 		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
+			file << dataName << " " << data.x << " " << data.y << "\n";
+			file.close();
+		}
+		else if (!DataExist(filepath, dataName)) {
+			file.open(filepath, std::ios::app);
 			file << dataName << " " << data.x << " " << data.y << "\n";
 			file.close();
 		}
@@ -154,6 +169,11 @@ public:
 			file << dataName << " " << data.x << " " << data.y << " " << data.z << "\n";
 			file.close();
 		}
+		else if (!DataExist(filepath, dataName)) {
+			file.open(filepath, std::ios::app);
+			file << dataName << " " << data.x << " " << data.y << " " << data.z << "\n";
+			file.close();
+		}
 		else {
 			std::string replacePath = "";
 			if (filepath.find_last_of("\\") == std::string::npos) {
@@ -194,6 +214,11 @@ public:
 
 		if (overwrite || !FileExist(filepath)) {
 			file.open(filepath);
+			file << dataName << " " << data.x << " " << data.y << " " << data.z << " " << data.w << "\n";
+			file.close();
+		}
+		else if (!DataExist(filepath, dataName)) {
+			file.open(filepath, std::ios::app);
 			file << dataName << " " << data.x << " " << data.y << " " << data.z << " " << data.w << "\n";
 			file.close();
 		}
@@ -276,6 +301,8 @@ public:
 			if (currentDataName == dataName) {
 				ss >> returnType;
 				file.close();
+
+				std::replace(returnType.begin(), returnType.end(), '_', ' ');
 				return returnType;
 			}
 		}
