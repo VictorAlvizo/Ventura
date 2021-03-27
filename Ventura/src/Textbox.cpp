@@ -21,6 +21,8 @@ Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, glm::vec2 pos, g
 	m_CurrentKeyPos = 0;
 
 	m_BlockEntire = false;
+	m_MaxKeyPos = false;
+	m_ShadowHide = 0;
 }
 
 Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<Texture> textboxTexture, glm::vec2 pos, glm::vec2 size, std::string defaultText, std::string placeHolderText, glm::vec2 textOffset, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
@@ -43,6 +45,8 @@ Textbox::Textbox(unsigned int winWidth, unsigned int winHeight, std::shared_ptr<
 	m_CurrentKeyPos = 0;
 
 	m_BlockEntire = false;
+	m_MaxKeyPos = false;
+	m_ShadowHide = 0;
 }
 
 Textbox::~Textbox() {
@@ -62,15 +66,18 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool passwordMode, bool drawH
 		spriteRenderer.DrawSprite(*m_Texture, m_Pos - (8.0f * outlineWidth) / 15.0f, m_Size + outlineWidth, false, followCamera, 0.0f, glm::vec4(outlineColor, 1.0f));
 	}
 
+	//Drawing textbox
 	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, false, followCamera, 0.0f , textboxColor);
 
+	int showPos = m_ShowText.length() - (m_Text.length() - m_CurrentKeyPos);
+
 	if (!passwordMode) {
-		m_TextRenderer->Text(m_ShowText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, m_CurrentKeyPos);
+		m_TextRenderer->Text(m_ShowText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, (m_MaxKeyPos) ? showPos : m_CurrentKeyPos);
 	}
 	else {
 		std::string passwordText;
 		passwordText.append(m_ShowText.length(), '*');
-		m_TextRenderer->Text(passwordText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, m_CurrentKeyPos);
+		m_TextRenderer->Text(passwordText, m_Pos.x + m_TextOffset.x, m_Pos.y + m_TextOffset.y, 1.0, textColor, followCamera, 1.0f, (m_MaxKeyPos) ? showPos : m_CurrentKeyPos);
 	}
 
 	if (m_PlaceholderText != "" && m_Text == "") {
@@ -78,23 +85,43 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool passwordMode, bool drawH
 	}
 
 	if (m_Pos.x + m_Size.x > m_TextRenderer->getInserationOffset()) {
+		if (m_CurrentKeyPos == m_Text.length() && m_CurrentKeyPos != 0 && m_HideIndex > 0) { //Some letters are being hidden and the current key is located at the last letter
+			m_MaxKeyPos = true;
+		}
+
+		if (m_MaxKeyPos && m_Text.length() - m_CurrentKeyPos == m_ShowText.length()) { //Hit the limit of the shown last characters, go back to normal logic
+			m_MaxKeyPos = false;
+
+			if (m_ShadowHide > m_HideIndex) {
+				m_HideIndex = 0;
+			}
+			else {
+				m_HideIndex -= m_ShadowHide - 1;
+			}
+
+			m_ShadowHide = 0;
+		}
+
 		//Logic behind changing the cursor position and not messing the textbox up
-		if (m_HideIndex != 0) {
+		if (m_MaxKeyPos) { //Special case, show all the last letters it can without going over the textbox width
+			m_ShowText = m_Text.substr(m_HideIndex, m_Text.length() - m_HideIndex);
+		}
+		else if (m_HideIndex != 0) { //Go here when not showing the first letter of the entire text
 			m_ShowText = m_Text.substr(m_HideIndex, (m_Text.length() - m_HideIndex) - (m_Text.length() - m_CurrentKeyPos));
 		}
-		else if (m_BlockEntire && m_Pos.x + m_Size.x < m_TextRenderer->getInserationOffsetMax()) {
+		else if (m_BlockEntire && m_Pos.x + m_Size.x < m_TextRenderer->getInserationOffsetMax()) { //Blocking enabled but shown text still exceeds it, block more letters
 			m_BackBlockAmount--;
 			m_ShowText = m_Text.substr(0, m_Text.length() - (m_Text.length() - m_BackBlockAmount));
 		}
-		else if (m_BlockEntire) {
+		else if (m_BlockEntire) { //Stable state, shown text fits within the textbox
 			m_ShowText = m_Text.substr(0, m_Text.length() - (m_Text.length() - m_BackBlockAmount));
 		}
-		else if (!m_BlockEntire && m_Pos.x + m_Size.x < m_TextRenderer->getInserationOffsetMax()) {
+		else if (!m_BlockEntire && m_Pos.x + m_Size.x < m_TextRenderer->getInserationOffsetMax()) { //My shown text now exceeds the textbox width, don't show entire text
 			m_BlockEntire = true;
 			m_BackBlockAmount = m_Text.length() - 1;
 			m_ShowText = m_Text.substr(0, m_Text.length() - (m_Text.length() - m_BackBlockAmount));
 		}
-		else {
+		else { //Entire Text fits within box normally, show the whole thing
 			m_ShowText = m_Text.substr(0, m_Text.length());
 		}
 	}
@@ -160,11 +187,14 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 			m_CurrentKey = 262;
 			
 		}
-		else if (keys[263] && keyAllowment[263] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 263 && m_CurrentKeyPos != 0)) {
+		else if (keys[263] && keyAllowment[263] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 263 && m_CurrentKeyPos != 0)) { //Left arrow keys
 			m_CurrentKeyPos--;
 
-			if (m_HideIndex != 0) {
+			if (m_HideIndex != 0 && !m_MaxKeyPos) {
 				m_HideIndex--;
+			}
+			else if (m_HideIndex != 0 && m_MaxKeyPos) {
+				m_ShadowHide++;
 			}
 
 			keyAllowment[263] = 0;
@@ -200,6 +230,9 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 
 					if (m_BlockEntire) {
 						m_BlockEntire = false;
+					}
+					else if (m_MaxKeyPos) {
+						m_MaxKeyPos = false;
 					}
 				}
 			}

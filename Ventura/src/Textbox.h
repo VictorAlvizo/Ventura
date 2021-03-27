@@ -41,7 +41,7 @@ private:
 	Timer * m_CursorTimer;
 	bool m_ShowBlink;
 	unsigned int m_HideIndex;
-	bool m_BlockEntire;
+	bool m_BlockEntire; //Whether to show entire text or not
 	int m_BackBlockAmount;
 
 	float m_HoldTime;
@@ -49,6 +49,9 @@ private:
 	bool m_HoldEnabled; //User has been holding the key for a specified time, spam the key
 
 	int m_CurrentKeyPos; //Where the user is typing
+
+	bool m_MaxKeyPos;
+	unsigned int m_ShadowHide; //Special hide to account for when maxkeypos turns false
 
 	Hitbox * m_Hitbox;
 	glm::vec2 m_HitboxOffset;
