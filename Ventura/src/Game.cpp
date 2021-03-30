@@ -14,20 +14,16 @@ Game::~Game() {
 
 	delete m_Camera;
 	m_Camera = nullptr;
-
-	delete m_Textbox;
-	m_Textbox = nullptr;
 }
 
 void Game::Init() {
 	EngineInit();
 
-	m_Textbox = new Textbox(m_Width, m_Height, glm::vec2(200.0f), glm::vec2(300.0f, 100.0f), "", "Type");
+	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {
-	m_Textbox->DetectKeys(m_Keys, m_KeyAllowment, m_CapsActive, deltaTime);
-	m_Textbox->CheckClicked(m_MouseButtons[GLFW_MOUSE_BUTTON_1], m_MouseAllowment[GLFW_MOUSE_BUTTON_1], m_MousePos, true, glm::vec2(0.0f));
+	//holder
 }
 
 void Game::Update(float deltaTime) {
@@ -43,7 +39,7 @@ void Game::Render() {
 	//ImGui Code
 	ImGui::End();
 
-	m_Textbox->Draw(*m_SpriteRenderer);
+	//holder
 }
 
 void Game::CheckCollisions() {

@@ -28,20 +28,30 @@ struct Cycle {
 class AnimationCycle {
 public:
 	AnimationCycle();
+	//Custom copy constructer to due to data type transferability issues
 	AnimationCycle(const AnimationCycle& copy); //Had to make my own as std::mutex cannot be copied
 	~AnimationCycle();
 	
 	//Third argument will stay the same while it ranges the indexes linearly
 	//Ex LinearX("Walking", 0, 4, 1) -> (0 - 4, 1)
 	void LinearX(const std::string cycleName, int xStart, int xEnd, int y, int speed = 100, bool loop = true);
+	//Third argument will stay the same while it ranges the indexes linearly. X remains constant, moves through y
 	void LinearY(const std::string cycleName, int yStart, int yEnd, int x, int speed = 100, bool loop = true);
+	//Custom x and y position of the wanted sprites if a linear approach is not wanted
 	void CustomCycle(const std::string cycleName, std::vector<glm::ivec2> spritePoses, int speed = 100, bool loop = true);
-
+	
+	//Commence the animation of a sprite with that name. If the current animation is one 
+	//that dosen't loop, new animations will be 
+	//discarded until that animation finished
 	void Animate(const std::string cycleName);
+	//Stop the animation
 	void TerminateAnimation();
 
+	//Get the current x and y position of the current sprite image
 	inline glm::ivec2 getSpritePos() const { return m_CurrentIndex; }
+	//Returns the name of the current animation running
 	inline std::string getCurrentAnimation() const { return m_CurrentAnimation; }
+	//Check if the animation is still running or not
 	inline bool isTerminated() const { return m_TerminateAnimation; }
 
 private:
