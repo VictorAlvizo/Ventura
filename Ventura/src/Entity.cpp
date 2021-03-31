@@ -188,6 +188,7 @@ void Entity::MovePos() {
 
 void Entity::AttachCamera(Camera * camera) {
 	m_Camera = camera;
+	m_Camera->Move(glm::vec2(m_Pos.x - (m_Size.x), m_Pos.y - (m_Size.y / 2.0f)));
 }
 
 void Entity::DetachCamera() {
