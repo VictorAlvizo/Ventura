@@ -5,7 +5,6 @@ Game::Game(unsigned int screenWidth, unsigned int screenHeight, float gravity)
 {
 	m_SpriteRenderer = nullptr;
 	m_Camera = nullptr;
-	m_Textbox = nullptr;
 }
 
 Game::~Game() {
@@ -18,8 +17,6 @@ Game::~Game() {
 
 void Game::Init() {
 	EngineInit();
-
-	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {

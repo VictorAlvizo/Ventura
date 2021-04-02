@@ -8,28 +8,33 @@ public:
 	Component();
 	~Component();
 
+	//Add a componenet of any type
 	template<typename T>
 	void Add(const std::string& compName, T& newComponent) {
 		std::cout << "Error: Not a recognized component" << std::endl;
 	}
 
+	//Add an animation component
 	template<>
 	void Add<AnimationCycle>(const std::string& compName, AnimationCycle& cycle) {
 		m_ACComponents[compName] = std::make_shared<AnimationCycle>(cycle);
 	}
 
+	//Add an audio component
 	template<>
 	void Add<Audio>(const std::string& compName, Audio& audio) {
 		m_AudioComponents[compName] = std::make_shared<Audio>(audio);
 		m_AudioComponents[compName]->m_DeathEnabled = true;
 	}
 
+	//Return the pointer to a component of an unknown type
 	template<typename T>
 	std::shared_ptr<T>& Get(const std::string& name) {
 		std::cout << "Error: Not a recognized component" << std::endl;
 		return nullptr;
 	}
 
+	//Return the pointer to an AnimationCycle component of the name
 	template<> 
 	std::shared_ptr<AnimationCycle>& Get(const std::string& name) {
 		if (m_ACComponents.find(name) != m_ACComponents.end()) {
@@ -40,6 +45,7 @@ public:
 		}
 	}
 
+	//Return the pointer to an Audio component of the name
 	template<>
 	std::shared_ptr<Audio>& Get(const std::string& name) {
 		if (m_AudioComponents.find(name) != m_AudioComponents.end()) {

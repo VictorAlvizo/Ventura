@@ -8,67 +8,92 @@ class Camera;
 
 class Entity {
 public:
+	//Should not be used if you want to use the entity, won't initlize the texture and other essential varibles
 	Entity();
+	//Entity concstructer for a static image
 	Entity(std::shared_ptr<Texture>& texture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), float mass = 1.0f, bool childClass = false);
 	//Only if you want animated sprites / use of a spritesheet. Provide the dimensions of 1 sprite
 	Entity(std::shared_ptr<Texture>& texture, float spriteX, float spriteY, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, glm::vec2 hbPos = glm::vec2(0.0f), glm::vec2 hbSize = glm::vec2(0.0f), float mass = 1.0f, bool childClass = false);
+	//Custom copy constructer for the entity class
 	Entity(const Entity& copy);
 	~Entity();
 
+	//Use if the entity uses a static image and not an animation
 	virtual void Draw(SpriteRenderer& spriteRenderer, glm::vec4 color = glm::vec4(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f));
+	//Use if the entity uses an animation. Provide the spritepos through the AnimationCycle object associsated with it
 	virtual void Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec4 color = glm::vec4(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f));
 
+	//Returns each of the corners of the entity, override if the entity is not of a rectangle shape, affects hitbox
 	virtual std::vector<glm::vec2> GetCorners();
 
+	//Move the entity to a position
 	void Move(glm::vec2 newPos);
+	//Gradually move the entity in accordance to its velocity
 	void Translate(float deltaTime);
+	//Call this method if you want the entity to be affected by gravity
 	void GravityMovement(float gravity, float deltaTime);
+	//Flip the sprite of this entity
 	void Flip(bool flip);
+	//Set the rotation of the entity
 	void SetRotation(float newRotation);
 
+	//Add a componenet of an unknown type to the entity
 	template<typename T>
 	void AddComponent(const std::string& compName, T& newComponent) {
 		m_Components.Add(compName, newComponent);
 	}
 
+	//Add an Animationcycle component
 	template<>
 	void AddComponent<AnimationCycle>(const std::string& compName, AnimationCycle& newComponent) {
 		m_Components.Add<AnimationCycle>(compName, newComponent);
 	}
 
+	//Add an Audio component
 	template<>
 	void AddComponent<Audio>(const std::string& compName, Audio& newAudio) {
 		m_Components.Add<Audio>(compName, newAudio);
 	}
 
+	//Retrive an unknown type of components
 	template<typename T>
 	std::shared_ptr<T>& GetComponent(const std::string& name) {
 		return m_Components.Get(name);
 	}
 
+	//Retrive the pointer of an AnimationCycle component with the name
 	template<>
 	std::shared_ptr<AnimationCycle>& GetComponent(const std::string& name) {
 		return m_Components.Get<AnimationCycle>(name);
 	}
 
+	//Retrive the pointer of an Audio componenet with the name
 	template<>
 	std::shared_ptr<Audio>& GetComponent(const std::string& name) {
 		return m_Components.Get<Audio>(name);
 	}
-
+	
+	//Returns the position  of the entity
 	inline glm::vec2 getPos() const { return m_Pos; }
+	//Returns the size of the entity
 	inline glm::vec2 getSize() const { return m_Size; }
+	//Returns the rotation of the entity
 	inline float getRotation() const { return m_Rotation; }
+	//Returns the mass of the entity
 	inline float getMass() const { return m_Mass; }
+	//Returns the hitbox pointer object of the entity
 	inline Hitbox* getHitbox() const { return m_Hitbox; }
+	//Returns if the entity is flipped or not
 	inline bool isFlipped() const { return m_Flipped; }
 
 	std::string m_Tag;
 	glm::vec2 m_Velocity;
 	bool m_Destroyed;
 
+	//Operator overloading the assigment operator to copy it correctly
 	void operator=(const Entity& copy); //Same code as copy constructer
-
+	
+	//When storing the entity data
 	friend std::ostream& operator<<(std::ostream& output, Entity& entity) {
 		output << entity.m_Pos.x << " " << entity.m_Pos.y << " " << entity.m_Size.x << " " << entity.m_Size.y << " "
 			<< entity.m_Velocity.x << " " << entity.m_Velocity.y << " " << entity.m_Destroyed << " "
@@ -88,6 +113,7 @@ public:
 		return output;
 	}
 
+	//When retriving the entity data
 	friend std::istream& operator>>(std::istream& input, Entity& entity) {
 		std::string texturePath;
 		glm::vec2 hitboxPos, hitboxSize, spriteSize;

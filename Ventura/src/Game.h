@@ -1,6 +1,5 @@
 #pragma once
 #include "EngineHeader.h"
-#include "Textbox.h"
 
 class Game {
 public:
@@ -37,7 +36,7 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 
-	Textbox * m_Textbox;
+	Checkbox * m_Checkbox;
 
 	unsigned int m_UBOVisionBlock;
 };

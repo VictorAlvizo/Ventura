@@ -6,6 +6,9 @@ Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool ini
 	m_UncheckedTexture = ResourceManager::Get<Texture>("checkbox");
 	m_CheckedTexture = ResourceManager::Get<Texture>("checkboxTicked");
 
+	m_TextOffset = (textOffset == glm::vec2(0.0f)) ? glm::vec2((220.0f * m_Size.x) / 200.0f, (90.0f * m_Size.y) / 200.0f) : textOffset;
+	fontSize = (fontSize == 0) ? (32 * m_Size.y) / 200.0f : fontSize;
+
 	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize);
 	m_Text->m_Rotation = m_Rotation;
 
@@ -18,6 +21,9 @@ Checkbox::Checkbox(unsigned int windowWidth, unsigned int windowHeight, bool ini
 {
 	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, fontSize);
 	m_Text->m_Rotation = m_Rotation;
+
+	m_TextOffset = (textOffset == glm::vec2(0.0f)) ? glm::vec2((220.0f * m_Size.x) / 200.0f, (90.0f * m_Size.y) / 200.0f) : textOffset;
+	fontSize = (fontSize == 0) ? (32 * m_Size.y) / 200.0f : fontSize;
 
 	glm::vec2 hitSize = (hitboxSize == glm::vec2(0.0f)) ? m_Size : hitboxSize;
 	m_Hitbox = new Hitbox(m_Pos + hitboxOffset, hitSize, glm::vec2(0.0f), m_Rotation);

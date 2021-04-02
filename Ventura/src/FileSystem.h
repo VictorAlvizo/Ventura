@@ -7,7 +7,6 @@
 #include "Vendor/glm/glm.hpp"
 #include "Entity.h"
 
-//TODO: May update to a JSON file instead of a txt file later on
 class FileSystem {
 public:
 	//WARNING: They look very alike but retriving data from the wrong type is most likely bad news!
