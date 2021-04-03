@@ -5,11 +5,13 @@
 
 class SpriteRenderer {
 public:
+	//Empty constructer
 	SpriteRenderer();
 	//Only need to set childClass as true when wanting to override the Init() method
 	SpriteRenderer(std::shared_ptr<Shader> shader, bool childClass = false);
 	~SpriteRenderer();
 
+	//Draw the sprite, this method can be overriden if making a custom sprite renderer
 	virtual void DrawSprite(Texture& texture, glm::vec2 pos, 
 		glm::vec2 size = glm::vec2(10.0f), bool flipped = false, bool followCamera = true, float rotate = 0.0f, glm::vec4 color = glm::vec4(1.0f),
 		std::vector<float> texUV = {

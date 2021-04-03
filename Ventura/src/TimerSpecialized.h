@@ -4,12 +4,14 @@
 template <typename T>
 class TimerSpecialized : public Timer {
 public:
+	//Default constructer with a wait time of 1 second
 	TimerSpecialized()
 		:Timer()
 	{
 		//holder
 	}
 
+	//Give a wait period in miliseconds (1000 miliseconds = 1 second)
 	TimerSpecialized(int waitPeriod) 
 		:Timer(waitPeriod)
 	{
@@ -27,6 +29,8 @@ public:
 		m_TimerThread = nullptr;
 	}
 
+
+	//Start the timer with a method wanted
 	void StartTimer(const std::function<T()>& func) {
 		if (!m_ContinueThread) {
 			m_ContinueThread = true;
@@ -34,6 +38,7 @@ public:
 		}
 	}
 
+	//Stop the timer
 	void StopTimer() {
 		if (m_ContinueThread) {
 			m_ContinueThread = false;
@@ -43,7 +48,9 @@ public:
 		}
 	}
 
+	//Retrives the data of the method called
 	inline T getData() const { return m_ReturnData; }
+	//Returns true if the timer is running
 	inline bool isTimerRunning() const { return m_ContinueThread; }
 
 private:

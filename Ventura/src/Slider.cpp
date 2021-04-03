@@ -1,7 +1,7 @@
 #include "Slider.h"
 
 Slider::Slider(std::shared_ptr<Texture> slideTexture, glm::vec2 pos, glm::vec2 size, float rotation, float initPercentage, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
-	:m_Texture(slideTexture), m_Pos(pos), m_Size(size), m_Rotation(rotation), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false)
+	:m_Texture(slideTexture), m_Pos(pos), m_Size(size), m_Rotation(rotation), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false), m_ValueChangedDelegateAdded(false)
 {
 	if (initPercentage <= 100.0f && initPercentage >= 0.0f) {
 		m_Percent = initPercentage;
@@ -40,6 +40,12 @@ void Slider::CheckClicked(bool buttonClicked, glm::vec2 mousePos, bool following
 				}
 				else {
 					m_Percent = ((cameraPos.x + mousePos.x - m_Pos.x) * 100) / m_Size.x;
+				}
+
+				//Check if the delegate that is called when the value changes is true, differs from the 
+				//other delegate as that is only to be called when the slider is clicked
+				if (m_ValueChangedDelegateAdded) {
+					m_ValueChangedDelegate(m_Percent);
 				}
 			}
 
@@ -86,6 +92,10 @@ void Slider::SetPercentage(float newPercentage) {
 	else {
 		std::cout << "Error: Percentage inputted is larger than 100 or lower than 0" << std::endl;
 	}
+
+	if (m_ValueChangedDelegateAdded) {
+		m_ValueChangedDelegate(m_Percent);
+	}
 }
 
 void Slider::AddPercentage(float addAmount) {
@@ -96,6 +106,10 @@ void Slider::AddPercentage(float addAmount) {
 	}
 	else if (m_Percent < 0.0f) {
 		m_Percent = 0.0f;
+	}
+
+	if (m_ValueChangedDelegateAdded) {
+		m_ValueChangedDelegate(m_Percent);
 	}
 }
 
@@ -112,4 +126,9 @@ void Slider::Rotate(float newRotation) {
 void Slider::SetDelegate(const std::function<void(float)>& func) {
 	m_Delegate = func;
 	m_DelegateAdded = true;
+}
+
+void Slider::SetValueChangedDelegate(const std::function<void(float)>& func){
+	m_ValueChangedDelegate = func;
+	m_ValueChangedDelegateAdded = true;
 }

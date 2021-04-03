@@ -254,6 +254,7 @@ public:
 		}
 	}
 
+	//For retriving unknown types (that don't naturally work with >>), you have to overload the >> operator
 	template<typename T>
 	static T Retrive(std::string filePath, std::string dataName) {
 		T emptyReturn{};

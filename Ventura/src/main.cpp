@@ -30,6 +30,7 @@ int main() {
 
     if (!glfwInit()) {
         std::cout << "Error: Failed to initialize GLFW" << std::endl;
+        return -1;
     }
 
     /* Uncomment if you want to use fullscreen

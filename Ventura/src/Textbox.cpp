@@ -185,7 +185,6 @@ void Textbox::DetectKeys(const bool * keys, int * keyAllowment, bool capsLock, f
 			m_CurrentKeyPos++;
 			keyAllowment[262] = 0;
 			m_CurrentKey = 262;
-			
 		}
 		else if (keys[263] && keyAllowment[263] == 1 && m_CurrentKeyPos != 0 || (m_HoldEnabled && m_CurrentKey == 263 && m_CurrentKeyPos != 0)) { //Left arrow keys
 			m_CurrentKeyPos--;
