@@ -17,6 +17,8 @@ Game::~Game() {
 
 void Game::Init() {
 	EngineInit();
+
+	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {

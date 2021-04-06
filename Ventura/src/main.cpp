@@ -8,7 +8,7 @@ void MouseButtonCallback(GLFWwindow * window, int button, int action, int mods);
 void MousePosCallback(GLFWwindow * window, double xPos, double yPos);
 
 //Note: If planning to not use full screen, declare initial size here
-float windowWidth = 800, windowHeight = 600;
+float windowWidth = 800.0f, windowHeight = 600.0f;
 Game * ventura;
 
 void FramebufferSizeCallback(GLFWwindow * window, int width, int height) {

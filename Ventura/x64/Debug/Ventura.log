@@ -1,80 +1,4 @@
-﻿  Button.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Button.cpp(10,25): warning C4244: '=': conversion from 'T' to 'unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Camera.cpp
-  Checkbox.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Checkbox.cpp(10,23): warning C4244: '=': conversion from 'T' to 'unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Checkbox.cpp(26,23): warning C4244: '=': conversion from 'T' to 'unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Circle.cpp
-  CollisionHandler.cpp
-  Entity.cpp
-  FileSystem.cpp
-  Filter.cpp
-  Game.cpp
-  HitCircle.cpp
-  Hitbox.cpp
-  HitboxRenderer.cpp
-  ParticleGenerator.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ParticleGenerator.cpp(6,17): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ParticleGenerator.cpp(57,30): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ParticleGenerator.cpp(150,13): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ParticleGenerator.cpp(151,13): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ParticleGenerator.cpp(155,44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ParticleGenerator.cpp(159,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  ResourceManager.cpp
-  Scene.cpp
-  Shader.cpp
-  Slider.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Slider.cpp(14,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Slider.cpp(15,33): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  SpriteRenderer.cpp
-  TextRenderer.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\TextRenderer.cpp(74,24): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-  Textbox.cpp
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(12,69): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(36,69): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(72,73): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Textbox.cpp(121,43): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(48): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(38): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.cpp(54): warning C4715: 'ResourceManager::GetTextureFromFileName': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.cpp(44): warning C4715: 'ResourceManager::GetShaderFromFileName': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(38): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(48): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(38): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\Filter.cpp(242): warning C4715: 'Filter::getKernel': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(38): warning C4715: 'ResourceManager::Get<Shader>': not all control paths return a value
-C:\Users\Victor\Desktop\Ventura\Ventura\src\ResourceManager.h(48): warning C4715: 'ResourceManager::Get<Texture>': not all control paths return a value
-  Compiling...
-  main.cpp
+﻿  main.cpp
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(49,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(49,31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(52,37): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
@@ -82,6 +6,4 @@ C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(52,24): warning C4244: 'arg
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(78,35): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(78,22): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(96,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Ventura.vcxproj -> C:\Users\Victor\Desktop\Ventura\x64\Debug\Ventura.exe
