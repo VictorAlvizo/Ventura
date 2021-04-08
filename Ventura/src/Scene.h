@@ -20,4 +20,3 @@ public:
 protected:
 	Game * m_GameClass;
 };
-

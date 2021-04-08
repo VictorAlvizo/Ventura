@@ -36,7 +36,5 @@ private:
 	SpriteRenderer * m_SpriteRenderer;
 	Camera * m_Camera;
 
-	Checkbox * m_Checkbox;
-
 	unsigned int m_UBOVisionBlock;
 };
