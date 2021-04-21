@@ -132,7 +132,7 @@ void Textbox::Draw(SpriteRenderer& spriteRenderer, bool passwordMode, bool drawH
 	}
 
 	if (m_ShowBlink && m_Active || (m_CurrentKey == 262 && m_HoldEnabled) || (m_CurrentKey == 263 && m_HoldEnabled)) {
-		spriteRenderer.DrawSprite(*m_TextCursor, (m_CurrentKeyPos != 0) ? glm::vec2(m_TextRenderer->getInserationOffset(), m_Pos.y + (m_Size.y * 15.0f) / 100.0f) : m_Pos + m_TextOffset.x, glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, true, 0.0f, glm::vec4(cursorColor, 1.0f));
+		spriteRenderer.DrawSprite(*m_TextCursor, (m_CurrentKeyPos != 0) ? glm::vec2(m_TextRenderer->getInserationOffset(), m_Pos.y + (m_Size.y * 15.0f) / 100.0f) : m_Pos + m_TextOffset.x, glm::vec2(1.0f, (m_Size.y * 70.0f) / 100.0f), false, followCamera, 0.0f, glm::vec4(cursorColor, 1.0f));
 	}
 
 	if (drawHitbox) {

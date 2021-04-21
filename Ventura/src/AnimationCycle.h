@@ -58,6 +58,7 @@ private:
 	void AnimationThread();
 
 	bool m_TerminateAnimation;
+	bool m_Copied;
 
 	std::unordered_map<std::string, Cycle> m_Cycles;
 
@@ -68,4 +69,3 @@ private:
 	std::thread * m_AnimationThread;
 	std::mutex m_AnimationMutex;
 };
-

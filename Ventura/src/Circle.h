@@ -16,7 +16,7 @@ public:
 	void Draw(SpriteRenderer& spriteRenderer, glm::vec4 color = glm::vec4(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f)) override;
 	//Draw the circle entity that uses animation, spritepos shold be provided by the animation object associated with the entity
 	void Draw(SpriteRenderer& spriteRenderer, glm::ivec2 spritePos, glm::vec4 color = glm::vec4(1.0f), glm::vec3 hbColor = glm::vec3(0.0f, 1.0f, 0.0f)) override;
-
+	//Returns the radius
 	inline float getRadius() const { return m_Radius; }
 
 private:

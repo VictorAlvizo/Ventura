@@ -20,7 +20,7 @@ public:
 	//Add a sound to the audio object
 	void AddSound(const std::string& referenceName, const std::string& soundFileName, bool loop = false, float volumePercentage = 1.0f);
 	//Play the sound by name
-	void PlaySound(const std::string& soundName);
+	void PlaySound(const std::string& soundName, bool precedence = true);
 	//If soundName is left empty, all audio from this class will be stopped
 	void Mute(const std::string& soundName = "");
 	//Unmute any muted sounds 

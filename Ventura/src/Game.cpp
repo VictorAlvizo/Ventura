@@ -17,8 +17,6 @@ Game::~Game() {
 
 void Game::Init() {
 	EngineInit();
-
-	//holder
 }
 
 void Game::ProcessInput(float deltaTime) {
@@ -35,7 +33,7 @@ void Game::Update(float deltaTime) {
 
 void Game::Render() {
 	ImGui::Begin("ImGui");
-	//ImGui Code
+	//ImGui Code Here
 	ImGui::End();
 
 	//holder

@@ -33,6 +33,12 @@ public:
 
 	//Return if the checkbox's current state is true or false (checked or unchecked)
 	inline bool isChecked() const { return m_Checked; }
+	//Return the position of the checkbox
+	inline glm::vec2 getPos() const { return m_Pos; }
+	//Return the size of the checkbox
+	inline glm::vec2 getSize() const { return m_Size; }
+	//Return the rotation of the hitbox
+	inline float getRotation() const { return m_Rotation; }
 
 	std::string m_HeaderText;
 

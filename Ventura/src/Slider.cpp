@@ -1,7 +1,33 @@
 #include "Slider.h"
 
 Slider::Slider(std::shared_ptr<Texture> slideTexture, glm::vec2 pos, glm::vec2 size, float rotation, float initPercentage, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
-	:m_Texture(slideTexture), m_Pos(pos), m_Size(size), m_Rotation(rotation), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false), m_ValueChangedDelegateAdded(false)
+	:m_Texture(slideTexture), m_ForegroundTexture(slideTexture), m_Pos(pos), m_Size(size), m_Rotation(rotation), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false), m_ValueChangedDelegateAdded(false)
+{
+	if (initPercentage <= 100.0f && initPercentage >= 0.0f) {
+		m_Percent = initPercentage;
+	}
+	else {
+		std::cout << "Error: Percentage inputted is larger than 100 or lower than 0" << std::endl;
+		initPercentage = 100.0f;
+	}
+
+	m_Width = m_Texture->getWidth();
+	m_Height = m_Texture->getHeight();
+
+	//Easier to read this varible rather than declaring it again everytime I draw inside the function argument
+	m_DefaultTexUVs = {
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f
+	};
+
+	glm::vec2 hitSize = (hitboxSize == glm::vec2(0.0f)) ? m_Size : hitboxSize;
+	m_Hitbox = new Hitbox(m_Pos + m_HitboxOffset, hitSize);
+}
+
+Slider::Slider(std::shared_ptr<Texture> slideTexture, std::shared_ptr<Texture> foregroundTexture, glm::vec2 pos, glm::vec2 size, float rotation, float initPercentage, glm::vec2 hitboxOffset, glm::vec2 hitboxSize) 
+	:m_Texture(slideTexture), m_ForegroundTexture(foregroundTexture), m_Pos(pos), m_Size(size), m_Rotation(rotation), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false), m_ValueChangedDelegateAdded(false)
 {
 	if (initPercentage <= 100.0f && initPercentage >= 0.0f) {
 		m_Percent = initPercentage;
@@ -77,7 +103,7 @@ void Slider::Draw(SpriteRenderer& spriteRenderer, bool showHitbox, bool flip, gl
 		};
 	}
 
-	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, flip, followCamera, m_Rotation, glm::vec4(foregroundColor, 1.0f));
+	spriteRenderer.DrawSprite(*m_ForegroundTexture, m_Pos, m_Size, flip, followCamera, m_Rotation, glm::vec4(foregroundColor, 1.0f));
 	spriteRenderer.DrawSprite(*m_Texture, m_Pos, m_Size, flip, followCamera, m_Rotation, glm::vec4(color, 1.0f), m_DefaultTexUVs, posUVs);
 
 	if (showHitbox) {

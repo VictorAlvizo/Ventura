@@ -27,6 +27,8 @@ public:
 	inline glm::vec2 getPos() const { return m_Pos; }
 	//Get the window size. Needed for when wanting to get the area covered by the camera
 	inline glm::vec2 getWindowSize() const { return m_WindowSize; }
+	//Returns true if their is currently an entity it's following
+	inline bool isEntityConnected() const { return m_FollowEntity; }
 
 private:
 	glm::vec2 m_Pos, m_WindowSize;

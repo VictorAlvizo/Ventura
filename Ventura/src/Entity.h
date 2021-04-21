@@ -45,14 +45,20 @@ public:
 
 	//Add an Animationcycle component
 	template<>
-	void AddComponent<AnimationCycle>(const std::string& compName, AnimationCycle& newComponent) {
-		m_Components.Add<AnimationCycle>(compName, newComponent);
+	void AddComponent<AnimationCycle>(const std::string& compName, AnimationCycle& newAnimationCycle) {
+		m_Components.Add<AnimationCycle>(compName, newAnimationCycle);
 	}
 
 	//Add an Audio component
 	template<>
 	void AddComponent<Audio>(const std::string& compName, Audio& newAudio) {
 		m_Components.Add<Audio>(compName, newAudio);
+	}
+
+	//Add a ParticleGenerator component
+	template<>
+	void AddComponent<ParticleGenerator>(const std::string& compName, ParticleGenerator& newParticleGen) {
+		m_Components.Add<ParticleGenerator>(compName, newParticleGen);
 	}
 
 	//Retrive an unknown type of components
@@ -71,6 +77,12 @@ public:
 	template<>
 	std::shared_ptr<Audio>& GetComponent(const std::string& name) {
 		return m_Components.Get<Audio>(name);
+	}
+
+	//Retrive the pointer of a particle generator with the name
+	template<>
+	std::shared_ptr<ParticleGenerator>& GetComponent(const std::string& name) {
+		return m_Components.Get<ParticleGenerator>(name);
 	}
 	
 	//Returns the position  of the entity

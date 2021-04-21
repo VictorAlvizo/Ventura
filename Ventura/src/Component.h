@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "AnimationCycle.h"
 #include "Audio.h"
+#include "ParticleGenerator.h"
 
 class Component {
 public:
@@ -25,6 +26,12 @@ public:
 	void Add<Audio>(const std::string& compName, Audio& audio) {
 		m_AudioComponents[compName] = std::make_shared<Audio>(audio);
 		m_AudioComponents[compName]->m_DeathEnabled = true;
+	}
+
+	//Add a particle component
+	template<>
+	void Add<ParticleGenerator>(const std::string& compName, ParticleGenerator& particleGen) {
+		m_ParticleComponents[compName] = std::make_shared<ParticleGenerator>(particleGen);
 	}
 
 	//Return the pointer to a component of an unknown type
@@ -56,7 +63,18 @@ public:
 		}
 	}
 
+	template<>
+	std::shared_ptr<ParticleGenerator>& Get(const std::string& name) {
+		if (m_ParticleComponents.find(name) != m_ParticleComponents.end()) {
+			return m_ParticleComponents[name];
+		}
+		else {
+			std::cout << "Error: Particle Generator component " << name << " could not be found" << std::endl;
+		}
+	}
+
 private:
 	std::unordered_map<std::string, std::shared_ptr<AnimationCycle>> m_ACComponents;
 	std::unordered_map<std::string, std::shared_ptr<Audio>> m_AudioComponents;
+	std::unordered_map<std::string, std::shared_ptr<ParticleGenerator>> m_ParticleComponents;
 };

@@ -29,6 +29,7 @@ void Camera::Translate(glm::vec2 transPos, float deltaTime) {
 void Camera::SetEntity(Entity * entity) {
 	m_FollowEntity = entity;
 	m_FollowEntity->AttachCamera(this);
+	m_Pos = m_FollowEntity->m_Pos - (m_WindowSize / 2.0f - m_FollowEntity->m_Size / 2.0f);
 }
 
 void Camera::Disconnect() {

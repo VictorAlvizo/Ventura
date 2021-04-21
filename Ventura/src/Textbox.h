@@ -35,6 +35,10 @@ public:
 	inline std::string getText() const { return m_Text; }
 	//Returns if the textbox is currently active or not
 	inline bool isActive() const { return m_Active; }
+	//Returns the position of the textbox
+	inline glm::vec2 getPos() const { return m_Pos; }
+	//Returns the size of the textbox
+	inline glm::vec2 getSize() const { return m_Size; }
 
 private:
 	char ProcessKey(int keyIndex, bool shiftLeft, bool capsLock, bool shiftRight);

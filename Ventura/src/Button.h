@@ -41,6 +41,8 @@ public:
 	inline glm::vec2 getPos() const { return m_Pos; }
 	//Get the size of the button
 	inline glm::vec2 getSize() const { return m_Size; }
+	//Get the rotation  of the button
+	inline float getRotation() const { return m_Rotation; }
 
 	std::string m_ButtonText;
 

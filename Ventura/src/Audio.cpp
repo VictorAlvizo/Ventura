@@ -32,7 +32,7 @@ void Audio::AddSound(const std::string& referenceName, const std::string& soundF
 	m_Sounds[referenceName] = sound;
 }
 
-void Audio::PlaySound(const std::string& soundName) {
+void Audio::PlaySound(const std::string& soundName, bool precedence) {
 	if (!m_MuteActive) {
 		if (m_Sounds.find(soundName) != m_Sounds.end()) {
 			if (isPlaying(soundName)) {
@@ -41,7 +41,14 @@ void Audio::PlaySound(const std::string& soundName) {
 
 			Sound& currentSound = m_Sounds[soundName];
 			currentSound.m_Sound->setDefaultVolume(currentSound.m_Volume);
-			m_CurrentSound = m_SoundEngine->play2D(currentSound.m_Sound, currentSound.m_Loop, false, true);
+
+			//Current sound is not finished playing and I don't want the sound to become the current, just play it without setting m_CurrenteSound
+			if (!isFinished() && !precedence) {
+				m_SoundEngine->play2D(currentSound.m_Sound, currentSound.m_Loop, false, true);
+			}
+			else {
+				m_CurrentSound = m_SoundEngine->play2D(currentSound.m_Sound, currentSound.m_Loop, false, true);
+			}
 		}
 		else {
 			std::cout << "Error: Sound " << soundName << " was not found" << std::endl;
@@ -139,7 +146,7 @@ bool Audio::isFinished() {
 
 bool Audio::isPaused() {
 	if (m_CurrentSound) {
-		m_CurrentSound->getIsPaused();
+		return m_CurrentSound->getIsPaused();
 	}
 
 	return false;

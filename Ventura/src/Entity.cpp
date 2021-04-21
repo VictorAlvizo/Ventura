@@ -98,7 +98,6 @@ Entity::~Entity() {
 		delete m_Hitbox;
 		m_Hitbox = nullptr;
 
-		delete m_Camera;
 		m_Camera = nullptr;
 	}
 }

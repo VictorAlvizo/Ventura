@@ -10,6 +10,8 @@ class Slider {
 public:
 	//if want to use the default send the texture named "slider"
 	Slider(std::shared_ptr<Texture> slideTexture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, float initPercentage = 100.0f, glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
+	//For a custom slide texture and a different foreground texture
+	Slider(std::shared_ptr<Texture> slideTexture, std::shared_ptr<Texture> foregroundTexture, glm::vec2 pos, glm::vec2 size, float rotation = 0.0f, float initPercentage = 100.0f, glm::vec2 hitboxOffset = glm::vec2(0.0f), glm::vec2 hitboxSize = glm::vec2(0.0f));
 	~Slider();
 
 	//Call to check if the slider has been clicked on, if percent with click is true, it will change the slider volume with the mouse.
@@ -34,9 +36,16 @@ public:
 
 	//Return the current value of the slider
 	inline float getPercentage() const { return m_Percent; }
+	//Return the position of the slider
+	inline glm::vec2 getPos() const { return m_Pos; }
+	//Return the size of the slider
+	inline glm::vec2 getSize() const { return m_Size; }
+	//Return the rotation of the slider
+	inline float getRotation() const { return m_Rotation; }
 
 private:
 	std::shared_ptr<Texture> m_Texture;
+	std::shared_ptr<Texture> m_ForegroundTexture;
 
 	std::vector<float> m_DefaultTexUVs;
 

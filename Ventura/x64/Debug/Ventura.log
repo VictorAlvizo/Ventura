@@ -6,4 +6,5 @@ C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(52,24): warning C4244: 'arg
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(78,35): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(78,22): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
 C:\Users\Victor\Desktop\Ventura\Ventura\src\main.cpp(96,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Ventura.vcxproj -> C:\Users\Victor\Desktop\Ventura\x64\Debug\Ventura.exe

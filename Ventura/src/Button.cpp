@@ -19,14 +19,15 @@ Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_
 }
 
 Button::Button(unsigned int windowWidth, unsigned int windowHeight, std::shared_ptr<Texture> buttonTexture, std::shared_ptr<Texture> hoverTexture, std::shared_ptr<Texture> clickTexture, glm::vec2 pos, glm::vec2 size, std::string buttonText, float rotation, unsigned int fontSize, std::string customFont, glm::vec2 hitboxOffset, glm::vec2 hitboxSize)
-	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_FontSize(fontSize), m_TextPath(customFont), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false)
+	:m_Pos(pos), m_Size(size), m_Rotation(rotation), m_ButtonText(buttonText), m_TextPath(customFont), m_HitboxOffset(hitboxOffset), m_DelegateAdded(false)
 {
 	m_ButtonTextures[0] = buttonTexture;
 	m_ButtonTextures[1] = hoverTexture;
 	m_ButtonTextures[2] = clickTexture;
 
-	m_Text = new TextRenderer(windowWidth, windowHeight);
-	m_Text->LoadFont(customFont, m_FontSize);
+	m_FontSize = (fontSize == 0) ? (55 * m_Size.y) / 100.0f : fontSize;
+
+	m_Text = new TextRenderer(windowWidth, windowHeight, customFont, m_FontSize);
 
 	glm::vec2 hitSize = (hitboxSize != glm::vec2(0.0f)) ? hitboxSize : m_Size;
 	m_Hitbox = new Hitbox(m_Pos + m_HitboxOffset, hitSize, glm::vec2(0.0f), m_Rotation);

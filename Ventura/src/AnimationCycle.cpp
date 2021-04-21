@@ -5,6 +5,8 @@ AnimationCycle::AnimationCycle()
 {
 	m_TerminateAnimation = true; //Set to true by default so I can just start the animation thread once
 	m_CurrentAnimation = "";
+	m_AnimationThread = nullptr;
+	m_Copied = false;
 }
 
 AnimationCycle::AnimationCycle(const AnimationCycle& copy) {
@@ -13,6 +15,7 @@ AnimationCycle::AnimationCycle(const AnimationCycle& copy) {
 	m_Cycles = copy.m_Cycles;
 	m_CurrentIndex = copy.m_CurrentIndex;
 	m_CurrentCycle = copy.m_CurrentCycle;
+	m_Copied = true;
 }
 
 AnimationCycle::~AnimationCycle() {
@@ -24,9 +27,11 @@ AnimationCycle::~AnimationCycle() {
 
 	m_CurrentAnimation = "";
 	
-	std::lock_guard<std::mutex> lock(m_AnimationMutex);
-	delete m_AnimationThread;
-	m_AnimationThread = nullptr;
+	if (m_AnimationThread != nullptr && !m_Copied) {
+		std::lock_guard<std::mutex> lock(m_AnimationMutex);
+		delete m_AnimationThread;
+		m_AnimationThread = nullptr;
+	}
 }
 
 void AnimationCycle::LinearX(const std::string cycleName, int xStart, int xEnd, int y, int speed, bool loop) {
@@ -114,6 +119,7 @@ void AnimationCycle::AnimationThread() {
 			//Animation is not set to loop, don't change the index anymore
 			if (index + 1 == m_CurrentCycle.m_Range.size() && !m_CurrentCycle.m_Loop) {
 				m_CurrentCycle.m_CycleComplete = true;
+				m_CurrentAnimation = "";
 				TerminateAnimation();
 			}
 			else {

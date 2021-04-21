@@ -20,12 +20,16 @@ ParticleGenerator::ParticleGenerator(std::shared_ptr<Texture> texture, glm::vec2
 	m_CoolDown = 0.0f;
 }
 
-void ParticleGenerator::Draw(SpriteRenderer& spriteRenderer) {
+ParticleGenerator::~ParticleGenerator() {
+	//holder
+}
+
+void ParticleGenerator::Draw(SpriteRenderer& spriteRenderer, bool followCamera) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE); //Gives the particles a nice glow effect
 
 	for (Particle& particle : m_Particles) {
 		if (particle.m_Life > 0.0f) {
-			spriteRenderer.DrawSprite(*m_Texture, particle.m_Pos, particle.m_Size, false, true, particle.m_Rotation, particle.m_Color);
+			spriteRenderer.DrawSprite(*m_Texture, particle.m_Pos, particle.m_Size, false, followCamera, particle.m_Rotation, particle.m_Color);
 		}
 	}
 

@@ -47,9 +47,9 @@ public:
 		}
 	}
 
+private:
 	static std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
 	static std::unordered_map<std::string, std::shared_ptr<Texture>> m_Textures;
 
-private:
-	ResourceManager();
+	ResourceManager() = delete;
 };
